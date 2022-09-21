@@ -1,5 +1,5 @@
 spring.profiles.group:
-  "local": "test, common"
+  "test": "test, common"
   "dev": "test, common"
   "prod": "prod, common"
 
@@ -16,7 +16,7 @@ spring:
 logging.level:
   root: INFO
   org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-  me.iksad.insta: TRACE
+  me.iksadnorth.insta: TRACE
 
 
 ---
