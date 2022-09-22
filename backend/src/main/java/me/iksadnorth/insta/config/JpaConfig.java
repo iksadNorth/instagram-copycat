@@ -1,15 +1,27 @@
 package me.iksadnorth.insta.config;
 
+import me.iksadnorth.insta.model.dto.AccountDto;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
 @Configuration
-public class JpaConfig implements AuditorAware<Long> {
+@EnableJpaAuditing
+public class JpaConfig {
 
-    @Override
-    public Optional<Long> getCurrentAuditor() {
-        return Optional.of(1L); // TODO: Security 설정 시, 같이 손보기. @CreatedBy를 처리하기 위한 라인이다.
+    @Bean
+    public AuditorAware<Long> auditorAware() {
+        return () -> Optional.ofNullable((SecurityContextHolder.getContext()))
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getPrincipal)
+                .map(AccountDto.class::cast)
+                .map(AccountDto::getId);
     }
 }
