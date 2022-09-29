@@ -2,10 +2,9 @@ package me.iksadnorth.insta.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import me.iksadnorth.insta.config.EnableProjectConfig;
 import me.iksadnorth.insta.exception.ErrorCode;
 import me.iksadnorth.insta.fixture.AccountFixture;
-import me.iksadnorth.insta.fixture.FixturePackageScan;
-import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.request.AccountCreateRequest;
 import me.iksadnorth.insta.model.request.AccountUpdateRequest;
 import me.iksadnorth.insta.service.AccountService;
@@ -21,9 +20,6 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.annotation.Resource;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -32,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AccountFixture.SetMockUser
-@FixturePackageScan
+@EnableProjectConfig
 @Slf4j
 @DisplayName("AccountController 테스트")
 @ActiveProfiles("test")
@@ -43,8 +39,7 @@ class AccountControllerTest {
 
     private final String prefix = "/api/v1";
 
-    @Resource
-    List<AccountDto> dtos;
+    private final AccountFixture fixture = AccountFixture.getInstance();
 
     @InjectMocks AccountController controller;
     @MockBean AccountService service;
@@ -53,8 +48,8 @@ class AccountControllerTest {
     void setFixture() {
         // given
         // 접근할 계정. - 당사자
-        given(service.loadUserByUsername(eq(dtos.get(1).getEmail()))).willReturn(dtos.get(1));
-        given(service.getId(eq(dtos.get(1).getId()))).willReturn(dtos.get(1));
+        given(service.loadUserByUsername(eq(fixture.getDtos(1).getEmail()))).willReturn(fixture.getDtos(1));
+        given(service.getId(eq(fixture.getDtos(1).getId()))).willReturn(fixture.getDtos(1));
     }
 
     @DisplayName("[post][/accounts] 계정 생성 - 정상 작동")
@@ -66,7 +61,7 @@ class AccountControllerTest {
         // when & then
         mvc.perform(
                         post(prefix)
-                                .content(mapper.writeValueAsBytes(AccountCreateRequest.from(dtos.get(2))))
+                                .content(mapper.writeValueAsBytes(AccountCreateRequest.from(fixture.getDtos(2))))
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk());
@@ -81,7 +76,7 @@ class AccountControllerTest {
         // when & then
         mvc.perform(
                         post(prefix)
-                                .content(mapper.writeValueAsBytes(AccountCreateRequest.from(dtos.get(1))))
+                                .content(mapper.writeValueAsBytes(AccountCreateRequest.from(fixture.getDtos(1))))
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().is(ErrorCode.DUPLICATED_USER_NAME.getStatus().value()));
@@ -128,7 +123,7 @@ class AccountControllerTest {
         mvc.perform(
                 put(prefix + "/accounts/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(dtos.get(2))))
+                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(fixture.getDtos(2))))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -144,7 +139,7 @@ class AccountControllerTest {
         mvc.perform(
                 put(prefix + "/accounts/2")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(dtos.get(2))))
+                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(fixture.getDtos(2))))
                 )
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_ID.getStatus().value()))
@@ -161,7 +156,7 @@ class AccountControllerTest {
         mvc.perform(
                 put(prefix + "/accounts/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(dtos.get(2))))
+                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(fixture.getDtos(2))))
                 )
                 .andDo(print())
                 .andExpect(status().is(ErrorCode.UNAUTHORIZED.getStatus().value()))
@@ -178,7 +173,7 @@ class AccountControllerTest {
         mvc.perform(
                 put(prefix + "/accounts/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(dtos.get(2))))
+                        .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(fixture.getDtos(2))))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())

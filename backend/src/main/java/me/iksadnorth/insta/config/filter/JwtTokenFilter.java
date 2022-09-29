@@ -38,7 +38,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if(header == null || !header.startsWith("Bearer ")) {
                 throw new InstaApplicationException(
                         ErrorCode.TOKEN_NOT_FOUNDED,
-                        String.format("헤더에 인증을 위한 Authorization가 Bearer로 시작하지 않음. \n%s", header.toString())
+                        String.format("헤더에 인증을 위한 Authorization가 Bearer로 시작하지 않음. \nheader: %s", header)
                 );
             }
 
@@ -60,7 +60,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         } catch (RuntimeException e) {
             log.error(e.toString());
-            e.printStackTrace();
         } finally {
             filterChain.doFilter(request, response);
         }

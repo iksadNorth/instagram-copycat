@@ -17,4 +17,16 @@ public class Response<T> {
     public static Response<Void> error(ErrorCode errorCode) {
         return new Response<>(errorCode.getMessage(), null);
     }
+
+    @Override
+    public String toString() {
+        return data != null
+                ? "Response{" +
+                "status='" + status + '\'' +
+                ", data=" + data +
+                '}'
+                : "Response{" +
+                "status='" + status + '\'' +
+                ", data= null }";
+    }
 }
