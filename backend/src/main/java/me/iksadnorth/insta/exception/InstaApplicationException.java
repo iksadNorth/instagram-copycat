@@ -1,29 +1,22 @@
 package me.iksadnorth.insta.exception;
 
-public class InstaApplicationException extends RuntimeException {
-    private ErrorCode errorCode;
-    private String message;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    public InstaApplicationException(ErrorCode errorCode, String message) {
-        this.errorCode = errorCode;
-        this.message = message;
-    }
+@Getter
+@RequiredArgsConstructor
+public class InstaApplicationException extends RuntimeException {
+    private final ErrorCode errorCode;
+    private final String message;
 
     public InstaApplicationException(ErrorCode errorCode) {
-        new InstaApplicationException(errorCode, null);
-    }
-
-    @Override
-    public String getMessage() {
-        return (this.message != null)
-                ? String.format("%s. %s", errorCode.getMessage(), message)
-                : errorCode.getMessage();
+        this(errorCode, null);
     }
 
     @Override
     public String toString() {
         return message != null
-                ? String.format("\n%s \n%s \n%s", super.toString(), errorCode.getMessage(), message)
-                : String.format("\n%s \n%s", super.toString(), errorCode.getMessage());
+                ? String.format("\n%s \n%s", errorCode.getMessage(), message)
+                : errorCode.getMessage();
     }
 }

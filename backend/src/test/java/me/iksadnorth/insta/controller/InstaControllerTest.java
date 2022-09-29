@@ -2,9 +2,10 @@ package me.iksadnorth.insta.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import me.iksadnorth.insta.config.EnableProjectConfig;
 import me.iksadnorth.insta.exception.ErrorCode;
-import me.iksadnorth.insta.fixture.FixturePackageScan;
-import me.iksadnorth.insta.model.dto.AccountDto;
+import me.iksadnorth.insta.exception.InstaApplicationException;
+import me.iksadnorth.insta.fixture.AccountFixture;
 import me.iksadnorth.insta.model.request.AccountLoginRequest;
 import me.iksadnorth.insta.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,28 +20,25 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.annotation.Resource;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@EnableProjectConfig
 @Slf4j
 @DisplayName("딱히 특정 소속에 속하지 않은 controller 테스트")
 @ActiveProfiles("test")
-@FixturePackageScan
 @WebMvcTest(InstaController.class)
 class InstaControllerTest {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper mapper;
-    
+
     private final String prefix = "/api/v1";
 
-    @Resource List<AccountDto> dtos;
+    private final AccountFixture fixture = AccountFixture.getInstance();
 
     @InjectMocks InstaController controller;
     @MockBean AccountService service;
@@ -48,7 +46,6 @@ class InstaControllerTest {
     @BeforeEach
     void setFixture() {
         // given
-        given(service.loadUserByUsername(eq(dtos.get(1).getEmail()))).willReturn(dtos.get(1));
     }
 
     @DisplayName("[post][/login] 로그인 테스트 - 정상 작동")
@@ -56,11 +53,13 @@ class InstaControllerTest {
     @WithAnonymousUser
     void loginTest1() throws Exception {
         // given
+        given(service.login(any(), any()))
+                .willReturn("token");
 
         // when & then
         mvc.perform(
                 post(prefix + "/login")
-                        .content(mapper.writeValueAsBytes(AccountLoginRequest.from(dtos.get(1))))
+                        .content(mapper.writeValueAsBytes(AccountLoginRequest.from(fixture.getDtos(0))))
                         .contentType(MediaType.APPLICATION_JSON)
                         ).andDo(print())
                 .andExpect(status().isOk())
@@ -72,11 +71,13 @@ class InstaControllerTest {
     @WithAnonymousUser
     void loginTest2() throws Exception {
         // given
+        given(service.login(any(), any()))
+                .willThrow(new InstaApplicationException(ErrorCode.USER_NOT_FOUNDED));
 
         // when & then
         mvc.perform(
                 post(prefix + "/login")
-                        .content(mapper.writeValueAsBytes(AccountLoginRequest.from(dtos.get(2))))
+                        .content(mapper.writeValueAsBytes(AccountLoginRequest.from(fixture.getDtos(1))))
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().is(ErrorCode.USER_NOT_FOUNDED.getStatus().value()));
@@ -87,11 +88,13 @@ class InstaControllerTest {
     @WithAnonymousUser
     void loginTest3() throws Exception {
         // given
+        given(service.login(any(), any()))
+                .willThrow(new InstaApplicationException(ErrorCode.INVALID_PASSWORD));
 
         // when & then
         mvc.perform(
                 post(prefix + "/login")
-                        .content(mapper.writeValueAsBytes(AccountLoginRequest.from(dtos.get(3))))
+                        .content(mapper.writeValueAsBytes(AccountLoginRequest.from(fixture.getDtos(2))))
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().is(ErrorCode.INVALID_PASSWORD.getStatus().value()));

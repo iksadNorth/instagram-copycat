@@ -14,8 +14,8 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "JWT Token 값이 적절하지 않습니다."),
     TOKEN_NOT_FOUNDED(HttpStatus.UNAUTHORIZED, "인증을 위한 토큰을 찾을 수 없습니다."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰의 기한이 만료되었습니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다.")
-    ;
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다."),
+    USER_ALREADY_EXISTED(HttpStatus.INTERNAL_SERVER_ERROR, "이미 해당 유저가 존재합니다.");
 
     private final HttpStatus status;
     private final String message;
