@@ -6,7 +6,7 @@
         <p>{{ label.askHavingAccount.label }}</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <router-link to="label.join.linkTo">{{ label.join.label }}</router-link>
+        <p id="join" @click="onClickJoin">{{ label.join.label }}</p>
     </v-card>
 </template>
 
@@ -16,12 +16,14 @@ export default {
         return {
             label: {
                 askHavingAccount: {label: "계정이 없으신가요?"},
-                join: {label: "가입하기", linkTo: "/join"}, // TODO: linkTo에 대해 좀더 생각하기.
+                join: {label: "가입하기"},
             }
         }
     },
     methods: {
-
+        onClickJoin() {
+            console.log("Click onClickJoin");
+        }
     },
     watch: {
         
@@ -31,11 +33,11 @@ export default {
 
 <style scoped>
     .v-card {
-        padding: 30px;
+        padding: 20px;
     }
-    a {
+    #join {
         color: blue;
         font-weight: bold;
-        text-decoration: none;
+        cursor: pointer;
     }
 </style>

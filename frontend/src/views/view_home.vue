@@ -28,16 +28,16 @@ export default {
 
 <style scoped>
     #left--sector {
-        background-color: beige;
+        /* background-color: beige; */
     }
     #right--sector {
-        background-color: rgb(156, 203, 153);
+        /* background-color: rgb(156, 203, 153); */
     }
     #body {
-        background-color: blueviolet;
+        /* background-color: blueviolet; */
     }
     .right--rows {
-        background-color: aqua;
+        /* background-color: aqua; */
         
         margin: 1px;
     }
