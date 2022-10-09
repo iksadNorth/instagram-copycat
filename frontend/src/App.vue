@@ -6,7 +6,7 @@
       </v-app-bar>
 
       <v-main>
-        <router-view />
+        <router-view class="my-5" />
       </v-main>
     </v-layout>
 
