@@ -8,5 +8,5 @@ export default {
         Vue.component("com-join", join);
         Vue.component("com-app", app_download);
     }
-  };
+};
   

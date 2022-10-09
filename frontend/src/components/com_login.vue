@@ -99,7 +99,6 @@ export default {
 <style scoped>
     .v-card {
         padding: 30px;
-        border-radius: 20px;
     }
     .v-container {
         background-color: black;

@@ -22,7 +22,7 @@
 
 <script>
 export default {
-    
+
 }
 </script>
 
@@ -50,5 +50,8 @@ export default {
 
         justify-content: center;
         align-items: center;
+    }
+    .v-card {
+        border-radius: 15px;
     }
 </style>
