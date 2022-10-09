@@ -3,11 +3,11 @@
     <!-- 좌측 열 -->
     <v-col id="left--sector" 
     cols="5"
-    ><v-row>
+    >
         <v-img
         src="@/assets/homepageLeft.png"
         ></v-img>
-    </v-row></v-col>
+    </v-col>
 
     <!-- 우측 열 -->
     <v-col id="right--sector"
