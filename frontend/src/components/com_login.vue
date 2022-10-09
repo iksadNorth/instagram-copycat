@@ -93,9 +93,6 @@ export default {
             console.log("Click onClickFindPassword");
         },
     },
-    watch: {
-        
-    },
 }
 </script>
 
