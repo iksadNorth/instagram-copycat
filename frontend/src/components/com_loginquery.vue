@@ -6,7 +6,7 @@
         <p>{{ label.askHavingAccount.label }}</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
-        <p id="join" @click="onClickJoin">{{ label.join.label }}</p>
+        <p id="login" @click="onClickLogin">{{ label.login.label }}</p>
     </v-card>
 </template>
 
@@ -15,15 +15,15 @@ export default {
     data() {
         return {
             label: {
-                askHavingAccount: {label: "계정이 없으신가요?"},
-                join: {label: "가입하기"},
+                askHavingAccount: {label: "계정이 있으신가요?"},
+                login: {label: "로그인"},
             }
         }
     },
     methods: {
-        onClickJoin() {
-            this.$router.push("/accounts/emailsignup");
-            console.log("Click onClickJoin");
+        onClickLogin() {
+            this.$router.push("/");
+            console.log("Click onClickLogin");
         }
     },
     watch: {
@@ -36,7 +36,7 @@ export default {
     .v-card {
         padding: 20px;
     }
-    #join {
+    #login {
         color: blue;
         font-weight: bold;
         cursor: pointer;

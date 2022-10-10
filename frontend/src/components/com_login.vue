@@ -21,7 +21,7 @@
         <!-- 3 -->
         <v-row>
             <v-text-field
-            variant="outlined" clearable density="compact"
+            variant="outlined" clearable density="compact" type="password"
             :label="inputs.pw.label"
             v-model="inputs.pw.value"
             ></v-text-field>
