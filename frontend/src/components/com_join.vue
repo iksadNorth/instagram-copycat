@@ -22,6 +22,7 @@ export default {
     },
     methods: {
         onClickJoin() {
+            this.$router.push("/accounts/emailsignup");
             console.log("Click onClickJoin");
         }
     },

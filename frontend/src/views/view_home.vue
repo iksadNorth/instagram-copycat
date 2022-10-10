@@ -2,7 +2,7 @@
 <v-container><v-row id="body">
     <!-- 좌측 열 -->
     <v-col id="left--sector" 
-    cols="5"
+    class="pa-16"
     >
         <v-img
         src="@/assets/homepageLeft.png"
