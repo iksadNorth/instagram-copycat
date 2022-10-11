@@ -1,7 +1,6 @@
 <template>
 <v-container>
     <v-row id="first--rows">
-        {{screenState.toLowerCase()}}
         <com-joinform class="w-100" v-if="screenState.toLowerCase()=='joinform'"/>
         <com-birthform class="w-100" v-if="screenState.toLowerCase()=='birthform'"/>
         <com-vertificationform class="w-100" v-if="screenState.toLowerCase()=='vertificationform'"/>
