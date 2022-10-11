@@ -15,6 +15,8 @@ import article_profile          from "@/components/com_article_profile";
 import article_tools            from '@/components/com_article_tools'
 import image                    from '@/components/com_image'
 import follow_recommend         from '@/components/com_follow_recommend'
+import container_img            from '@/components/com_container_img'
+import image_with_info          from '@/components/com_image_with_info'
 
 export default {
     install(Vue) {
@@ -35,8 +37,11 @@ export default {
         Vue.component("com-profile", article_profile);
         Vue.component("com-article-tools", article_tools);
         Vue.component("com-img", image);
-
+        
         Vue.component("com-follow-rec", follow_recommend);
+        
+        Vue.component("com-container-img", container_img);
+        Vue.component("com-img-info", image_with_info);
     }
 };
   
