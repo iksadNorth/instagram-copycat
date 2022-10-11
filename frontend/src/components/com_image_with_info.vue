@@ -1,0 +1,62 @@
+<template>
+    <div>
+        <v-hover v-slot="{ isHovering, props }">
+            <img
+                v-bind="props" class="fill" 
+                :src="data.imgSrc"
+            />
+            <div
+                v-bind="props" class="fill transparent center clickable"
+                @click="onClickPost"
+                v-if="isHovering"
+            >
+                <p class="gap"><v-icon>mdi-heart</v-icon>&nbsp;{{ data.likes }}</p>
+                <p class="gap"><v-icon>mdi-comment</v-icon>&nbsp;{{ data.comments }}</p>
+            </div>
+        </v-hover>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        data: Object,
+        // data: {
+        //     pid: 90384,
+        //     imgSrc: "https://img.freepik.com/premium-photo/abstract-blue-background-with-smooth-lines_476363-5999.jpg?w=900",
+        //     likes: 42,
+        //     comments: 21,
+        // },
+    },
+    methods: {
+        onClickPost() {
+            console.log("Click onClickPost");
+        },
+    },
+}
+</script>
+
+<style scoped>
+    .fill {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    .transparent {
+        background-color: black;
+        color: white;
+        opacity: 0.3;
+    }
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .gap {
+        margin-left : 5%;
+        margin-right: 5%;
+    }
+    .clickable {
+        cursor: pointer;
+    }
+</style>
