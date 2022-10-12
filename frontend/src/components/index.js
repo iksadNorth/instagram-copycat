@@ -19,6 +19,7 @@ import container_img            from '@/components/com_container_img'
 import image_with_info          from '@/components/com_image_with_info'
 import btn_follow               from '@/components/com_btn_follow'
 import comment_set              from '@/components/com_comment_set'
+import account_profile          from "@/components/com_account_profile";
 
 export default {
     install(Vue) {
@@ -47,6 +48,8 @@ export default {
 
         Vue.component("com-btn-follow", btn_follow);
         Vue.component("com-comment", comment_set);
+
+        Vue.component("com-account-profile", account_profile);
     }
 };
   
