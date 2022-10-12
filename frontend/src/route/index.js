@@ -6,6 +6,7 @@ const routes = [
   { path: '/explore', component: () => import("@/views/view_explore.vue")},
   { path: '/p/:pid', component: () => import("@/views/view_article.vue")},
   { path: '/:uid', component: () => import("@/views/view_account.vue")},
+  { path: '/explore/tags/:tag', component: () => import("@/views/view_hashtag.vue")},
 ];
 
 export default createRouter({
