@@ -70,6 +70,8 @@ export default {
         onClickArticles() {console.log("Click onClickArticles")},
         onClickFollowers() {console.log("Click onClickFollowers")},
         onClickFollowings() {console.log("Click onClickFollowings")},
+
+        onClickFollow() {console.log("Click onClickFollow")},
     },
 }
 </script>
