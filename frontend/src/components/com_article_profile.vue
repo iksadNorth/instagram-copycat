@@ -2,7 +2,7 @@
     <div class="d-flex flex-row align-center">
         <v-avatar 
             color="red" :size="size" variant="tonal"
-            class="ma-4 clickable"
+            class="mr-4 clickable"
             @click="onClickProfile"
         >{{ mkAvatar(data.writer) }}</v-avatar>
         <p

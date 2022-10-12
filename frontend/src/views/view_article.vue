@@ -4,7 +4,7 @@
         <!-- 좌측 열 -->
         <v-col id="left--sector"
         >
-            <com-img class="fill ma-n3 my-n8" :data="data"/>
+            <com-img class="ma-n3 my-n8" :data="data"/>
         </v-col>
 
         <!-- 우측 열 -->

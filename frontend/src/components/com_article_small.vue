@@ -17,9 +17,6 @@
     <!-- 게시글 내용 -->
     <com-article-content :data="data" />
 
-    <!-- 게시글 작성일자 -->
-    <com-createdAt :data="data"/>
-
     <v-divider/>
 
     <!-- 게시글 댓글 작성 -->

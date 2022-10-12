@@ -1,5 +1,15 @@
 <template>
-    <div class="d-flex flex-row align-center">
+    <v-row>
+    <v-col cols="auto" v-if="isExistAvatar">
+        <!-- 아바타 -->
+        <v-avatar 
+            color="red" :size="size" variant="tonal"
+            class="clickable"
+            @click="onClickProfile"
+        >{{ mkAvatar(data.writer) }}</v-avatar>
+    </v-col>
+    <v-col>
+        <!-- 내용 -->
         <p
         @click="onClickProfile" class="clickable" 
         >
@@ -7,7 +17,11 @@
             &nbsp;&nbsp;
             {{ data.content }}
         </p>
-    </div>
+
+        <!-- 작성 일자 -->
+        <com-createdAt :data="data"/>
+    </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -18,8 +32,14 @@ export default {
         //         writer: "게시글 작성자 NickName",
         //         content: "게시글 내용",
         //     },
+        isExistAvatar: {
+            type: Boolean,
+            default: false
+        },
     },
     methods: {
+        mkAvatar(nickname) { return nickname.slice(0, 2).toUpperCase(); },
+
         onClickProfile() {console.log("Click onClickProfile")},
     },
 }
@@ -28,5 +48,10 @@ export default {
 <style scoped>
     .clickable {
         cursor: pointer;
+    }
+    .v-col {
+        /* background-color: rgb(118, 17, 17);
+        opacity: 1; */
+        margin: 1px;
     }
 </style>
