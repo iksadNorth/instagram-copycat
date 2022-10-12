@@ -2,13 +2,10 @@
     <p
         class="text-grey"
     ><strong>{{ label.rec4user.label }}</strong></p>
-    <v-row align="center">
+    <v-row align="center" class="ma-3">
         <com-profile :data="data"/>
         <v-spacer/>
-        <p
-            class="follow clickable"
-            @click="onClickFollow(data.uid)"
-        ><strong>{{ label.follow.label }}</strong></p>
+        <com-btn-follow :data="data" />
     </v-row>
 </template>
 
@@ -25,14 +22,13 @@ export default {
         return {
             label: {
                 rec4user: {label: "회원님을 위한 추천"},
-                follow: {label: "팔로우"},
             }
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
     .follow {
         color: aqua;
     }

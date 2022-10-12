@@ -18,8 +18,18 @@
             {{ data.content }}
         </p>
 
-        <!-- 작성 일자 -->
-        <com-createdAt :data="data"/>
+        <div class="d-flex flex-row align-center">
+            <!-- 작성 일자 -->
+            <com-createdAt :data="data"/>
+
+            <!-- 좋아요 -->
+            <com-likes :data="data" class="ml-4" size="15" color="grey" />
+
+            <!-- 답글 달기 -->
+            <p
+            @click="onClickPostComment" class="clickable text-grey ml-4"
+            >답글 달기<strong></strong></p>
+        </div>
     </v-col>
     </v-row>
 </template>
@@ -30,11 +40,12 @@ export default {
         data: Object,
         // data: {
         //         writer: "게시글 작성자 NickName",
+        //         likes: 83,
         //         content: "게시글 내용",
         //     },
         isExistAvatar: {
             type: Boolean,
-            default: false
+            default: true
         },
     },
     methods: {
@@ -53,5 +64,8 @@ export default {
         /* background-color: rgb(118, 17, 17);
         opacity: 1; */
         margin: 1px;
+    }
+    com-likes {
+        font-size: small;
     }
 </style>
