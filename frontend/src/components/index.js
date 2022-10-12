@@ -20,6 +20,7 @@ import image_with_info          from '@/components/com_image_with_info'
 import btn_follow               from '@/components/com_btn_follow'
 import comment_set              from '@/components/com_comment_set'
 import account_profile          from "@/components/com_account_profile";
+import hashtag_profile          from "@/components/com_hashtag_profile";
 
 export default {
     install(Vue) {
@@ -50,6 +51,7 @@ export default {
         Vue.component("com-comment", comment_set);
 
         Vue.component("com-account-profile", account_profile);
+        Vue.component("com-hashtag-profile", hashtag_profile);
     }
 };
   
