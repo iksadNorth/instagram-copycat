@@ -17,6 +17,8 @@ import image                    from '@/components/com_image'
 import follow_recommend         from '@/components/com_follow_recommend'
 import container_img            from '@/components/com_container_img'
 import image_with_info          from '@/components/com_image_with_info'
+import btn_follow               from '@/components/com_btn_follow'
+import comment_set              from '@/components/com_comment_set'
 
 export default {
     install(Vue) {
@@ -42,6 +44,9 @@ export default {
         
         Vue.component("com-container-img", container_img);
         Vue.component("com-img-info", image_with_info);
+
+        Vue.component("com-btn-follow", btn_follow);
+        Vue.component("com-comment", comment_set);
     }
 };
   
