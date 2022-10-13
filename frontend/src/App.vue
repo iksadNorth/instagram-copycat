@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout>
-      <v-app-bar color="header bg-black">
+      <v-app-bar color="header py-2">
         <Header />
       </v-app-bar>
 
@@ -35,6 +35,6 @@ export default {
 
 <style>
   .footer {
-    max-height: 50px;
+    height: 8vh;
   }
 </style>
