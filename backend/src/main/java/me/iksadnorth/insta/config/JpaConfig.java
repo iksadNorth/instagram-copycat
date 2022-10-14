@@ -20,6 +20,7 @@ public class JpaConfig {
         return () -> Optional.ofNullable((SecurityContextHolder.getContext()))
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
+                .filter(auth -> !auth.getName().equals("anonymousUser"))
                 .map(Authentication::getPrincipal)
                 .map(AccountDto.class::cast)
                 .map(AccountDto::getId);

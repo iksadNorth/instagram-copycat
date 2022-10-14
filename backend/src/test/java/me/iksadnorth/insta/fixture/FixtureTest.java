@@ -1,38 +1,55 @@
 package me.iksadnorth.insta.fixture;
 
 import lombok.extern.slf4j.Slf4j;
-import me.iksadnorth.insta.config.EnableProjectConfig;
-import me.iksadnorth.insta.controller.InstaController;
+import me.iksadnorth.insta.config.EnableProjectSecurityConfig;
 import me.iksadnorth.insta.service.AccountService;
+import me.iksadnorth.insta.service.ArticleService;
+import me.iksadnorth.insta.service.CommentService;
+import me.iksadnorth.insta.service.HashtagService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 
-@AccountFixture.SetMockUser
-@EnableProjectConfig
+import java.util.Arrays;
+
+@Fixture.SetMockUser
+@EnableProjectSecurityConfig
 @Slf4j
 @ActiveProfiles("test")
 @WebMvcTest
-public class AccountFixtureTest {
+public class FixtureTest {
     @MockBean
     AccountService service;
+    @MockBean
+    ArticleService articleService;
+    @MockBean
+    CommentService commentService;
+    @MockBean
+    HashtagService hashtagService;
+    @Autowired
+    ApplicationContext applicationContext;
+    @Test
+    void printBeans() {
+        Arrays.stream(applicationContext.getBeanDefinitionNames()).forEach(log::trace);
+    }
     @Test
     void printUser() {
         log.trace(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Test
-    @AccountFixture.SetMockOther
+    @Fixture.SetMockOther
     void printUserOther() {
         log.trace(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Test
-    @AccountFixture.SetMockAdmin
+    @Fixture.SetMockAdmin
     void printUserAdmin() {
         log.trace(SecurityContextHolder.getContext().getAuthentication().getName());
     }

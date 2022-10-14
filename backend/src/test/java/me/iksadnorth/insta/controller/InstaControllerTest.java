@@ -2,10 +2,10 @@ package me.iksadnorth.insta.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import me.iksadnorth.insta.config.EnableProjectConfig;
+import me.iksadnorth.insta.config.EnableProjectSecurityConfig;
 import me.iksadnorth.insta.exception.ErrorCode;
 import me.iksadnorth.insta.exception.InstaApplicationException;
-import me.iksadnorth.insta.fixture.AccountFixture;
+import me.iksadnorth.insta.fixture.Fixture;
 import me.iksadnorth.insta.model.request.AccountLoginRequest;
 import me.iksadnorth.insta.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@EnableProjectConfig
+@EnableProjectSecurityConfig
 @Slf4j
 @DisplayName("딱히 특정 소속에 속하지 않은 controller 테스트")
 @ActiveProfiles("test")
@@ -38,7 +38,7 @@ class InstaControllerTest {
 
     private final String prefix = "/api/v1";
 
-    private final AccountFixture fixture = AccountFixture.getInstance();
+    private final Fixture fixture = Fixture.getInstance();
 
     @InjectMocks InstaController controller;
     @MockBean AccountService service;

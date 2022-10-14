@@ -19,6 +19,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     ) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(ErrorCode.INVALID_TOKEN.getStatus().value());
-        response.getWriter().write(Response.error(ErrorCode.INVALID_TOKEN).toString());
+        response.getWriter().write(Response.error(ErrorCode.INVALID_TOKEN.toString()).toString());
     }
 }

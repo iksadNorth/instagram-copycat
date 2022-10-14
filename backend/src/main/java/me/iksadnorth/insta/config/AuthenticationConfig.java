@@ -35,7 +35,7 @@ public class AuthenticationConfig {
                 .csrf().disable()
                 .httpBasic().disable().formLogin().disable()
                 .cors().configurationSource(corsConfig()).and()
-
+                .headers().frameOptions().disable().and()       // TODO: h2 console을 사용하기 위한 설정이므로 최종 결과물에서는 제거하기.
 
                 .authorizeHttpRequests()
                     .mvcMatchers(HttpMethod.DELETE, "/api/v1/hashtag/*").hasRole("ADMIN")

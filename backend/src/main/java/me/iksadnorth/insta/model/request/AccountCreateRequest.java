@@ -1,27 +1,43 @@
 package me.iksadnorth.insta.model.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import me.iksadnorth.insta.model.dto.AccountDto;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class AccountCreateRequest {
-    private final String email;
-    private final String userName;
-    private final String nickName;
-    private final String password;
-    private final LocalDateTime dataOfBirth;
+    private String email;
+    private String userName;
+    private String nickName;
+    private String password;
+    @JsonFormat(pattern = "yyyyMMddHHmmss")
+    private LocalDateTime dateOfBirth;
 
     public static AccountCreateRequest from(AccountDto dto) {
-        return new AccountCreateRequest(
-                dto.getEmail(),
-                dto.getUserName(),
-                dto.getNickName(),
-                dto.getPassword(),
-                dto.getDataOfBirth()
-        );
+        AccountCreateRequest vo = new AccountCreateRequest();
+
+        vo.setEmail(dto.getEmail());
+        vo.setUserName(dto.getUserName());
+        vo.setNickName(dto.getNickName());
+        vo.setPassword(dto.getPassword());
+        vo.setDateOfBirth(dto.getDateOfBirth());
+
+        return vo;
+    }
+
+    public AccountDto toDto() {
+        return AccountDto.builder()
+                .email(email)
+                .userName(userName)
+                .nickName(nickName)
+                .password(password)
+                .dateOfBirth(dateOfBirth)
+                .build();
     }
 }

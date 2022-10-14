@@ -4,13 +4,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.iksadnorth.insta.type.RoleType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE account SET deleted_at = NOW() WHERE id=?")
@@ -18,18 +20,25 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Account extends BaseEntity {
-    @Column(nullable = false, unique = true)
+    @Setter @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private String userName;
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private String nickName;
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Setter @Column(nullable = false)
     private LocalDateTime dateOfBirth;
-    @Column(nullable = false) @Enumerated(EnumType.STRING)
+    @Setter @ColumnDefault("USER") @Enumerated(EnumType.STRING)
     private RoleType role;
 
+    @Setter
     private String introduction;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+    private Set<Article> articles = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
+    private Set<Follow> followers = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followee")
+    private Set<Follow> followees = new HashSet<>();
 }

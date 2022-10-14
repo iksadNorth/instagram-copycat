@@ -14,8 +14,12 @@ public class Response<T> {
         return new Response<>("SUCCESS", data);
     }
 
-    public static Response<Void> error(ErrorCode errorCode) {
-        return new Response<>(errorCode.getMessage(), null);
+    public static Response<Void> success() {
+        return Response.success(null);
+    }
+
+    public static Response<Void> error(String message) {
+        return new Response<>(message, null);
     }
 
     @Override

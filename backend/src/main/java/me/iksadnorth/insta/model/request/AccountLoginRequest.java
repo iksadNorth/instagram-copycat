@@ -1,18 +1,29 @@
 package me.iksadnorth.insta.model.request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import me.iksadnorth.insta.model.dto.AccountDto;
 
+@Setter
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class AccountLoginRequest {
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
 
     public static AccountLoginRequest from(AccountDto dto) {
-        return new AccountLoginRequest(
-                dto.getEmail(), dto.getPassword()
-        );
+        AccountLoginRequest accountLoginRequest = new AccountLoginRequest();
+        accountLoginRequest.setEmail(dto.getEmail());
+        accountLoginRequest.setPassword(dto.getPassword());
+        return accountLoginRequest;
+    }
+
+    public AccountDto toDto() {
+        return AccountDto.builder()
+                .email(email)
+                .password(password)
+                .build();
     }
 }

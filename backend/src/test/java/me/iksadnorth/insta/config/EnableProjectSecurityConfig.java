@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Import({AuthenticationConfig.class, JwtProperties.class, AccountService.class})
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EnableProjectConfig {
+public @interface EnableProjectSecurityConfig {
 }
