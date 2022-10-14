@@ -10,6 +10,8 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -22,11 +24,18 @@ public class Article extends BaseEntity {
     @CreatedBy
     private Long createdBy;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id", nullable = false)
     private Image image;
 
     private String content;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
     @Convert(converter = BooleanToYNConverter.class)
     @Column(length = 1)
@@ -37,4 +46,7 @@ public class Article extends BaseEntity {
     @Column(length = 1)
     @ColumnDefault(value = BooleanToYNConverter.False)
     private Boolean isAllowedComments;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<Hashtag> hashtags = new ArrayList<>();
 }

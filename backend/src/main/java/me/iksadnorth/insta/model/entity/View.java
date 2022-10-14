@@ -20,6 +20,10 @@ public class View extends BaseEntity {
     @CreatedBy
     private Long createdBy;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 }
