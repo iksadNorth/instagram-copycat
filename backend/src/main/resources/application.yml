@@ -18,6 +18,14 @@ logging.level:
   org.hibernate.type.descriptor.sql.BasicBinder: TRACE
   me.iksadnorth.insta: TRACE
 
+jwt:
+  secret-key: 00c89a1f936f93e5a83964f2c34e44195595f7cac271a7c4bee3cf85087043930bb082aa1705281f37c1bd282edcc8f9b6581018d01fcfcf60fa694416f6bf8a
+  #  for a month
+  expired-time-ms: 2592000000
+
+cors:
+  allowed-url: "http://localhost:8090"
+
 
 ---
 
@@ -25,6 +33,7 @@ logging.level:
 spring:
   config.activate.on-profile: "test"
   jpa:
+    defer-datasource-initialization: true
     hibernate.ddl-auto: create-drop
   datasource:
     url: "jdbc:h2:mem:test_mem"
@@ -33,6 +42,7 @@ spring:
   h2.console:
     enabled: true
     path: /h2
+sql.init.mode: always
 
 
 ---

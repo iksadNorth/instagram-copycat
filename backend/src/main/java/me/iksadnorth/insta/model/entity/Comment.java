@@ -20,6 +20,9 @@ public class Comment extends BaseEntity {
     @CreatedBy
     private Long createdBy;
 
+    @ManyToOne @JoinColumn(name = "", nullable = false)
+    private Account account;
+
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 

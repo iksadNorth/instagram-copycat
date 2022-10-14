@@ -1,5 +1,6 @@
 package me.iksadnorth.insta.exception;
 
+import me.iksadnorth.insta.model.response.Response;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -18,5 +19,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     ) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(ErrorCode.INVALID_TOKEN.getStatus().value());
+        response.getWriter().write(Response.error(ErrorCode.INVALID_TOKEN.toString()).toString());
     }
 }
