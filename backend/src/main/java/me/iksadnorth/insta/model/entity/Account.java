@@ -30,7 +30,8 @@ public class Account extends BaseEntity {
     private String password;
     @Setter @Column(nullable = false)
     private LocalDateTime dateOfBirth;
-    @Setter @ColumnDefault("USER") @Enumerated(EnumType.STRING)
+//    @Setter @ColumnDefault("USER") @Enumerated(EnumType.STRING)
+    @Setter @Enumerated(EnumType.STRING)
     private RoleType role;
 
     @Setter
