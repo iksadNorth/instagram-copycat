@@ -7,9 +7,13 @@ export default createStore({
             // screenState: "birthform",
             // screenState: "vertificationform",
             // screenState: "termform",
+		},
+		account: {
+			uid: undefined,
 		}
 	},
 	getters: {
+		isLogin(state) {return state.account.uid != null;}
 	},
 	mutations: {
 		setScreenState: (state, payload) => {
