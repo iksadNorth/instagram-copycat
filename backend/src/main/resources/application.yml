@@ -1,6 +1,6 @@
 spring.profiles.group:
   "test": "test, common"
-  "dev": "test, common"
+  "dev": "dev, common"
   "prod": "prod, common"
 
 
@@ -34,7 +34,7 @@ spring:
   config.activate.on-profile: "test"
   jpa:
     defer-datasource-initialization: true
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create
   datasource:
     url: "jdbc:h2:mem:test_mem"
     username: "iksad"
@@ -52,6 +52,19 @@ spring:
   config.activate.on-profile: "prod"
   jpa:
     hibernate.ddl-auto: validate
+  datasource:
+    url: "jdbc:mysql://localhost/DbMySql"
+    username: "iksad"
+    password: "1234"
+
+
+---
+
+
+spring:
+  config.activate.on-profile: "dev"
+  jpa:
+    hibernate.ddl-auto: create
   datasource:
     url: "jdbc:mysql://localhost/DbMySql"
     username: "iksad"

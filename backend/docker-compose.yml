@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1111
+      MYSQL_USER: iksad
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: DbMySql
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/mounted/mysql:/var/lib/mysql
