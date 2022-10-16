@@ -81,6 +81,9 @@
 </template>
 
 <script>
+import { AccountCreateRequest } from "@/dto/Request";
+import { num2str } from "@/utils/util";
+
 export default {
     data() {
         return {
@@ -102,20 +105,7 @@ export default {
             birth: {
                 month: {
                     selected: {key: '1월', value: 1},
-                    options: [
-                        {key: '1월', value: 1},
-                        {key: '2월', value: 2},
-                        {key: '3월', value: 3},
-                        {key: '4월', value: 4},
-                        {key: '5월', value: 5},
-                        {key: '6월', value: 6},
-                        {key: '7월', value: 7},
-                        {key: '8월', value: 8},
-                        {key: '9월', value: 9},
-                        {key: '10월', value: 10},
-                        {key: '11월', value: 11},
-                        {key: '12월', value: 12},
-                    ]
+                    options: this.makeMonthList()
                 },
                 day: {
                     selected: {key: '1', value: 1},
@@ -131,7 +121,15 @@ export default {
     },
     methods: {
         onClickNext() {
-            this.$store.commit("setScreenState", "vertificationform");
+            const newOne = AccountCreateRequest.of();
+            newOne.dateOfBirth = [
+                this.birth.year.selected.value, 
+                num2str(this.birth.month.selected.value), 
+                num2str(this.birth.day.selected.value),
+            ].join("") + "000000";
+
+            this.$store.commit("setAccount4Creating", newOne);
+            this.$store.commit("setScreenState", "termform");
             console.log("Click onClickNext");
         },
         onClickBackward() {
@@ -139,19 +137,37 @@ export default {
             console.log("Click onClickBackward");
         },
         makeDayList(month) {
-            const thrityMonth = [2, 4, 6, 9, 11];
+            const febMonth = [2];
+            const thrityMonth = [4, 6, 9, 11];
             let result = [];
+            let items;
             if (thrityMonth.includes(month)) {
-                let items = [...Array(30).keys()].map(x => x+1);
-                for (const item of items) {
-                    result.push({key: item, value: item})
-                }
+                items = [...Array(30).keys()].map(x => x+1);
+            } else if (febMonth.includes(month)) {
+                items = [...Array(28).keys()].map(x => x+1);
             } else {
-                let items = [...Array(31).keys()].map(x => x+1);
-                for (const item of items) {
-                    result.push({key: item, value: item})
-                }
+                items = [...Array(31).keys()].map(x => x+1);
             }
+            for (const item of items) {
+                result.push({key: item, value: item})
+            }
+            return result;
+        },
+        makeMonthList() {
+            let result = [
+                {key: '1월', value: 1},
+                {key: '2월', value: 2},
+                {key: '3월', value: 3},
+                {key: '4월', value: 4},
+                {key: '5월', value: 5},
+                {key: '6월', value: 6},
+                {key: '7월', value: 7},
+                {key: '8월', value: 8},
+                {key: '9월', value: 9},
+                {key: '10월', value: 10},
+                {key: '11월', value: 11},
+                {key: '12월', value: 12},
+            ];
             return result;
         },
         makeYearList() {
