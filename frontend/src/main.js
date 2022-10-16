@@ -3,7 +3,7 @@ import App from '@/App.vue'
 import vuetify from '@/plugins/vuetify'
 import { loadFonts } from '@/plugins/webfontloader'
 
-import axios from "axios";
+import { instance, instanceWithAuth } from "@/axios";
 import store from '@/store'
 import router from '@/route';
 import registerComponent from '@/components';
@@ -13,7 +13,8 @@ loadFonts()
 
 const app = createApp(App)
 
-app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$axios = instance;
+app.config.globalProperties.$axiosAuth = instanceWithAuth;
 
 app.use(configuration)
 app.use(registerComponent)

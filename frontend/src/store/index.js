@@ -10,15 +10,19 @@ export default createStore({
 		},
 		account: {
 			uid: undefined,
+			email: undefined,
 		}
 	},
 	getters: {
-		isLogin(state) {return state.account.uid != null;}
+		isLogin(state) {return state.account.email != null;}
 	},
 	mutations: {
 		setScreenState: (state, payload) => {
 			state.emailsignup.screenState = payload;
-		}
+		},
+		overwriteAccount: (state, payload) => {
+			Object.assign(state.account, payload);
+		},
 	},
 	actions: {
 	}
