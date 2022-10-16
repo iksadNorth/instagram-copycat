@@ -4,7 +4,5 @@ const dictErrorCode = {
 };
 
 export default function(status, errorCode) {
-    console.log(status==errorCode);
-    console.log(dictErrorCode[errorCode]);
     return (status==errorCode) ? dictErrorCode[errorCode] : "";
 }
