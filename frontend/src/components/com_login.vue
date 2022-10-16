@@ -69,9 +69,10 @@
 <script>
 import * as Req from "@/dto/Request";
 import * as Res from "@/dto/Response";
+import { Claim } from "@/dto/Claim";
 
 import { saveAccessToken } from "@/utils/localStorage"
-// import { jwtDec } from "@/utils/JWT";
+import { jwtDec } from "@/utils/JWT";
 
 export default {
     data() {
@@ -106,7 +107,8 @@ export default {
                     saveAccessToken(token);
 
                     const token_dec = jwtDec(token);
-                    console.log(token_dec);
+                    const claim = Claim.of(token_dec);
+                    this.$store.commit("overwriteAccount", claim.account);
                 }
             )
             .catch(

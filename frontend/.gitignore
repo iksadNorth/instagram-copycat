@@ -189,3 +189,6 @@ npm-debug.log
 yarn-error.log
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,vuejs,node,visualstudiocode
+
+# 보안상 제외할 경로.
+src/secret
