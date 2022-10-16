@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @Configuration
 @RequiredArgsConstructor
 public class AuthenticationConfig {
@@ -26,7 +28,7 @@ public class AuthenticationConfig {
     @Autowired UserDetailsService userDetailsService;
     @Autowired JwtProperties jwtProperties;
 
-    @Value("${cors.allowed-url}") String allowedUrl;
+    @Value("${cors.allowed-url}") String[] allowedUrls;
 
 
     @Bean
@@ -67,13 +69,13 @@ public class AuthenticationConfig {
     public CorsConfigurationSource corsConfig() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOrigin(allowedUrl);
+        Arrays.stream(allowedUrls).forEach(config::addAllowedOrigin);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/v1/**", config);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }
