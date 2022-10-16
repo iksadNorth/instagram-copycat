@@ -14,7 +14,7 @@ export default createStore({
 		}
 	},
 	getters: {
-		isLogin(state) {return state.account.uid != null;}
+		isLogin(state) {return state.account.email != null;}
 	},
 	mutations: {
 		setScreenState: (state, payload) => {

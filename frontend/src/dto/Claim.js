@@ -8,7 +8,7 @@ export class Claim {
 
     get account() {
         return {
-            "uid": 1,
+            "uid": undefined,
             "email": this.email,
         };
     }
