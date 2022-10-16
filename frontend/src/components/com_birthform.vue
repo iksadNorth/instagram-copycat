@@ -87,10 +87,6 @@ import { num2str } from "@/utils/util";
 export default {
     data() {
         return {
-            inputs: {
-                id: {label: "전화번호, 사용자 이름 또는 이메일", value: undefined},
-                pw: {label: "비밀번호", value: undefined},
-            },
             btn: {
                 next: {label: "다음"},
             },

@@ -91,10 +91,10 @@ export default {
     data() {
         return {
             inputs: {
-                email: {label: "이메일", value: undefined, state: undefined},
-                name: {label: "성명", value: undefined},
-                nickname: {label: "사용자 이름", value: undefined},
-                pw: {label: "비밀번호", value: undefined},
+                email: {label: "이메일", value: this.$store.state.account4Creating.email, state: undefined},
+                name: {label: "성명", value: this.$store.state.account4Creating.userName},
+                nickname: {label: "사용자 이름", value: this.$store.state.account4Creating.nickName},
+                pw: {label: "비밀번호", value: this.$store.state.account4Creating.password},
             },
             btn: {
                 loginWithFacebook: {label: "Facebook으로 로그인"},
