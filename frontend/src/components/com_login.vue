@@ -36,7 +36,7 @@
             >{{ btn.login.label }}</v-btn>
         </v-row>
         <!-- 5 -->
-        <v-row align="center">
+        <v-row align="center" class="remove">
             <v-col>
                 <v-divider thickness="2"></v-divider>
             </v-col>
@@ -48,7 +48,7 @@
             </v-col>
         </v-row>
         <!-- 6 -->
-        <v-row justify="center">
+        <v-row justify="center" class="remove">
             <p
             id="sector--facebookLogin"
             @click="onClickFacebookLogin"
@@ -57,7 +57,7 @@
             </strong></p>
         </v-row>
         <!-- 7 -->
-        <v-row justify="center">
+        <v-row justify="center" class="remove">
             <p
             id="sector--findPassword"
             @click="onClickFindPassword"
@@ -147,5 +147,8 @@ export default {
     }
     #sector--findPassword {
         cursor: pointer;
+    }
+    .remove {
+        display: none;
     }
 </style>
