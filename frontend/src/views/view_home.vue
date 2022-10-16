@@ -46,8 +46,6 @@
 export default {
     data() {
         return {
-            isLogin: true,
-
             data: {
                 uid: 634643,
                 writer: "kakao_career",
@@ -57,7 +55,10 @@ export default {
                 createdAt: "8월 5",
             },
         }
-    }
+    },
+    computed: {
+        isLogin() {return this.$store.getters["isLogin"];},
+    },
 }
 </script>
 
