@@ -14,6 +14,6 @@ public class GlobalControllerAdvice {
     public ResponseEntity<?> errorHandler(InstaApplicationException e) {
         log.error("Error occurs {}", e.toString());
         return ResponseEntity.status(e.getErrorCode().getStatus())
-                .body(Response.error(e.toString()));
+                .body(Response.error(e.getErrorCode().name()));
     }
 }
