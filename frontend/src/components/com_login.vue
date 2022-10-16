@@ -16,6 +16,7 @@
             variant="outlined" clearable density="compact"
             :label="inputs.id.label"
             v-model="inputs.id.value"
+            persistent-hint :hint="inputs.id.state"
             ></v-text-field>
         </v-row>
         <!-- 3 -->
@@ -24,6 +25,7 @@
             variant="outlined" clearable density="compact" type="password"
             :label="inputs.pw.label"
             v-model="inputs.pw.value"
+            persistent-hint :hint="inputs.pw.state"
             ></v-text-field>
         </v-row>
         <!-- 4 -->
@@ -65,12 +67,18 @@
 </template>
 
 <script>
+import * as Req from "@/dto/Request";
+import * as Res from "@/dto/Response";
+
+import { saveAccessToken } from "@/utils/localStorage"
+// import { jwtDec } from "@/utils/JWT";
+
 export default {
     data() {
         return {
             inputs: {
-                id: {label: "전화번호, 사용자 이름 또는 이메일", value: undefined},
-                pw: {label: "비밀번호", value: undefined},
+                id: {label: "전화번호, 사용자 이름 또는 이메일", value: undefined, state: ""},
+                pw: {label: "비밀번호", value: undefined, state: ""},
             },
             btn: {
                 login: {label: "로그인"},
@@ -85,6 +93,31 @@ export default {
     methods: {
         onClickLogin() {
             console.log("Click onClickLogin");
+
+            this.$axios({
+                    method: 'post', url: this.$to("/login"),
+                    data: Req.LoginRequest.of(this.inputs.id.value, this.inputs.pw.value).param,
+                })
+            .then(
+                res => {
+                    const token = Res.LoginResponse.of(res).token;
+                    console.log(token);
+
+                    saveAccessToken(token);
+
+                    const token_dec = jwtDec(token);
+                    console.log(token_dec);
+                }
+            )
+            .catch(
+                res => {
+                    const error = Res.ErrResponse.of(res);
+                    console.log(error);
+
+                    this.inputs.id.state = error.isIt("USER_NOT_FOUNDED");
+                    this.inputs.pw.state = error.isIt("INVALID_PASSWORD");
+                }
+            );
         },
         onClickFacebookLogin() {
             console.log("Click onClickFacebookLogin");
