@@ -25,3 +25,15 @@ export class LoginResponse {
 
     static of(response) {return new this(response);}
 }
+
+export class ImageCreateResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get url() {
+        return this.response.data.data.url;
+    }
+
+    static of(response) {return new this(response);}
+}

@@ -58,3 +58,23 @@ export class AccountVerifyRequest {
 
     static of(email) {return new this(email);}
 }
+
+export class ArticleCreateRequest {
+    constructor(url, content, toggleHide, toggleComment) {
+        this.url = url;
+        this.content = content;
+        this.toggleHide = toggleHide;
+        this.toggleComment = toggleComment;
+    }
+
+    get param() {
+        return {
+            "url": this.url,
+            "content": this.content,
+            "toggleHide": this.toggleHide,
+            "toggleComment": this.toggleComment,
+        };
+    }
+
+    static of(url, content, toggleHide, toggleComment) {return new this(url, content, toggleHide, toggleComment);}
+}
