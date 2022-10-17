@@ -21,6 +21,9 @@ import btn_follow               from '@/components/com_btn_follow'
 import comment_set              from '@/components/com_comment_set'
 import account_profile          from "@/components/com_account_profile";
 import hashtag_profile          from "@/components/com_hashtag_profile";
+import header_search            from "@/components/com_header_search";
+import article_posting          from "@/components/com_article_posting";
+import header_heart             from "@/components/com_header_heart";
 
 export default {
     install(Vue) {
@@ -52,6 +55,11 @@ export default {
 
         Vue.component("com-account-profile", account_profile);
         Vue.component("com-hashtag-profile", hashtag_profile);
+
+        Vue.component("com-search", header_search);
+        Vue.component("com-posting", article_posting);
+
+        Vue.component("com-heart", header_heart);
     }
 };
   
