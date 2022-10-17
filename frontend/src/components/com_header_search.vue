@@ -40,6 +40,13 @@ export default {
     },
     methods: {
         doSearch(keyword) {console.log("Click doSearch. keyword: " + keyword);},
+        doPreSearch(keyword) {console.log("Click doPreSearch. keyword: " + keyword);},
+    },
+    computed: {
+        search() { return this.inputs.search.value; },
+    },
+    watch: {
+        search(newVal) { this.doPreSearch(newVal); },
     },
 }
 </script>
