@@ -1,21 +1,9 @@
 package me.iksadnorth.insta.model.dto;
 
 import lombok.*;
-import me.iksadnorth.insta.model.entity.Account;
 import me.iksadnorth.insta.model.entity.Article;
-import me.iksadnorth.insta.model.entity.Image;
-import me.iksadnorth.insta.type.RoleType;
-import me.iksadnorth.insta.utils.BooleanToYNConverter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @ToString
@@ -44,7 +32,7 @@ public class ArticleDto {
         entity.setDeletedAt(deletedAt);
 
         entity.setCreatedBy(createdBy);
-        entity.setAccount(account.toEntity());
+//        entity.setAccount(account.toEntity());
         entity.setImage(image.toEntity());
         entity.setContent(content);
         entity.setIsHideLikesAndViews(isHideLikesAndViews);

@@ -2,19 +2,10 @@ package me.iksadnorth.insta.model.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.dto.ArticleDto;
 import me.iksadnorth.insta.model.dto.ImageDto;
-import me.iksadnorth.insta.model.entity.Account;
-import me.iksadnorth.insta.model.entity.Image;
-import me.iksadnorth.insta.utils.BooleanToYNConverter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedBy;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
