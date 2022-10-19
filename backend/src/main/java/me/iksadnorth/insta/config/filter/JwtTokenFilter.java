@@ -32,7 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String header = response.getHeader(HttpHeaders.AUTHORIZATION);
+        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         try{
             if(header == null || !header.startsWith("Bearer ")) {
@@ -45,7 +45,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String token = header.split(" ")[1].trim();
             String email = JwtTokenUtils.getEmail(token, secretKey);
             UserDetails principal = userService.loadUserByUsername(email);
-
 
             if(!JwtTokenUtils.isExpired(token, secretKey)) {
                 throw new InstaApplicationException(ErrorCode.TOKEN_EXPIRED);
