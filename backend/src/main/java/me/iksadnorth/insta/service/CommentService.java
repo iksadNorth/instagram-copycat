@@ -42,7 +42,7 @@ public class CommentService {
         long count = principal.getAuthorities().stream()
                 .map(SimpleGrantedAuthority.class::cast)
                 .map(Object::toString)
-                .filter(x -> x.equals(RoleType.ADMIN.name()))
+                .filter(x -> x.equals(RoleType.ROLE_ADMIN.name()))
                 .count();
         // 로그인된 유저의 권한이 ADMIN이 아니라면 댓글의 주인인지 확인하는 단계.
         if(count <= 0 && repo.existsByIdAndAccount_Email(id, principal.getUsername())) {
@@ -73,7 +73,7 @@ public class CommentService {
         long count = principal.getAuthorities().stream()
                 .map(SimpleGrantedAuthority.class::cast)
                 .map(Object::toString)
-                .filter(x -> x.equals(RoleType.ADMIN.name()))
+                .filter(x -> x.equals(RoleType.ROLE_ADMIN.name()))
                 .count();
         // 로그인된 유저의 권한이 ADMIN이 아니라면 댓글의 주인인지 확인하는 단계.
         if(count <= 0 && repo.existsByIdAndAccount_Email(id, principal.getUsername())) {
