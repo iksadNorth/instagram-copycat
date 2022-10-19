@@ -20,7 +20,11 @@ export class LoginResponse {
     }
 
     get token() {
-        return this.response.data.data.token;
+        if(this.response) {
+            return this.response.data.data.token;
+        } else {
+            return null;
+        }
     }
 
     static of(response) {return new this(response);}
@@ -31,9 +35,21 @@ export class ImageCreateResponse {
         this.response = response;
     }
 
+    get id() {
+        if(this.response) {
+            return this.response.data.data.id;
+        } else {
+            return null;
+        }
+    }
     get url() {
-        return this.response.data.data.url;
+        if(this.response) {
+            return this.response.data.data.path;
+        } else {
+            return null;
+        }
     }
 
+    static of() {return new this(null);}
     static of(response) {return new this(response);}
 }

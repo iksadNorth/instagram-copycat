@@ -129,12 +129,13 @@ export default {
         onClickMakePost: async function() {
             console.log("Click onClickMakePost");
             const files = this.inputs.file.value;
-            const url = await this.sendImageToServer(files);
+            const response = await this.sendImageToServer(files);
 
-            if(url) {this.mkArticle(
-                url,
+            if(response.id) {this.mkArticle(
+                response.id,
+                response.url,
                 this.inputs.content.value, 
-                this.inputs.toggleHide.value, 
+                this.inputs.toggleHide.value,
                 this.inputs.toggleComment.value
             );}
         },
@@ -159,24 +160,23 @@ export default {
                 formData.append("files", file);
             }
 
-            this.$axiosAuth.post(this.$to("/images"), formData, {"Content-Type": 'multipart/form-data'})
-                .then(res => {
-                    const url = Res.ImageCreateResponse.of(res).url;
-                    return url;
-                })
-                .catch(res => {
-                    const error = Res.ErrResponse.of(res);
-                    console.log(error);
+            try {
+                const res = await this.$axiosAuth.post(this.$to("/images"), formData, {"Content-Type": 'multipart/form-data'});
+                const response = Res.ImageCreateResponse.of(res);
+                return response;
+            } catch (res) {
+                const error = Res.ErrResponse.of(res);
+                console.log(error);
 
-                    alert(error.isIt("ERROR_WHILE_SAVING"));
-                    return ;
-                });
+                alert(error.isIt("ERROR_WHILE_SAVING"));
+                return Res.ImageCreateResponse.of();
+            }
         },
-        mkArticle(url, content, toggleHide, toggleComment) {
-            this.$axios({
+        mkArticle(id, url, content, toggleHide, toggleComment) {
+            this.$axiosAuth({
                     method: 'post', 
                     url: this.$to("/articles"),
-                    data: Req.ArticleCreateRequest.of(url,content, toggleHide, toggleComment).param,
+                    data: Req.ArticleCreateRequest.of(id, url,content, toggleHide, toggleComment).param,
                 })
             .then(res => {
                     console.log("게시글 생성 성공.");

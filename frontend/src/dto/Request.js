@@ -60,7 +60,8 @@ export class AccountVerifyRequest {
 }
 
 export class ArticleCreateRequest {
-    constructor(url, content, toggleHide, toggleComment) {
+    constructor(id, url, content, toggleHide, toggleComment) {
+        this.id = id;
         this.url = url;
         this.content = content;
         this.toggleHide = toggleHide;
@@ -69,12 +70,12 @@ export class ArticleCreateRequest {
 
     get param() {
         return {
-            "url": this.url,
+            "image": {"id": this.id, "path": this.url,},
             "content": this.content,
-            "toggleHide": this.toggleHide,
-            "toggleComment": this.toggleComment,
+            "isHideLikesAndViews": this.toggleHide,
+            "isAllowedComments": this.toggleComment,
         };
     }
 
-    static of(url, content, toggleHide, toggleComment) {return new this(url, content, toggleHide, toggleComment);}
+    static of(id, url, content, toggleHide, toggleComment) {return new this(id, url, content, toggleHide, toggleComment);}
 }

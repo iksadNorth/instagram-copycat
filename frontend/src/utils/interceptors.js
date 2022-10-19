@@ -4,7 +4,9 @@ export function setInterceptors(axios) {
     // 요청 시,
 	axios.interceptors.request.use(
 		(config) => {
-			config.headers.Authorization = loadAccessToken() || "";
+			const token = loadAccessToken();
+			
+			config.headers.Authorization = token ? "Bearer " + token : "";
 			return config;
 		},
 		(error) => {

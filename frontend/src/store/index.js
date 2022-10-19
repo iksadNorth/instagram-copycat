@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import { AccountCreateRequest } from "@/dto/Request";
+import { loadAccessToken } from "@/utils/localStorage"
 
 export default createStore({
 	state: {
@@ -11,7 +12,7 @@ export default createStore({
 		},
 		account: {
 			uid: undefined,
-			email: undefined,
+			email: loadAccessToken(),
 		},
 		account4Creating: AccountCreateRequest.of(),
 	},
