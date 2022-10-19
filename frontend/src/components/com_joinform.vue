@@ -17,14 +17,14 @@
             </strong></p>
         </v-row>
         <!-- 3 -->
-        <v-row>
+        <v-row class="remove">
             <v-btn
             class="w-100" color="primary"
             @click="onClickLoginWithFacebook"
             ><v-icon>mdi-facebook</v-icon>&nbsp;{{ btn.loginWithFacebook.label }}</v-btn>
         </v-row>
         <!-- 4 -->
-        <v-row align="center">
+        <v-row align="center" class="remove">
             <v-col>
                 <v-divider thickness="2"></v-divider>
             </v-col>
@@ -41,6 +41,7 @@
             variant="outlined" clearable density="compact"
             :label="inputs.email.label"
             v-model="inputs.email.value"
+            persistent-hint :hint="inputs.email.state"
             ></v-text-field>
         </v-row>
         <!-- 6 -->
@@ -84,14 +85,16 @@
 </template>
 
 <script>
+import { AccountCreateRequest } from "@/dto/Request";
+
 export default {
     data() {
         return {
             inputs: {
-                email: {label: "휴대폰 번호 또는 이메일", value: undefined},
-                name: {label: "성명", value: undefined},
-                nickname: {label: "사용자 이름", value: undefined},
-                pw: {label: "비밀번호", value: undefined},
+                email: {label: "이메일", value: this.$store.state.account4Creating.email, state: undefined},
+                name: {label: "성명", value: this.$store.state.account4Creating.userName},
+                nickname: {label: "사용자 이름", value: this.$store.state.account4Creating.nickName},
+                pw: {label: "비밀번호", value: this.$store.state.account4Creating.password},
             },
             btn: {
                 loginWithFacebook: {label: "Facebook으로 로그인"},
@@ -109,8 +112,36 @@ export default {
             console.log("Click onClickFacebookLogin");
         },
         onClickNext() {
+            if(!this.isFillAll()) {
+                alert("기입되지 않은 부분이 있습니다.");
+                return ;
+            }
+            if(!this.verifyEmail()) {
+                this.inputs.email.state = "해당 이메일은 이미 존재합니다.";
+                return ;
+            }
+
+            const newOne = AccountCreateRequest.of();
+            newOne.email = this.inputs.email.value;
+            newOne.userName = this.inputs.name.value;
+            newOne.nickName = this.inputs.nickname.value;
+            newOne.password = this.inputs.pw.value;
+
+            this.$store.commit("setAccount4Creating", newOne)
             this.$store.commit("setScreenState", "birthform");
             console.log("Click onClickNext");
+        },
+        isFillAll() {
+            return (
+                this.inputs.email.value ||
+                this.inputs.name.value ||
+                this.inputs.nickname.value ||
+                this.inputs.pw.value
+            );
+        },
+        verifyEmail() {
+            // TODO: 차후에 완성시킬 것.
+            return true;
         },
     },
 }
@@ -132,5 +163,8 @@ export default {
     }
     #sector--findPassword {
         cursor: pointer;
+    }
+    .remove {
+        display: none;
     }
 </style>

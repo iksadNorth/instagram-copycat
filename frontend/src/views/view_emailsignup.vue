@@ -30,6 +30,9 @@ export default {
     }
     #third--rows {
         /* background-color: blueviolet; */
+
+        display: flex;
+        justify-content: center;
     }
     .v-container {
         min-width: 350px;

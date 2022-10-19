@@ -70,12 +70,11 @@
 </template>
 
 <script>
+import * as Res from "@/dto/Response";
+
 export default {
     data() {
         return {
-            inputs: {
-                code: {label: "인증 코드", value: undefined},
-            },
             btn: {
                 next: {label: "가입"},
             },
@@ -96,7 +95,33 @@ export default {
     },
     methods: {
         onClickNext() {
-            this.$router.push("/");
+            if (!this.funcIsAgreeWithAll()) {
+                alert("모든 약관에 동의하셔야 합니다.");
+                return ;
+            }
+            this.$axios({
+                    method: 'post', url: this.$to("/accounts"),
+                    data: this.$store.state.account4Creating.param,
+                })
+            .then(
+                res => {
+                    console.log("가입 성공.");
+                    console.log(res);
+                    
+                    this.$router.push("/");
+                    this.$store.commit("clearAccount4Creating");
+                }
+            )
+            .catch(
+                res => {
+                    const error = Res.ErrResponse.of(res);
+                    console.log(error);
+
+                    const errorMessage = error.isIt("DUPLICATED_USER");
+                    if (errorMessage) {alert(errorMessage);}
+                }
+            );
+
             this.$store.commit("setScreenState", "joinform");
             console.log("Click onClickNext");
         },
@@ -104,15 +129,16 @@ export default {
             this.$store.commit("setScreenState", "vertificationform");
             console.log("Click onClickBackward");
         },
-    },
-    computed: {
-        isAgreeWithAll() {return this.checkbox.agreeWithAll.value;},
-        isDisagreeWithAny() {
+        funcIsAgreeWithAll() {
             return this.checkbox.agreeWithUseTerm.value 
             && this.checkbox.agreeWithDataTerm.value 
             && this.checkbox.agreeWithLocationTerm.value
             ;
-        },
+        }
+    },
+    computed: {
+        isAgreeWithAll() {return this.checkbox.agreeWithAll.value;},
+        isAgreeWithAllOption() {return this.funcIsAgreeWithAll();},
     },
     watch: {
         isAgreeWithAll(newVal) {
@@ -122,7 +148,7 @@ export default {
                 this.checkbox.agreeWithLocationTerm.value = true;
             }
         },
-        isDisagreeWithAny(newVal) {
+        isAgreeWithAllOption(newVal) {
             if (!newVal) {
                 this.checkbox.agreeWithAll.value = false;
             }

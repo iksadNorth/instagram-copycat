@@ -28,6 +28,10 @@ cors:
     http://localhost:8090, 
     http://192.168.25.3:8090
 
+download:
+  image:
+    trg-dir: src/main/resources/images
+
 
 ---
 
