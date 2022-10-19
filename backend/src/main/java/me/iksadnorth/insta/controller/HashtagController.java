@@ -20,7 +20,7 @@ public class HashtagController {
     @Autowired HashtagService service;
 
     @PostMapping
-    public Response<Void> hashtagCreate(HashtagCreateRequest request) {
+    public Response<Void> hashtagCreate(@RequestBody HashtagCreateRequest request) {
         return Response.success();
     }
 

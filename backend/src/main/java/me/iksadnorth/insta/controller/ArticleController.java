@@ -8,8 +8,6 @@ import me.iksadnorth.insta.model.response.ArticleReadResponse;
 import me.iksadnorth.insta.model.response.CountsResponse;
 import me.iksadnorth.insta.model.response.Response;
 import me.iksadnorth.insta.service.ArticleService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ public class ArticleController {
     private final ArticleService service;
 
     @PostMapping
-    public Response<Void> articleCreate(ArticleCreateRequest request) {
+    public Response<Void> articleCreate(@RequestBody ArticleCreateRequest request) {
         service.articleCreate(request.toDto());
         return Response.success();
     }
@@ -33,7 +31,7 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public Response<Void> articleUpdate(@PathVariable Long id, ArticleUpdateRequest request, Authentication auth) {
+    public Response<Void> articleUpdate(@PathVariable Long id, @RequestBody ArticleUpdateRequest request, Authentication auth) {
         service.articleUpdate(id, request.toDto(), ((UserDetails) auth.getPrincipal()));
         return Response.success();
     }
