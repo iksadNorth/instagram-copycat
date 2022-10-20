@@ -25,8 +25,8 @@ public class HashtagController {
     }
 
     @GetMapping
-    public Response<Page<HashtagReadResponse>> hashtagRead(Pageable pageable) {
-        Page<HashtagDto> dtos = service.hashtagRead(pageable);
+    public Response<Page<HashtagReadResponse>> hashtagRead(@RequestParam String name, Pageable pageable) {
+        Page<HashtagDto> dtos = service.hashtagReadByName(name, pageable);
         return Response.success(dtos.map(HashtagReadResponse::from));
     }
 

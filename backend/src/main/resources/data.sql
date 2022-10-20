@@ -27,11 +27,11 @@ INSERT INTO article (account_id, image_id, content) VALUES (3, 9, 'post content3
 INSERT INTO follow (follower_id, followee_id) VALUES (1, 2);
 INSERT INTO follow (follower_id, followee_id) VALUES (3, 1);
 
-INSERT INTO hashtag (name, article_id) VALUES ('#tag1', 1);
-INSERT INTO hashtag (name, article_id) VALUES ('#tag1', 2);
+INSERT INTO hashtag (name, article_id) VALUES ('tag1', 1);
+INSERT INTO hashtag (name, article_id) VALUES ('tag1', 2);
 
-INSERT INTO hashtag (name, article_id) VALUES ('#tag2', 2);
-INSERT INTO hashtag (name, article_id) VALUES ('#tag2', 3);
+INSERT INTO hashtag (name, article_id) VALUES ('tag2', 2);
+INSERT INTO hashtag (name, article_id) VALUES ('tag2', 3);
 
-INSERT INTO hashtag (name, article_id) VALUES ('#tag3', 3);
-INSERT INTO hashtag (name, article_id) VALUES ('#tag3', 1);
+INSERT INTO hashtag (name, article_id) VALUES ('tag3', 3);
+INSERT INTO hashtag (name, article_id) VALUES ('tag3', 1);

@@ -156,7 +156,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Page<AccountDto> loadByNickName(String nickName, Pageable pageable) {
-        return repo.findByNickNameContaining(nickName, pageable)
+        return repo.findByNickNameContainingIgnoreCase(nickName, pageable)
                 .map(AccountDto::fromEntity);
     }
 
