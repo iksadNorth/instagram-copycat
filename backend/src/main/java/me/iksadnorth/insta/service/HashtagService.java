@@ -20,6 +20,10 @@ public class HashtagService {
         return repo.findDistinctNameBy(pageable).map(HashtagDto::fromNameMapping);
     }
 
+    public Page<HashtagDto> hashtagReadByName(String name, Pageable pageable) {
+        return repo.findDistinctNameByNameContainingIgnoreCase(name, pageable).map(HashtagDto::fromNameMapping);
+    }
+
     public Page<ArticleDto> hashtagReadAbout(String tag, Pageable pageable) {
         return articleRepo.findByHashtags_Name(tag, pageable).map(ArticleDto::fromEntity);
     }
