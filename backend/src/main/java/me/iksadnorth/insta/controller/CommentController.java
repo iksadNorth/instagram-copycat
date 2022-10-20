@@ -26,7 +26,7 @@ public class CommentController {
     private final CommentService service;
 
     @PostMapping
-    public Response<Void> commentCreate(@PathVariable Long id, CommentCreateRequest request) {
+    public Response<Void> commentCreate(@PathVariable Long id, @RequestBody CommentCreateRequest request) {
         service.commentCreate(request.toDto());
         return Response.success();
     }
@@ -38,7 +38,7 @@ public class CommentController {
     }
 
     @PutMapping("/{Id}")
-    public Response<Void> commentUpdate(@PathVariable Long id, CommentUpdateRequest request, Authentication auth) {
+    public Response<Void> commentUpdate(@PathVariable Long id, @RequestBody CommentUpdateRequest request, Authentication auth) {
         service.commentUpdate(id, request.toDto(), ((UserDetails) auth.getPrincipal()));
         return Response.success();
     }

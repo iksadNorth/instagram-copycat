@@ -35,7 +35,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public Response<Void> accountUpdate(@PathVariable Long id, AccountUpdateRequest request, Authentication auth) {
+    public Response<Void> accountUpdate(@PathVariable Long id, @RequestBody AccountUpdateRequest request, Authentication auth) {
         service.accountUpdate(id, request.toDto(), ((UserDetails) auth.getPrincipal()));
         return Response.success();
     }
