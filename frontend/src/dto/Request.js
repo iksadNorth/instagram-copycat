@@ -79,3 +79,31 @@ export class ArticleCreateRequest {
 
     static of(id, url, content, toggleHide, toggleComment) {return new this(id, url, content, toggleHide, toggleComment);}
 }
+
+export class AccountKeyWordRequest {
+    constructor(name) {
+        this.name = name;
+    }
+
+    get param() {
+        return {
+            "nickName": this.name,
+        };
+    }
+
+    static of(name) {return new this(name);}
+}
+
+export class HashtagKeyWordRequest {
+    constructor(name) {
+        this.name = name;
+    }
+
+    get param() {
+        return {
+            "name": this.name,
+        };
+    }
+
+    static of(name) {return new this(name);}
+}
