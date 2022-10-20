@@ -47,7 +47,7 @@ public class Fixture {
                         .nickName("익섿")
                         .password("q1w2e3r4")
                         .dateOfBirth(LocalDateTime.now())
-                        .role(RoleType.USER)
+                        .role(RoleType.ROLE_USER)
                         .build());
         // 1 - 존재하지 않는 계정. 잘못된 정보 기입 상황을 가정.
         // - 혹은 계정 가입을 위한 정보 기입도 가정.
@@ -79,14 +79,14 @@ public class Fixture {
                         .nickName("남쪽")
                         .password("1234")
                         .dateOfBirth(LocalDateTime.now())
-                        .role(RoleType.USER)
+                        .role(RoleType.ROLE_USER)
                         .build());
         // 4 - Admin 계정.
         // SetMockAdmin 계정.
         userDtos.add(AccountDto.builder()
                         .id(5L)
                         .email("admin@gmail.com")
-                        .role(RoleType.ADMIN)       // ADMIN권한을 가지고 있음.
+                        .role(RoleType.ROLE_ADMIN)       // ADMIN권한을 가지고 있음.
                         .build());
         // 5 - 0번과 마찬가지로 이미 존재하지만 0번의 계정이 아닌 계정. 0번 계정으로의 접근을 불가능한 외부자의 역할을 맡을 예정.
         // - 혹은 1번 유저가 팔로우한 유저.
@@ -97,7 +97,7 @@ public class Fixture {
                         .nickName("서쪽")
                         .password("1234")
                         .dateOfBirth(LocalDateTime.now())
-                        .role(RoleType.USER)
+                        .role(RoleType.ROLE_USER)
                         .build());
 
         this.followDtos = new ArrayList<>();

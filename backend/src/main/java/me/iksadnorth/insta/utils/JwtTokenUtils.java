@@ -19,7 +19,7 @@ public class JwtTokenUtils {
 
     public static boolean isExpired(String token, String secretKey) {
         Date expiration = JwtTokenUtils.getClaims(token, secretKey).getExpiration();
-        return expiration.before(new Date());
+        return expiration.after(new Date());
     }
 
     private static Claims getClaims(String token, String secretKey) {

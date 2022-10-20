@@ -1,6 +1,6 @@
-INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('iksadnorth@gmail.com', 'iksad', 'Iksad', 'q1w2e3r4', NOW(), 'USER');
-INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('iksadsouth@gmail.com', 'south', 'South', 'q1w2e3r4', NOW(), 'USER');
-INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('dark@gmail.com', 'dark', 'Dark', 'q1w2e3r4', NOW(), 'USER');
+INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('iksadnorth@gmail.com', 'iksad', 'Iksad', 'q1w2e3r4', NOW(), 'ROLE_USER');
+INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('iksadsouth@gmail.com', 'south', 'South', 'q1w2e3r4', NOW(), 'ROLE_USER');
+INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('dark@gmail.com', 'dark', 'Dark', 'q1w2e3r4', NOW(), 'ROLE_USER');
 
 INSERT INTO image (path) VALUES ('00000.jpg');
 INSERT INTO image (path) VALUES ('00001.jpg');
