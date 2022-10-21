@@ -1,9 +1,13 @@
 <template>
     <v-container>
+        <!-- 계정 정보란 -->
         <v-row>
             <com-account-profile class="mx-16 my-6" :data="user" />
         </v-row>
+
         <v-divider class="my-6" />
+
+        <!-- 사진 나열란 -->
         <v-row>
             <com-container-img :album="album" />
         </v-row>
@@ -11,17 +15,20 @@
 </template>
 
 <script>
+import * as Req from "@/dto/Request";
+import * as Res from "@/dto/Response";
+
 export default {
     data() {
         return {
             user: {
-                uid: 634643,
-                name: "iksad",
-                nickname: "kakao_career",
-                articles: 832,
-                followers: 2535,
-                followings: 13,
-                introduction: "자기소개 하는 란.",
+                uid: 0,
+                name: "",
+                nickname: "",
+                articles: 0,
+                followers: 0,
+                followings: 0,
+                introduction: "",
             },
             album: [
                 {
@@ -54,6 +61,37 @@ export default {
     computed: {
         uid() {return this.$route.params.uid;}
     },
+    methods: {
+        fetchProfile() {
+            // 기본 정보 fetch
+            this.$axios({
+                method: 'get', url: this.$to(`/accounts/${this.uid}`),
+            }).then(res => {
+                this.user = Object.assign(
+                    this.user, 
+                    Res.AccountReadByIdResponse.of(res).content
+                    );
+            }).catch(res => {
+                const error = Res.ErrResponse.of(res);
+                console.log(error);
+            });
+        },
+        fetchArticles() {
+            // 게시물 조회 fetch
+            this.$axios({
+                method: 'get', url: this.$to(`/accounts/${this.uid}/articles`),
+            }).then(res => {
+                this.album = this.album.concat(Res.ArticleReadResponse.of(res).content);
+            }).catch(res => {
+                const error = Res.ErrResponse.of(res);
+                console.log(error);
+            });
+        },
+    },
+    mounted() {
+        this.fetchProfile();
+        this.fetchArticles();
+    }
 }
 </script>
 

@@ -107,3 +107,25 @@ export class HashtagKeyWordRequest {
 
     static of(name) {return new this(name);}
 }
+
+// https://docs.spring.io/spring-data/rest/docs/current/reference/html/#paging-and-sorting.sorting
+// https://www.bezkoder.com/spring-data-sort-multiple-columns/
+export class PageRequest {
+    constructor(page, size, sort) {
+        this.page = page;
+        this.size = size;
+        this.sort = sort;
+        // sort: {col: 칼럼명, asc: true | false}
+    }
+
+    With(obj) {
+        const page = {};
+        if(this.page) {page = Object.assign(page, {page: this.page,})}
+        if(this.size) {page = Object.assign(page, {size: this.size,})}
+        if(this.sort) {page = Object.assign(page, {sort: `${this.sort.col},${(this.sort.asc) ? "asc" : "desc"}`,})}
+        return Object.assign(obj, page);
+    }
+
+    static of(page, size, sort) {return new this(page, size, sort);}
+    static of(page, size) {return new this(page, size, null);}
+}

@@ -29,7 +29,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public Response<AccountReadResponse> accountCreate(@PathVariable Long id) {
+    public Response<AccountReadResponse> accountRead(@PathVariable Long id) {
         AccountDto responses = service.loadById(id);
         return Response.success(AccountReadResponse.from(responses));
     }
