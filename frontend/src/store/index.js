@@ -15,6 +15,9 @@ export default createStore({
 			email: loadAccessToken(),
 		},
 		account4Creating: AccountCreateRequest.of(),
+		dialog: {
+			value: false,
+		},
 	},
 	getters: {
 		isLogin(state) {return state.account.email != null;}
@@ -31,6 +34,9 @@ export default createStore({
 		},
 		clearAccount4Creating: (state) => {
 			state.account4Creating = AccountCreateRequest.of();
+		},
+		setDialog: (state, payload) => {
+			state.dialog.value = payload;
 		},
 	},
 	actions: {

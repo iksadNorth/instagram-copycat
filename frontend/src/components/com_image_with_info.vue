@@ -3,15 +3,15 @@
         <v-hover v-slot="{ isHovering, props }">
             <img
                 v-bind="props" class="fill" 
-                :src="data.imgSrc"
+                :src="imgSrc"
             />
             <div
                 v-bind="props" class="fill transparent center clickable"
                 @click="onClickPost"
                 v-if="isHovering"
             >
-                <p class="gap"><v-icon>mdi-heart</v-icon>&nbsp;{{ data.likes }}</p>
-                <p class="gap"><v-icon>mdi-comment</v-icon>&nbsp;{{ data.comments }}</p>
+                <p class="gap"><v-icon>mdi-heart</v-icon>&nbsp;{{ likes }}</p>
+                <p class="gap"><v-icon>mdi-comment</v-icon>&nbsp;{{ comments }}</p>
             </div>
         </v-hover>
     </div>
@@ -31,6 +31,7 @@ export default {
     methods: {
         onClickPost() {
             console.log("Click onClickPost");
+            this.$router.push(`/p/${this.pid}`)
         },
     },
     computed: {
