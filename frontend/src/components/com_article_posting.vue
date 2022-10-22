@@ -139,7 +139,7 @@ export default {
                 this.inputs.toggleComment.value
             );}
             this.$store.commit('setDialog', false);
-            console.log(this.$store.state.dialog.value);
+            this.$router.go();
         },
 
         handleFile(file) {

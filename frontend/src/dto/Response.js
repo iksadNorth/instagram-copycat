@@ -140,3 +140,19 @@ export class ArticleReadResponse {
 
     static of(response) {return new this(response);}
 }
+
+export class FollowReadResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get isFollow() {
+        if(this.response) {
+            return this.response.data.data.isFollow;
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}

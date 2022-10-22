@@ -76,6 +76,15 @@ public class AccountController {
         return Response.success();
     }
 
+    @GetMapping("/follow/{follower_id}")
+    public Response<FollowReadResponse> accountIsFollow(
+            @PathVariable Long follower_id,
+            Authentication auth
+    ) {
+        Boolean isFollow = service.isFollow(((UserDetails) auth.getPrincipal()), follower_id);
+        return Response.success(FollowReadResponse.of(isFollow));
+    }
+
     @DeleteMapping("/follow/{follower_id}")
     public Response<Void> accountUnFollow(
             @PathVariable Long follower_id,
