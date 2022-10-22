@@ -2,15 +2,15 @@ INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role)
 INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('iksadsouth@gmail.com', 'south', 'South', 'q1w2e3r4', NOW(), 'ROLE_USER');
 INSERT INTO account (email, user_name, nick_name, password, date_of_birth, role) VALUES ('dark@gmail.com', 'dark', 'Dark', 'q1w2e3r4', NOW(), 'ROLE_USER');
 
-INSERT INTO image (path) VALUES ('00000.jpg');
-INSERT INTO image (path) VALUES ('00001.jpg');
-INSERT INTO image (path) VALUES ('00002.jpg');
-INSERT INTO image (path) VALUES ('00003.jpg');
-INSERT INTO image (path) VALUES ('00004.jpg');
-INSERT INTO image (path) VALUES ('00005.jpg');
-INSERT INTO image (path) VALUES ('00006.jpg');
-INSERT INTO image (path) VALUES ('00007.jpg');
-INSERT INTO image (path) VALUES ('00008.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2017/09/25/13/12/cocker-spaniel-2785074_960_720.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2016/10/10/14/13/dog-1728494__340.png');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2015/11/17/13/13/bulldog-1047518__340.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2016/10/31/14/55/rottweiler-1785760__340.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2016/05/26/13/51/dog-1417208__340.png');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2016/07/15/15/55/dachshund-1519374__340.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2019/04/10/23/51/animal-4118585__340.jpg');
+INSERT INTO image (path) VALUES ('https://cdn.pixabay.com/photo/2022/10/08/18/13/dog-7507541__340.jpg');
 
 INSERT INTO article (account_id, image_id, content) VALUES (1, 1, 'post content1');
 INSERT INTO article (account_id, image_id, content) VALUES (1, 2, 'post content2');
