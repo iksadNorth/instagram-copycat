@@ -19,6 +19,7 @@
                     <v-icon id="Posting-activator" @click="onClickPosting" >mdi-plus-circle-outline</v-icon>
                     <v-icon id="Explore-activator" @click="onClickExplore" >mdi-compass</v-icon>
                     <v-icon id="Alarm-activator" @click="onClickAlarm" >mdi-heart</v-icon>
+                    <v-icon id="Logout-activator" @click="onClickLogout" >mdi-logout</v-icon>
                 </div>
                 
                 <!-- overlay 창들 -->
@@ -61,6 +62,11 @@ export default {
             this.$router.push("/explore");
         },
         onClickAlarm() {console.log("Click onClickAlarm");},
+        onClickLogout() {
+            console.log("Click onClickLogout");
+            this.$router.push("/");
+            this.$store.commit('logoutAccount');
+        },
     },
     computed: {
         dialogFlag: {

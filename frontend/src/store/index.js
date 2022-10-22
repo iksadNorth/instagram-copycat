@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import { AccountCreateRequest } from "@/dto/Request";
-import { loadAccessToken } from "@/utils/localStorage"
+import { loadAccessToken, DelAccessToken } from "@/utils/localStorage"
 
 export default createStore({
 	state: {
@@ -28,6 +28,13 @@ export default createStore({
 		},
 		overwriteAccount: (state, payload) => {
 			Object.assign(state.account, payload);
+		},
+		logoutAccount: (state) => {
+			DelAccessToken();
+			state.account = {
+				uid: undefined,
+				email: loadAccessToken(),
+			}
 		},
 		setAccount4Creating: (state, payload) => {
 			state.account4Creating.overWrite(payload);
