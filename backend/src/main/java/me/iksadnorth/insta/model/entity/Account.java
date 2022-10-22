@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.iksadnorth.insta.type.RoleType;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -16,6 +16,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE account SET deleted_at = NOW() WHERE id=?")
+@Where(clause = "deleted_at is NULL")
 @Table(name = "account", indexes = @Index(columnList = "email"))
 @Entity
 @EntityListeners(AuditingEntityListener.class)

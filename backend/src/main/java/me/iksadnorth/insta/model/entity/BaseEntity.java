@@ -13,7 +13,6 @@ import java.util.Objects;
 @Setter
 @Getter
 @NoArgsConstructor
-@Where(clause = "deleted_at is NULL")
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
