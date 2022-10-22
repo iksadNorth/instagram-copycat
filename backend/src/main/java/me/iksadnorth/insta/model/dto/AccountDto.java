@@ -97,8 +97,8 @@ public class AccountDto implements UserDetails {
     }
 
     public String getUserName() { return userName; }
-    private GrantedAuthority transRole(RoleType role) { return new SimpleGrantedAuthority(role.name()); }
-    @Override public Collection<? extends GrantedAuthority> getAuthorities() {
+    private SimpleGrantedAuthority transRole(RoleType role) { return new SimpleGrantedAuthority(role.name()); }
+    @Override public Collection<SimpleGrantedAuthority> getAuthorities() {
         return List.of(transRole(role));
     }
     @Override public String getUsername() { return email; }
