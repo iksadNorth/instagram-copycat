@@ -2,10 +2,7 @@ package me.iksadnorth.insta.fixture;
 
 import lombok.extern.slf4j.Slf4j;
 import me.iksadnorth.insta.config.EnableProjectSecurityConfig;
-import me.iksadnorth.insta.service.AccountService;
-import me.iksadnorth.insta.service.ArticleService;
-import me.iksadnorth.insta.service.CommentService;
-import me.iksadnorth.insta.service.HashtagService;
+import me.iksadnorth.insta.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,6 +28,8 @@ public class FixtureTest {
     CommentService commentService;
     @MockBean
     HashtagService hashtagService;
+    @MockBean
+    ImageService imageService;
     @Autowired
     ApplicationContext applicationContext;
     @Test

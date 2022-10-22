@@ -9,6 +9,8 @@ import me.iksadnorth.insta.model.entity.Image;
 @Getter
 @RequiredArgsConstructor
 public class AccountReadResponse {
+    private final Long id;
+    private final String userName;
     private final String nickName;
     private final String introduction;
     private final Long articles;
@@ -17,6 +19,8 @@ public class AccountReadResponse {
 
     public static AccountReadResponse from(AccountDto dto) {
         return new AccountReadResponse(
+                dto.getId(),
+                dto.getUserName(),
                 dto.getNickName(),
                 dto.getIntroduction(),
                 dto.getArticles(),

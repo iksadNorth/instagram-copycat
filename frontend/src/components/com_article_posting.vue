@@ -138,6 +138,8 @@ export default {
                 this.inputs.toggleHide.value,
                 this.inputs.toggleComment.value
             );}
+            this.$store.commit('setDialog', false);
+            this.$router.go();
         },
 
         handleFile(file) {
@@ -180,7 +182,6 @@ export default {
                 })
             .then(res => {
                     console.log("게시글 생성 성공.");
-                    console.log(res);
             })
             .catch(res => {
                     const error = Res.ErrResponse.of(res);

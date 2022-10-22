@@ -19,7 +19,7 @@ public class CommentDto {
     private final LocalDateTime deletedAt;
 
     // Entity 속성들.
-    private final Long createdBy;
+    private final AccountDto account;
     private final ArticleDto article;
     private final CommentDto parent;
     private final String content;
@@ -30,7 +30,6 @@ public class CommentDto {
         entity.setCreatedAt(createdAt);
         entity.setDeletedAt(deletedAt);
 
-        entity.setCreatedBy(createdBy);
         entity.setArticle(article.toEntity());
         entity.setParent(parent.toEntity());
         entity.setContent(content);
@@ -45,7 +44,7 @@ public class CommentDto {
                 .createdAt(entity.getCreatedAt())
                 .deletedAt(entity.getDeletedAt())
 
-                .createdBy(entity.getCreatedBy())
+                .account(AccountDto.fromEntity(entity.getAccount()))
                 .article(ArticleDto.fromEntity(entity.getArticle()))
                 .parent(CommentDto.fromEntity(entity.getParent()))
                 .content(entity.getContent())
@@ -59,7 +58,6 @@ public class CommentDto {
                 .createdAt(createdAt)
                 .deletedAt(Optional.ofNullable(dto.getDeletedAt()).orElse(deletedAt))
 
-                .createdBy(createdBy)
                 .article(article)
                 .parent(parent)
                 .content(Optional.ofNullable(dto.getContent()).orElse(content))

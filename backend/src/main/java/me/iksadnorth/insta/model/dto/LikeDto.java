@@ -2,7 +2,6 @@ package me.iksadnorth.insta.model.dto;
 
 import lombok.*;
 import me.iksadnorth.insta.model.entity.Likes;
-import me.iksadnorth.insta.model.entity.View;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +17,6 @@ public class LikeDto {
     private final LocalDateTime deletedAt;
 
     // Entity 속성들.
-    private final Long createdBy;
     private final AccountDto account;
     private final ArticleDto article;
     private final CommentDto comment;
@@ -29,8 +27,7 @@ public class LikeDto {
         entity.setCreatedAt(createdAt);
         entity.setDeletedAt(deletedAt);
 
-        entity.setCreatedBy(createdBy);
-        entity.setAccount(account.toEntity());
+//        entity.setAccount(account.toEntity());
         entity.setArticle(article.toEntity());
         entity.setComment(comment.toEntity());
 
@@ -43,7 +40,6 @@ public class LikeDto {
                 entity.getCreatedAt(),
                 entity.getDeletedAt(),
 
-                entity.getCreatedBy(),
                 AccountDto.fromEntity(entity.getAccount()),
                 ArticleDto.fromEntity(entity.getArticle()),
                 CommentDto.fromEntity(entity.getComment())

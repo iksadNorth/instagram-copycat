@@ -6,6 +6,7 @@ import lombok.Setter;
 import me.iksadnorth.insta.utils.BooleanToYNConverter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,13 +18,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE article SET deleted_at = NOW() WHERE id=?")
+@Where(clause = "deleted_at is NULL")
 @Table(name = "article")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Article extends BaseEntity {
     @CreatedBy
-    private Long createdBy;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;

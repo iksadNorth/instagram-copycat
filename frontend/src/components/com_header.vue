@@ -19,14 +19,15 @@
                     <v-icon id="Posting-activator" @click="onClickPosting" >mdi-plus-circle-outline</v-icon>
                     <v-icon id="Explore-activator" @click="onClickExplore" >mdi-compass</v-icon>
                     <v-icon id="Alarm-activator" @click="onClickAlarm" >mdi-heart</v-icon>
+                    <v-icon id="Logout-activator" @click="onClickLogout" >mdi-logout</v-icon>
                 </div>
                 
                 <!-- overlay 창들 -->
                 <div>
                     <!-- plus 클릭 시 -->
-                    <v-dialog activator="#Posting-activator" v-model="state.dialog.value">
+                    <v-dialog activator="#Posting-activator" v-model="dialogFlag">
                         <!-- 게시글 창 -->
-                        <com-posting isOpenDialog="state.dialog.value" />
+                        <com-posting isOpenDialog="dialogFlag" />
                     </v-dialog>
 
                     <!-- 하트 클릭 시 -->
@@ -61,6 +62,21 @@ export default {
             this.$router.push("/explore");
         },
         onClickAlarm() {console.log("Click onClickAlarm");},
+        onClickLogout() {
+            console.log("Click onClickLogout");
+            this.$router.push("/");
+            this.$store.commit('logoutAccount');
+        },
+    },
+    computed: {
+        dialogFlag: {
+            get() {
+                return this.$store.state.dialog.value;
+            },
+            set(val) {
+                this.$store.commit('setDialog', val);
+            },
+        }
     },
 }
 </script>

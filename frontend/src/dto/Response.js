@@ -91,3 +91,68 @@ export class HashtagKeywordResponse {
 
     static of(response) {return new this(response);}
 }
+
+export class AccountReadByIdResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get content() {
+        if(this.response) {
+            const item = this.response.data.data
+            return {
+                uid: item['id'],
+                name: item['userName'],
+                nickname: item['nickName'],
+                introduction: item['introduction'],
+                articles: item['articles'],
+                followers: item['followers'],
+                followings: item['followings'],
+            };
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}
+
+export class ArticleReadResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get content() {
+        if(this.response) {
+            const array = this.response.data.data.content
+            return array.map(item => {
+                return {
+                    pid: item['id'],
+                    imgSrc: item['image']['path'],
+                    likes: item['path'],
+                    comments: item['path'],
+                }
+            });
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}
+
+export class FollowReadResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get isFollow() {
+        if(this.response) {
+            return this.response.data.data.isFollow;
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}

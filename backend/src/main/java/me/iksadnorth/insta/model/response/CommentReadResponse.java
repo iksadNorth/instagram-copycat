@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CommentReadResponse {
     private final LocalDateTime createdAt;
-    private final Long createdBy;
     private final ArticleDto article;
     private final CommentDto parent;
     private final String content;
@@ -19,7 +18,6 @@ public class CommentReadResponse {
     public static CommentReadResponse from(CommentDto dto) {
         return new CommentReadResponse(
                 dto.getCreatedAt(),
-                dto.getCreatedBy(),
                 dto.getArticle(),
                 dto.getParent(),
                 dto.getContent()

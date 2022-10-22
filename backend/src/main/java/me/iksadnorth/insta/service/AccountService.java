@@ -213,6 +213,21 @@ public class AccountService implements UserDetailsService {
         followRepo.delete(entity);
     }
 
+    public Boolean isFollow(UserDetails principal, Long follower_id) {
+        Account follower = loadUserByUsername(principal.getUsername()).toEntity();
+        Account followee = repo.findById(follower_id)
+                .orElseThrow(
+                        () -> new InstaApplicationException(
+                                ErrorCode.ID_NOT_FOUNDED,
+                                String.format("다음 follower_id값이 존재하지 않습니다. \nId: %s", follower_id)
+                        )
+                );
+
+        return followRepo
+                .findByFollower_IdAndFollowee_Id(follower.getId(), followee.getId())
+                .isPresent();
+    }
+
     public Long countArticles(Long id) { return articleRepo.countByAccount_Id(id); }
 
     public Page<ArticleDto> loadFeedById(Long id, Pageable pageable) {

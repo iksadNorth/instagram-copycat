@@ -14,7 +14,6 @@ public class ArticleReadResponse {
     private final Long id;
     private final LocalDateTime createdAt;
 
-    private final Long createdBy;
     private final AccountDto account;
     private final ImageDto image;
     private final String content;
@@ -29,7 +28,6 @@ public class ArticleReadResponse {
                 dto.getId(),
                 dto.getCreatedAt(),
 
-                dto.getCreatedBy(),
                 dto.getAccount(),
                 dto.getImage(),
                 dto.getContent()

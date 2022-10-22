@@ -11,7 +11,6 @@ import me.iksadnorth.insta.model.dto.ImageDto;
 @Getter
 @NoArgsConstructor
 public class ArticleCreateRequest {
-    private Long createdBy;
     private AccountDto account;
     private ImageDto image;
     private String content;
@@ -20,7 +19,6 @@ public class ArticleCreateRequest {
 
     public static ArticleCreateRequest from(ArticleDto dto) {
         ArticleCreateRequest articleCreateRequest = new ArticleCreateRequest();
-        articleCreateRequest.setCreatedBy(dto.getCreatedBy());
         articleCreateRequest.setAccount(dto.getAccount());
         articleCreateRequest.setImage(dto.getImage());
         articleCreateRequest.setContent(dto.getContent());
@@ -31,7 +29,6 @@ public class ArticleCreateRequest {
 
     public ArticleDto toDto() {
         return ArticleDto.builder()
-                .createdBy(createdBy)
                 .account(account)
                 .image(image)
                 .content(content)

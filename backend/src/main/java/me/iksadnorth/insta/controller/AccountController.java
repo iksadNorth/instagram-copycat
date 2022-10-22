@@ -29,7 +29,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public Response<AccountReadResponse> accountCreate(@PathVariable Long id) {
+    public Response<AccountReadResponse> accountRead(@PathVariable Long id) {
         AccountDto responses = service.loadById(id);
         return Response.success(AccountReadResponse.from(responses));
     }
@@ -74,6 +74,15 @@ public class AccountController {
     ) {
         service.doFollow(((UserDetails) auth.getPrincipal()), follower_id);
         return Response.success();
+    }
+
+    @GetMapping("/follow/{follower_id}")
+    public Response<FollowReadResponse> accountIsFollow(
+            @PathVariable Long follower_id,
+            Authentication auth
+    ) {
+        Boolean isFollow = service.isFollow(((UserDetails) auth.getPrincipal()), follower_id);
+        return Response.success(FollowReadResponse.of(isFollow));
     }
 
     @DeleteMapping("/follow/{follower_id}")

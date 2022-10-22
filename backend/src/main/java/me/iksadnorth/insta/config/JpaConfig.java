@@ -1,6 +1,7 @@
 package me.iksadnorth.insta.config;
 
 import me.iksadnorth.insta.model.dto.AccountDto;
+import me.iksadnorth.insta.model.entity.Account;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -16,13 +17,13 @@ import java.util.Optional;
 public class JpaConfig {
 
     @Bean
-    public AuditorAware<Long> auditorAware() {
+    public AuditorAware<Account> auditorAware() {
         return () -> Optional.ofNullable((SecurityContextHolder.getContext()))
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .filter(auth -> !auth.getName().equals("anonymousUser"))
                 .map(Authentication::getPrincipal)
                 .map(AccountDto.class::cast)
-                .map(AccountDto::getId);
+                .map(AccountDto::toEntity);
     }
 }

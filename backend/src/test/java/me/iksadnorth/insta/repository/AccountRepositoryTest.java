@@ -41,7 +41,7 @@ class AccountRepositoryTest {
 
     @Test
     void findByNickNameContaining() {
-        repo.findByNickNameContaining("a", PageRequest.of(0, 10))
+        repo.findByNickNameContainingIgnoreCase("a", PageRequest.of(0, 10))
                 .map(AccountDto::fromEntity)
                 .map(Object::toString)
                 .forEach(log::trace);
