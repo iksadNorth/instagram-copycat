@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-    <v-row id="body">
+    <v-container v-if="isLoaded">
+    <v-row id="body" align="center">
         <!-- 좌측 열 -->
         <v-col id="left--sector"
         >
@@ -26,7 +26,7 @@
             <v-divider class="my-4"/>
 
             <!-- 게시물 각종 버튼들 -->
-            <com-article-tools />
+            <com-article-tools :data="data" />
 
             <!-- 게시글 좋아요 표시 -->
             <com-likes :data="data" />
@@ -44,20 +44,43 @@
 </template>
 
 <script>
+import * as Res from "@/dto/Response";
+
 export default {
     data() {
         return {
+            isLoaded: false,
             data: {
-                writer: "kakao_career",
-                imgSrc: "article-img-example.jpg",
-                likes: 83,
-                content: "모델 구조가 스케일링에 어떠한 영향을 미칠까?",
-                createdAt: "8월 5",
+                uid:0,
+                pid:this.pid,
+                nickname: "",
+                imgSrc: "https://cdn.pixabay.com/photo/2022/10/05/07/37/desert-7500086__340.jpg",
+                likes: 0,
+                content: "",
+                createdAt: "",
             }
         }
     },
     computed: {
         pid() {return this.$route.params.pid;},
+    },
+    methods: {
+        fetchPost: async function() {
+            console.log("call fetchPost");
+            return this.$axiosAuth({
+                method: 'get', url: this.$to(`/articles/${this.pid}`),
+            });
+        },
+    },
+    created: async function() {
+        try {
+            const res = await this.fetchPost();
+            this.data = Object.assign(this.data, Res.ArticleReadByIdResponse.of(res).content);
+            this.isLoaded = true;
+        } catch(res) {
+            const error = Res.ErrResponse.of(res);
+            console.log(error);
+        }
     },
 }
 </script>
