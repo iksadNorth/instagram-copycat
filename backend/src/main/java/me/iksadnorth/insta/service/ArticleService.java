@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleService {
     @Autowired ArticleRepository repo;
+    @Autowired CommentRepository commentRepo;
     @Autowired ViewRepository viewRepo;
     @Autowired LikeRepository likeRepo;
+    @Autowired AccountService accountService;
     public void articleCreate(ArticleDto dto) {
         repo.save(dto.toEntity());
     }
@@ -24,6 +26,20 @@ public class ArticleService {
                 .orElseThrow(() -> {throw new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED,
                         String.format("검색에서 사용되었던 id값 : %d", id)
                         );});
+    }
+
+    public ArticleDto articleReadWithInfo(Long id) {
+        return repo.findById(id).map(article -> {
+            Long articleId = article.getId();
+
+            Long numComments = commentRepo.countByArticle_Id(articleId);
+            Long numLikes = likeRepo.countByArticle_Id(articleId);
+            Long numViews = viewRepo.countByArticle_Id(articleId);
+
+            return ArticleDto.fromEntity(article, numComments, numLikes, numViews);
+        }).orElseThrow(() -> {throw new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED,
+                String.format("검색에서 사용되었던 id값 : %d", id)
+        );});
     }
 
     public void articleUpdate(Long id, ArticleDto dto, UserDetails principal) {

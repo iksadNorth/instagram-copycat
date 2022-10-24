@@ -2,10 +2,13 @@
     <p
         class="text-grey"
     ><strong>{{ label.rec4user.label }}</strong></p>
-    <v-row align="center" class="ma-3">
-        <com-profile :data="data"/>
+    <v-row 
+        align="center" class="ma-3"
+        v-for="entity of data" :key="entity"
+    >
+        <com-profile :data="entity"/>
         <v-spacer/>
-        <com-btn-follow :data="data" />
+        <com-btn-follow :data="entity" />
     </v-row>
 </template>
 
@@ -15,7 +18,7 @@ export default {
         data: Object,
         // data: {
         //         uid: 16274,
-        //         writer: "kakao_career",
+        //         name: "kakao_career",
         // },
     },
     data() {

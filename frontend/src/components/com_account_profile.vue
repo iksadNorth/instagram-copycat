@@ -5,13 +5,13 @@
                 color="red" :size="size" variant="tonal"
                 class="mr-4 clickable"
                 @click="onClickProfile"
-            >{{ mkAvatar(user.name) }}</v-avatar>
+            >{{ mkAvatar(user.nickname) }}</v-avatar>
         </v-col>
         <v-col class="ygaps">
             <v-row class="xgaps">
                 <p
                     class="clickable title"
-                ><strong>{{user.name}}</strong></p>
+                ><strong>{{user.nickname}}</strong></p>
                 <v-btn
                     flat density="compact"
                     @click="onClickFollow" class="btn--follow"

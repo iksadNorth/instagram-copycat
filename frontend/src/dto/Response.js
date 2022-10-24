@@ -63,7 +63,7 @@ export class AccountKeywordResponse {
         if(this.response) {
             const array = this.response.data.data.content
             return array.map(item => {
-                return {uid: item['id'], writer: item['nickName'],}
+                return {uid: item['id'], nickname: item['nickName'],}
             });
         } else {
             return null;
@@ -117,6 +117,62 @@ export class AccountReadByIdResponse {
     static of(response) {return new this(response);}
 }
 
+export class AccountReadResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get content() {
+        if(this.response) {
+            const array = this.response.data.data.content
+            return array.map(item => {
+                return {
+                    uid: item['id'],
+                    name: item['userName'],
+                    nickname: item['nickName'],
+                    introduction: item['introduction'],
+                    articles: item['articles'],
+                    followers: item['followers'],
+                    followings: item['followings'],
+                }
+            });
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}
+
+export class ArticleReadByIdResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get content() {
+        if(this.response) {
+            const item = this.response.data.data;
+            return {
+                pid: item['id'],
+                createdAt: item['createdAt'],
+                
+                uid: item['account']['id'],
+                nickname: item['account']['nickName'],
+                imgSrc: item['image']['path'],
+                content: item['content'],
+
+                comments: item['numComments'],
+                likes: item['numLikes'],
+                views: item['numViews'],
+            };
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}
+
 export class ArticleReadResponse {
     constructor(response) {
         this.response = response;
@@ -128,9 +184,16 @@ export class ArticleReadResponse {
             return array.map(item => {
                 return {
                     pid: item['id'],
+                    createdAt: item['createdAt'],
+                    
+                    uid: item['account']['id'],
+                    nickname: item['account']['nickName'],
                     imgSrc: item['image']['path'],
-                    likes: item['path'],
-                    comments: item['path'],
+                    content: item['content'],
+
+                    comments: item['numComments'],
+                    likes: item['numLikes'],
+                    views: item['numViews'],
                 }
             });
         } else {

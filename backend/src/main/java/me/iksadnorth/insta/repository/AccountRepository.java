@@ -1,6 +1,5 @@
 package me.iksadnorth.insta.repository;
 
-import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

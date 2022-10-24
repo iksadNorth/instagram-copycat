@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex flex-row align-center my-3">
-        <p class="date">{{ data.createdAt }}</p>
+    <div class="d-flex flex-row align-center mt-3">
+        <p class="date">{{ createdAt }}</p>
     </div>
 </template>
 
@@ -11,6 +11,9 @@ export default {
         // data: {
         //         createdAt: "8월 5",
         // },
+    },
+    computed: {
+        createdAt() {return this.data.createdAt.split('T')[0]}
     },
 }
 </script>

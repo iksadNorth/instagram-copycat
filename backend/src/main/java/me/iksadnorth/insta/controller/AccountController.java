@@ -1,10 +1,8 @@
 package me.iksadnorth.insta.controller;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.dto.ArticleDto;
-import me.iksadnorth.insta.model.dto.FollowDto;
 import me.iksadnorth.insta.model.request.AccountCreateRequest;
 import me.iksadnorth.insta.model.request.AccountUpdateRequest;
 import me.iksadnorth.insta.model.response.*;
@@ -12,8 +10,8 @@ import me.iksadnorth.insta.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +29,12 @@ public class AccountController {
     @GetMapping("/{id}")
     public Response<AccountReadResponse> accountRead(@PathVariable Long id) {
         AccountDto responses = service.loadById(id);
+        return Response.success(AccountReadResponse.from(responses));
+    }
+
+    @GetMapping("/principal")
+    public Response<AccountReadResponse> accountReadMine(@AuthenticationPrincipal AccountDto dto) {
+        AccountDto responses = service.loadById(dto.getId());
         return Response.success(AccountReadResponse.from(responses));
     }
 
@@ -109,13 +113,22 @@ public class AccountController {
         return Response.success(dtos.map(ArticleReadResponse::from));
     }
 
-    @GetMapping("/{id}/articles/recommended")
+    @GetMapping("/principal/articles/follow")
+    public Response<Page<ArticleReadResponse>> accountFeedsWithAuth(
+            @AuthenticationPrincipal AccountDto dto,
+            @PageableDefault Pageable pageable
+    ) {
+        Page<ArticleDto> dtos = service.loadFeedById(dto.getId(), pageable);
+        return Response.success(dtos.map(ArticleReadResponse::from));
+    }
+
+    @GetMapping("/principal/articles/recommended")
     public Response<Page<ArticleReadResponse>> accountRecommended(
-            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto,
             @PageableDefault Pageable pageable,
             Authentication auth
     ) {
-        Page<ArticleDto> dtos = service.loadExploreById(id, pageable, (UserDetails) auth.getPrincipal());
+        Page<ArticleDto> dtos = service.loadExploreById(dto.getId(), pageable, (UserDetails) auth.getPrincipal());
         return Response.success(dtos.map(ArticleReadResponse::from));
     }
 
