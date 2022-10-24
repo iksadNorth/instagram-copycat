@@ -15,7 +15,7 @@ export default {
         data: Object,
         // data: {
         //         uid: 16274,
-        //         writer: "kakao_career",
+        //         name: "kakao_career",
         // },
     },
     data() {

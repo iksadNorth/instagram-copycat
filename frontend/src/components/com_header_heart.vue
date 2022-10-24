@@ -12,14 +12,14 @@ export default {
     data() {
         return {
             profilesSearched: [
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
-                { writer: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
+                { name: "kakao_career", },
             ],
         }
     }

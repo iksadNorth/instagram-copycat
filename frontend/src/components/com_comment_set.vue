@@ -6,14 +6,14 @@
             color="red" :size="size" variant="tonal"
             class="clickable"
             @click="onClickProfile"
-        >{{ mkAvatar(data.writer) }}</v-avatar>
+        >{{ mkAvatar(data.nickname) }}</v-avatar>
     </v-col>
     <v-col>
         <!-- 내용 -->
         <p
         @click="onClickProfile" class="clickable" 
         >
-            <strong>{{ data.writer }}</strong>
+            <strong>{{ data.nickname }}</strong>
             &nbsp;&nbsp;
             {{ data.content }}
         </p>
@@ -39,7 +39,7 @@ export default {
     props: {
         data: Object,
         // data: {
-        //         writer: "게시글 작성자 NickName",
+        //         name: "게시글 작성자 NickName",
         //         likes: 83,
         //         content: "게시글 내용",
         //     },

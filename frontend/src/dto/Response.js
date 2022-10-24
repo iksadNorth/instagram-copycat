@@ -63,7 +63,7 @@ export class AccountKeywordResponse {
         if(this.response) {
             const array = this.response.data.data.content
             return array.map(item => {
-                return {uid: item['id'], writer: item['nickName'],}
+                return {uid: item['id'], nickname: item['nickName'],}
             });
         } else {
             return null;

@@ -48,7 +48,7 @@ export default {
         return {
             data: {
                 uid: 634643,
-                writer: "kakao_career",
+                nickname: "kakao_career",
                 imgSrc: "article-img-example.jpg",
                 likes: 83,
                 content: "모델 구조가 스케일링에 어떠한 영향을 미칠까?",

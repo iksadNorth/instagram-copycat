@@ -29,7 +29,7 @@ export default {
     props: {
         data: Object,
         // data: {
-        //     writer: "kakao_career",
+        //     name: "kakao_career",
         //     imgSrc: "article-img-example.jpg",
         //     likes: 83,
         //     content: "모델 구조가 스케일링에 어떠한 영향을 미칠까?",

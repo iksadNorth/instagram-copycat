@@ -17,7 +17,7 @@ export default {
         data: Object,
         // data: {
         //         uid: 1231,
-        //         writer: "kakao_career",
+        //         name: "kakao_career",
                 // or
         //         tag: "#tag1"
         //     },
@@ -53,14 +53,14 @@ export default {
     computed: {
         nameProfile() {
             if(this.kind.toLowerCase() == "account") {
-                return this.data.writer;
+                return this.data.nickname;
             } else if(this.kind.toLowerCase() == "hashtag") {
                 return this.data.tag;
             }
         },
         mkAvatar() { 
             if(this.kind.toLowerCase() == "account") {
-                return this.data.writer.slice(0, 2).toUpperCase();
+                return this.data.nickname.slice(0, 2).toUpperCase();
             } else if(this.kind.toLowerCase() == "hashtag") {
                 return `#${this.data.tag}`.slice(0, 2).toUpperCase();
             }
