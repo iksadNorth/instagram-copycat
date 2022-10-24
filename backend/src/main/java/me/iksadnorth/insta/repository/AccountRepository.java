@@ -12,4 +12,11 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByEmail(String email);
 
     Page<Account> findByNickNameContainingIgnoreCase(String nickName, Pageable pageable);
+
+    Page<Account> findByFollowers_Follower_Id(Long id, Pageable pageable);
+
+    Page<Account> findByFollowees_Followee_Id(Long id, Pageable pageable);
+
+    @Query(value = "SELECT * FROM account ORDER BY RAND()", nativeQuery = true)
+    Page<Account> findByRandomOrder(Long id, Pageable pageable);
 }

@@ -71,6 +71,33 @@ public class AccountController {
         return Response.success(CountsResponse.of(counts));
     }
 
+    @GetMapping("/{id}/following")
+    public Response<Page<AccountReadResponse>> accountFollowings(
+            @PathVariable Long id,
+            @PageableDefault Pageable pageable
+    ) {
+        Page<AccountDto> dtos = service.readFollowings(id, pageable);
+        return Response.success(dtos.map(AccountReadResponse::from));
+    }
+
+    @GetMapping("/{id}/follower")
+    public Response<Page<AccountReadResponse>> accountFollowers(
+            @PathVariable Long id,
+            @PageableDefault Pageable pageable
+    ) {
+        Page<AccountDto> dtos = service.readFollowers(id, pageable);
+        return Response.success(dtos.map(AccountReadResponse::from));
+    }
+
+    @GetMapping("/principal/following")
+    public Response<Page<AccountReadResponse>> accountRecommendFollowing(
+            @AuthenticationPrincipal AccountDto dto,
+            @PageableDefault Pageable pageable
+    ) {
+        Page<AccountDto> dtos = service.recommendFollowing(dto.getId(), pageable);
+        return Response.success(dtos.map(AccountReadResponse::from));
+    }
+
     @PostMapping("/follow/{follower_id}")
     public Response<Void> accountFollow(
             @PathVariable Long follower_id,
