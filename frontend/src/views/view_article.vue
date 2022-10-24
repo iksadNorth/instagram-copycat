@@ -64,14 +64,14 @@ export default {
 
 <style scoped>
     #left--sector {
-        background-color: black;
+        background-color: white;
         color: white;
     }
     #right--sector {
-        background-color: rgb(156, 203, 153);
+        background-color: rgb(235, 235, 235);
     }
     #body {
-        background-color: blueviolet;
+        background-color: black;
     }
     .inline {
         display: flex;
