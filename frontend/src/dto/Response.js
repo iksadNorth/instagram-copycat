@@ -219,3 +219,19 @@ export class FollowReadResponse {
 
     static of(response) {return new this(response);}
 }
+
+export class LikeReadResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get isLike() {
+        if(this.response) {
+            return this.response.data.data.isLike;
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}

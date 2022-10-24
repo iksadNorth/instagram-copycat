@@ -6,6 +6,7 @@ import me.iksadnorth.insta.model.request.ArticleCreateRequest;
 import me.iksadnorth.insta.model.request.ArticleUpdateRequest;
 import me.iksadnorth.insta.model.response.ArticleReadResponse;
 import me.iksadnorth.insta.model.response.CountsResponse;
+import me.iksadnorth.insta.model.response.LikeReadResponse;
 import me.iksadnorth.insta.model.response.Response;
 import me.iksadnorth.insta.service.ArticleService;
 import org.springframework.security.core.Authentication;
@@ -26,7 +27,7 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public Response<ArticleReadResponse> articleRead(@PathVariable Long id) {
-        ArticleDto dto = service.articleRead(id);
+        ArticleDto dto = service.articleReadWithInfo(id);
         return Response.success(ArticleReadResponse.from(dto));
     }
 
@@ -70,6 +71,12 @@ public class ArticleController {
     public Response<Void> articleLikeAdd(@PathVariable Long id, Authentication auth) {
         service.articleLikeAdd(id, ((UserDetails) auth.getPrincipal()));
         return Response.success();
+    }
+
+    @GetMapping("/{id}/like")
+    public Response<LikeReadResponse> articleIsLike(@PathVariable Long id, Authentication auth) {
+        Boolean isLike = service.articleIsLike(id, ((UserDetails) auth.getPrincipal()));
+        return Response.success(LikeReadResponse.of(isLike));
     }
 
     @DeleteMapping("/{id}/like")
