@@ -28,6 +28,9 @@ public class AccountService implements UserDetailsService {
     @Autowired AccountRepository repo;
     @Autowired ArticleRepository articleRepo;
     @Autowired FollowRepository followRepo;
+    @Autowired CommentRepository commentRepo;
+    @Autowired LikeRepository likeRepo;
+    @Autowired ViewRepository viewRepo;
 
     @Autowired JwtProperties jwtProperties;
 
@@ -277,5 +280,17 @@ public class AccountService implements UserDetailsService {
 
     public Page<ArticleDto> loadArticlesById(Long id, Pageable pageable) {
         return articleRepo.findByAccount_Id(id, pageable).map(ArticleDto::fromEntity);
+    }
+
+    public Page<AccountDto> readFollowings(Long id, Pageable pageable) {
+        return repo.findByFollowers_Follower_Id(id, pageable).map(AccountDto::fromEntity);
+    }
+
+    public Page<AccountDto> readFollowers(Long id, Pageable pageable) {
+        return repo.findByFollowees_Followee_Id(id, pageable).map(AccountDto::fromEntity);
+    }
+
+    public Page<AccountDto> recommendFollowing(Long id, Pageable pageable) {
+        return repo.findByRandomOrder(id, pageable).map(AccountDto::fromEntity);
     }
 }

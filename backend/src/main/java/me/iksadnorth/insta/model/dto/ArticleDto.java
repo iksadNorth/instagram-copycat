@@ -4,6 +4,7 @@ import lombok.*;
 import me.iksadnorth.insta.model.entity.Article;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @ToString
@@ -23,6 +24,12 @@ public class ArticleDto {
     private final String content;
     private final Boolean isHideLikesAndViews;
     private final Boolean isAllowedComments;
+    private final List<CommentDto> comments;
+
+    // Service를 위한 속성들.
+    private final Long numComments;
+    private final Long numLikes;
+    private final Long numViews;
 
     public Article toEntity() {
         Article entity = new Article();
@@ -50,6 +57,25 @@ public class ArticleDto {
                 .content(entity.getContent())
                 .isHideLikesAndViews(entity.getIsHideLikesAndViews())
                 .isAllowedComments(entity.getIsAllowedComments())
+
+                .build();
+    }
+
+    public static ArticleDto fromEntity(Article entity, Long numComments, Long numLikes, Long numViews) {
+        return ArticleDto.builder()
+                .id(entity.getId())
+                .createdAt(entity.getCreatedAt())
+                .deletedAt(entity.getDeletedAt())
+
+                .account(AccountDto.fromEntity(entity.getAccount()))
+                .image(ImageDto.fromEntity(entity.getImage()))
+                .content(entity.getContent())
+                .isHideLikesAndViews(entity.getIsHideLikesAndViews())
+                .isAllowedComments(entity.getIsAllowedComments())
+
+                .numComments(numComments)
+                .numLikes(numLikes)
+                .numViews(numViews)
 
                 .build();
     }
