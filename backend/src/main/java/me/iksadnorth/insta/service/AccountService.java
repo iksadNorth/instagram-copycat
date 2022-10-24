@@ -8,9 +8,7 @@ import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.dto.ArticleDto;
 import me.iksadnorth.insta.model.entity.Account;
 import me.iksadnorth.insta.model.entity.Follow;
-import me.iksadnorth.insta.repository.AccountRepository;
-import me.iksadnorth.insta.repository.ArticleRepository;
-import me.iksadnorth.insta.repository.FollowRepository;
+import me.iksadnorth.insta.repository.*;
 import me.iksadnorth.insta.type.RoleType;
 import me.iksadnorth.insta.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,7 +229,15 @@ public class AccountService implements UserDetailsService {
     public Long countArticles(Long id) { return articleRepo.countByAccount_Id(id); }
 
     public Page<ArticleDto> loadFeedById(Long id, Pageable pageable) {
-        return articleRepo.findFeedListById(id, pageable).map(ArticleDto::fromEntity);
+        return articleRepo.findFeedListById(id, pageable).map(article -> {
+            Long articleId = article.getId();
+
+            Long numComments = commentRepo.countByArticle_Id(articleId);
+            Long numLikes = likeRepo.countByArticle_Id(articleId);
+            Long numViews = viewRepo.countByArticle_Id(articleId);
+
+            return ArticleDto.fromEntity(article, numComments, numLikes, numViews);
+        });
     }
 
     public Page<ArticleDto> loadExploreById(Long id, Pageable pageable, UserDetails principal) {

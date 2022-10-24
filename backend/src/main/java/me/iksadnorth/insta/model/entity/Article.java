@@ -34,9 +34,6 @@ public class Article extends BaseEntity {
 
     private String content;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
-    private List<Comment> comments;
-
     @Convert(converter = BooleanToYNConverter.class)
     @Column(length = 1)
     @ColumnDefault(value = BooleanToYNConverter.False)
@@ -49,4 +46,13 @@ public class Article extends BaseEntity {
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private List<Hashtag> hashtags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<Likes> likes;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<View> views;
 }

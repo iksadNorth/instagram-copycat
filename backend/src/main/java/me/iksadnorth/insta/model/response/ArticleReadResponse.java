@@ -19,9 +19,9 @@ public class ArticleReadResponse {
     private final String content;
 
     // TODO: 아래 칼럼들에 대해서도 작업하기
-//    private final List<CommentDto> comments;
-//    private final Long likes;
-//    private final Long views;
+    private final Long numComments;
+    private final Long numLikes;
+    private final Long numViews;
 
     public static ArticleReadResponse from(ArticleDto dto) {
         return new ArticleReadResponse(
@@ -30,7 +30,11 @@ public class ArticleReadResponse {
 
                 dto.getAccount(),
                 dto.getImage(),
-                dto.getContent()
+                dto.getContent(),
+
+                dto.getNumComments(),
+                dto.getNumLikes(),
+                dto.getNumViews()
         );
     }
 }

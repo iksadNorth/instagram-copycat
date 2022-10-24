@@ -2,7 +2,7 @@
     <div>
         <v-img
         min-height="300"
-        :src="require(`@/assets/${data.imgSrc}`)"
+        :src="data.imgSrc"
         ></v-img>
     </div>
 </template>

@@ -12,8 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Slf4j
 @DisplayName("ArticleRepo 테스트 - 직접 설정한 쿼리가 작동하는지 확인하는 테스트")
 @EnableProjectJpaConfig

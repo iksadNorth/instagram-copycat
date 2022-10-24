@@ -40,7 +40,10 @@ export default {
     methods: {
         mkAvatar(nickname) { return nickname.slice(0, 2).toUpperCase(); },
 
-        onClickProfile() {console.log("Click onClickProfile")},
+        onClickProfile() {
+            console.log("Click onClickProfile")
+            this.$router.push(`/${this.data.uid}`)
+        },
     },
 }
 </script>
