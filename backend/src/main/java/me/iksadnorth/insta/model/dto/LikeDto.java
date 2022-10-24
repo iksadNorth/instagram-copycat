@@ -4,6 +4,7 @@ import lombok.*;
 import me.iksadnorth.insta.model.entity.Likes;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @ToString
 @EqualsAndHashCode(of = {"id"})
@@ -27,9 +28,9 @@ public class LikeDto {
         entity.setCreatedAt(createdAt);
         entity.setDeletedAt(deletedAt);
 
-//        entity.setAccount(account.toEntity());
-        entity.setArticle(article.toEntity());
-        entity.setComment(comment.toEntity());
+        entity.setAccount(Optional.ofNullable(account).map(AccountDto::toEntity).orElse(null));
+        entity.setArticle(Optional.ofNullable(article).map(ArticleDto::toEntity).orElse(null));
+        entity.setComment(Optional.ofNullable(comment).map(CommentDto::toEntity).orElse(null));
 
         return entity;
     }

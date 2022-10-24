@@ -16,7 +16,7 @@
                 <h2>{{ label.result_of_searching_account.label }}</h2>
             </v-row>
             <v-divider />
-            <v-row v-if="label.result_of_searching_account.value">
+            <v-row v-if="label.result_of_searching_account.value.length == 0">
                 <h5>{{ label.result_of_searching_account.no_result }}</h5>
             </v-row>
             <v-row v-for="profile of label.result_of_searching_account.value" :key="profile" >
@@ -30,7 +30,7 @@
                 <h2>{{ label.result_of_searching_hashtag.label }}</h2>
             </v-row>
             <v-divider />
-            <v-row v-if="label.result_of_searching_hashtag.value">
+            <v-row v-if="label.result_of_searching_hashtag.value.length == 0">
                 <h5>{{ label.result_of_searching_hashtag.no_result }}</h5>
             </v-row>
             <v-row v-for="profile of label.result_of_searching_hashtag.value" :key="profile" >

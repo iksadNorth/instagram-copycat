@@ -124,7 +124,10 @@ public class ArticleService {
 
     public void articleLikeAdd(Long id, UserDetails principal) {
         if(!likeRepo.existsByArticle_IdAndAccount_Email(id, principal.getUsername())) {
-            LikeDto dto = LikeDto.builder().article(articleRead(id)).build();
+            LikeDto dto = LikeDto.builder()
+                    .account(accountService.loadUserByUsername(principal.getUsername()))
+                    .article(articleRead(id))
+                    .build();
             likeRepo.save(dto.toEntity());
         }
     }
@@ -132,5 +135,9 @@ public class ArticleService {
     public void articleLikeDelete(Long id, UserDetails principal) {
         likeRepo.findByArticle_IdAndAccount_Email(id, principal.getUsername())
                 .ifPresent(like -> likeRepo.delete(like));
+    }
+
+    public Boolean articleIsLike(Long id, UserDetails principal) {
+        return likeRepo.existsByArticle_IdAndAccount_Email(id, principal.getUsername());
     }
 }
