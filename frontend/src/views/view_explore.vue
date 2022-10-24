@@ -7,36 +7,36 @@
 </template>
 
 <script>
+import * as Res from "@/dto/Response";
+
 export default {
     data() {
         return {
             album: [
-                {
-                    pid: 90384,
-                    imgSrc: "https://img.freepik.com/premium-photo/abstract-blue-background-with-smooth-lines_476363-5999.jpg?w=900",
-                    likes: 42,
-                    comments: 21,
-                },
-                {
-                    pid: 66367,
-                    imgSrc: "https://img.freepik.com/premium-photo/city-landscape-with-group-building-sky-sunlight_254791-864.jpg?w=900",
-                    likes: 15,
-                    comments: 14,
-                },
-                {
-                    pid: 8734,
-                    imgSrc: "https://img.freepik.com/premium-photo/background-empty-red-dark-podium-with-lights-tile-floor-3d-rendering_314485-400.jpg?w=900",
-                    likes: 72,
-                    comments: 16,
-                },
-                {
-                    pid: 34987,
-                    imgSrc: "https://img.freepik.com/free-photo/water-texture-background-pastel-blue-design_53876-146663.jpg?w=900&t=st=1665476193~exp=1665476793~hmac=42a4b7f81eee85146011a5ca0d710b4c063080bc440e7f2c3ec9ecf205f4ff83",
-                    likes: 36,
-                    comments: 8,
-                },
+                // {
+                //     pid: 34987,
+                //     imgSrc: "https://img.freepik.com/free-photo/water-texture-background-pastel-blue-design_53876-146663.jpg?w=900&t=st=1665476193~exp=1665476793~hmac=42a4b7f81eee85146011a5ca0d710b4c063080bc440e7f2c3ec9ecf205f4ff83",
+                //     likes: 36,
+                //     comments: 8,
+                // },
             ],
         }
+    },
+    methods: {
+        fetchMyRecommend() {
+            console.log("call fetchMyRecommend");
+            this.$axiosAuth({
+                method: 'get', url: this.$to(`/accounts/principal/articles/recommended`),
+            }).then(res => {
+                this.album = this.album.concat(Res.ArticleReadResponse.of(res).content);
+            }).catch(res => {
+                const error = Res.ErrResponse.of(res);
+                console.log(error);
+            });
+        },
+    },
+    mounted() {
+        this.fetchMyRecommend();
     },
 }
 </script>
