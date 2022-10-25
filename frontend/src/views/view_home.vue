@@ -23,18 +23,18 @@
 </v-container>
 
 <!-- 로그인했을 때 -->
-<v-container v-if="isLogin">
+    <v-container v-if="isLogin && isLoaded">
     <v-row id="body" align="start">
         <!-- 좌측 열 -->
         <v-col id="left--sector" 
         >
             <div 
-                v-for="feed of feeds" :key="feed"
+                v-for="feed of feeds.value" :key="feed"
                 class="my-5"
             >
                 <com-article-sm :data="feed"/>
             </div>
-            <div v-if="feeds.length==0">
+            <div v-if="feeds.value.length==0">
                 <h2 class="text-center">{{ label.recommendFollow.label }}</h2>
             </div>
         </v-col>
@@ -42,8 +42,8 @@
         <!-- 우측 열 -->
         <v-col id="right--sector"
         >
-            <com-profile :data="myProfile" size="60"/>
-            <com-follow-rec :data="yetFollows"/>
+            <com-profile :data="myProfile.value" size="60"/>
+            <com-follow-rec :data="yetFollows.value"/>
         </v-col>
     </v-row>
 </v-container>
@@ -59,43 +59,61 @@ export default {
                 recommendFollow: {label: "다른 사람들 팔로우해보세요!!"}
             },
             myProfile: {
-                uid: 634643,
-                nickname: "kakao_career",
-                imgSrc: "article-img-example.jpg",
-                likes: 83,
-                content: "모델 구조가 스케일링에 어떠한 영향을 미칠까?",
-                createdAt: "8월 5",
+                isLoaded: false,
+                value: {
+                    // uid: 0,
+                    // nickname: "",
+                    // imgSrc: "",
+                    // likes: 0,
+                    // content: "",
+                    // createdAt: "",
+                },
             },
-            feeds: [
-                // {
-                //     pid: ~~,
-                //     createdAt: ~~,
-                    
-                //     uid: ~~,
-                //     nickname: ~~,
-                //     imgSrc: ~~,
-                //     content: ~~,
+            feeds: {
+                isLoaded: false,
+                value: [
+                        // {
+                        //     pid: ~~,
+                        //     createdAt: ~~,
+                            
+                        //     uid: ~~,
+                        //     nickname: ~~,
+                        //     imgSrc: ~~,
+                        //     content: ~~,
+        
+                        //     comments: ~~,
+                        //     likes: ~~,
+                        //     views: ~~,
+                        // }
+                ],
+            },
 
-                //     comments: ~~,
-                //     likes: ~~,
-                //     views: ~~,
-                // }
-            ],
-            yetFollows: [
-                // {
-                //     uid: ~~,
-                //     name: ~~,
-                //     nickname: ~~,
-                //     introduction: ~~,
-                //     articles: ~~,
-                //     followers: ~~,
-                //     followings: ~~,
-                // }
-            ],
+            yetFollows: {
+                isLoaded: false,
+                value: [
+                        // {
+                        //     uid: ~~,
+                        //     name: ~~,
+                        //     nickname: ~~,
+                        //     introduction: ~~,
+                        //     articles: ~~,
+                        //     followers: ~~,
+                        //     followings: ~~,
+                        // }
+                ],
+            },
         }
     },
     computed: {
         isLogin() {return this.$store.getters["isLogin"];},
+        isLoaded() {
+            let state = true;
+            state = state && this.myProfile.isLoaded;
+            // state = state && this.feeds.isLoaded;
+            // state = state && this.yetFollows.isLoaded;
+            console.log(state)
+            return state;
+        }
     },
     methods: {
         fetchMyProfile() {
@@ -103,7 +121,8 @@ export default {
             this.$axiosAuth({
                 method: 'get', url: this.$to(`/accounts/principal`),
             }).then(res => {
-                this.myProfile = Res.AccountReadByIdResponse.of(res).content;
+                this.myProfile.value = Res.AccountReadByIdResponse.of(res).content;
+                this.myProfile.isLoaded = true;
             }).catch(res => {
                 const error = Res.ErrResponse.of(res);
                 console.log(error);
@@ -114,7 +133,8 @@ export default {
             this.$axiosAuth({
                 method: 'get', url: this.$to(`/accounts/principal/articles/follow`),
             }).then(res => {
-                this.feeds = this.feeds.concat(Res.ArticleReadResponse.of(res).content);
+                this.feeds.value = this.feeds.value.concat(Res.ArticleReadResponse.of(res).content);
+                this.feeds.isLoaded = true;
             }).catch(res => {
                 const error = Res.ErrResponse.of(res);
                 console.log(error);
@@ -125,7 +145,8 @@ export default {
             this.$axiosAuth({
                 method: 'get', url: this.$to(`/accounts/principal/following`),
             }).then(res => {
-                this.yetFollows = this.yetFollows.concat(Res.AccountReadResponse.of(res).content);
+                this.yetFollows.value = this.yetFollows.value.concat(Res.AccountReadResponse.of(res).content);
+                this.yetFollows.isLoaded = true;
             }).catch(res => {
                 const error = Res.ErrResponse.of(res);
                 console.log(error);
