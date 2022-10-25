@@ -109,6 +109,8 @@ export default {
                     const token_dec = jwtDec(token);
                     const claim = Claim.of(token_dec);
                     this.$store.commit("overwriteAccount", claim.account);
+
+                    this.$router.go();
                 }
             )
             .catch(
