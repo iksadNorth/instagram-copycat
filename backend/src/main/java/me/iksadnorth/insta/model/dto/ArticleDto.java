@@ -30,7 +30,6 @@ public class ArticleDto {
     // Service를 위한 속성들.
     private final Long numComments;
     private final Long numLikes;
-    private final Long numViews;
 
     public Article toEntity() {
         Article entity = new Article();
@@ -39,7 +38,7 @@ public class ArticleDto {
         entity.setDeletedAt(deletedAt);
 
 //        entity.setAccount(account.toEntity());
-        entity.setImage(image.toEntity());
+        entity.setImage(Optional.ofNullable(image).map((ImageDto::toEntity)).orElse(null));
         entity.setContent(content);
         entity.setIsHideLikesAndViews(isHideLikesAndViews);
         entity.setIsAllowedComments(isAllowedComments);
@@ -65,7 +64,6 @@ public class ArticleDto {
 
                 .numComments(numComments)
                 .numLikes(numLikes)
-                .numViews(numViews)
 
                 .build();
     }

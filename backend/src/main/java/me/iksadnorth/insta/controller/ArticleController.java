@@ -53,24 +53,6 @@ public class ArticleController {
         return Response.success();
     }
 
-    @GetMapping("/{id}/view/counts")
-    public Response<CountsResponse> articleViewCount(@PathVariable Long id) {
-        Long views = service.articleViewCount(id);
-        return Response.success(CountsResponse.of(views));
-    }
-
-    @PostMapping("/{id}/view")
-    public Response<Void> articleViewAdd(@PathVariable Long id, Authentication auth) {
-        service.articleViewAdd(id, ((UserDetails) auth.getPrincipal()));
-        return Response.success();
-    }
-
-    @DeleteMapping("/{id}/view")
-    public Response<Void> articleViewDelete(@PathVariable Long id, Authentication auth) {
-        service.articleViewDelete(id, ((UserDetails) auth.getPrincipal()));
-        return Response.success();
-    }
-
     @GetMapping("/{id}/like/counts")
     public Response<CountsResponse> articleLikeCount(@PathVariable Long id) {
         Long views = service.articleLikeCount(id);

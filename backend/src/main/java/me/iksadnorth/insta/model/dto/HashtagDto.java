@@ -2,7 +2,6 @@ package me.iksadnorth.insta.model.dto;
 
 import lombok.*;
 import me.iksadnorth.insta.model.entity.Hashtag;
-import me.iksadnorth.insta.model.entity.View;
 import me.iksadnorth.insta.model.mappinginterface.HashtagNameMapping;
 import me.iksadnorth.insta.utils.ProxyHandler;
 

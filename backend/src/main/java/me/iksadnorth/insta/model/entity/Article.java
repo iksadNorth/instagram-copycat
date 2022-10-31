@@ -52,7 +52,4 @@ public class Article extends BaseEntity {
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private List<Likes> likes;
-
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
-    private List<View> views;
 }

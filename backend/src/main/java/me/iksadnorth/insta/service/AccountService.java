@@ -33,7 +33,6 @@ public class AccountService implements UserDetailsService {
     @Autowired FollowRepository followRepo;
     @Autowired CommentRepository commentRepo;
     @Autowired LikeRepository likeRepo;
-    @Autowired ViewRepository viewRepo;
 
     @Autowired JwtProperties jwtProperties;
 
@@ -190,9 +189,8 @@ public class AccountService implements UserDetailsService {
 
             Long numComments = commentRepo.countByArticle_Id(articleId);
             Long numLikes = likeRepo.countByArticle_Id(articleId);
-            Long numViews = viewRepo.countByArticle_Id(articleId);
 
-            return ArticleDto.fromEntity(article, numComments, numLikes, numViews);
+            return ArticleDto.fromEntity(article, numComments, numLikes);
         });
     }
 
