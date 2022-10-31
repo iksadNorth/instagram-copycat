@@ -13,17 +13,20 @@ import me.iksadnorth.insta.type.RoleType;
 import me.iksadnorth.insta.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
+@Transactional
 public class AccountService implements UserDetailsService {
     @Autowired AccountRepository repo;
     @Autowired ArticleRepository articleRepo;
@@ -42,6 +45,33 @@ public class AccountService implements UserDetailsService {
                         new InstaApplicationException(
                             ErrorCode.USER_NOT_FOUNDED,
                             String.format("로그인을 시도한 email: %s", email)));
+    }
+
+    public Account loadUserById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> {throw new InstaApplicationException(
+                        ErrorCode.ID_NOT_FOUNDED, String.format("해당 연산에서 사용된 ID값 : %d", id)
+                );});
+    }
+
+    public Boolean hasOwnership(Long idGonnaChange, AccountDto dtoLogin) {
+        // 로그인된 유저의 권한이 ADMIN인지 확인
+        for(GrantedAuthority auth : dtoLogin.getAuthorities()) {
+            if(auth.getAuthority().equals(RoleType.ROLE_ADMIN.name())) {
+                return true;
+            }
+        }
+        // 로그인된 유저의 권한이 ADMIN이 아니라면 계정의 주인인지 확인하는 단계.
+        return dtoLogin.getId().equals(idGonnaChange);
+    }
+
+    public void assertOwnership(Long idGonnaChange, AccountDto dtoLogin) {
+        if(!hasOwnership(idGonnaChange, dtoLogin)) {
+            throw new InstaApplicationException(
+                    ErrorCode.OWNERSHIP_NOT_FOUNDED,
+                    String.format("변경을 요구한 계정의 id값: %s", idGonnaChange)
+            );
+        }
     }
 
     public String login(String email, String password) {
@@ -67,10 +97,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public AccountDto loadById(Long id) {
-        Account entity = repo.findById(id)
-                .orElseThrow(() -> {throw new InstaApplicationException(
-                        ErrorCode.ID_NOT_FOUNDED, String.format("해당 연산에서 사용된 ID값 : %d", id)
-                );});
+        Account entity = loadUserById(id);
         // 작성자가 쓴 글 목록.
         Long articles = articleRepo.countByAccount_Id(id);
         // 작성자를 팔로우한 사람 수.
@@ -81,77 +108,22 @@ public class AccountService implements UserDetailsService {
         return AccountDto.fromEntity(entity, articles, followees, followers);
     }
 
-    public void accountUpdate(Long id, AccountDto dto, UserDetails principal) {
+    public void accountUpdate(Long id, AccountDto dtoForUpdating, AccountDto dtoLogin) {
         // 해당 계정의 Id가 존재하는지 확인.
-        AccountDto dtoQueried = repo.findById(id)
-                .map(AccountDto::fromEntity)
-                .orElseThrow(() -> {
-                    throw new InstaApplicationException(
-                                    ErrorCode.ID_NOT_FOUNDED,
-                                    String.format("다음 Id값이 존재하지 않습니다. \nId: %s", id)
-                            );
-                        }
-                );
+        AccountDto dtoQueried = AccountDto.fromEntity(loadUserById(id));
         // 계정 접근 권한을 확인하는 단계.
-        // 로그인된 유저의 권한이 ADMIN인지 확인
-        long count = principal.getAuthorities().stream()
-                .map(SimpleGrantedAuthority.class::cast)
-                .map(Object::toString)
-                .filter(x -> x.equals(RoleType.ROLE_ADMIN.name()))
-                .count();
-        // 로그인된 유저의 권한이 ADMIN이 아니라면 계정의 주인인지 확인하는 단계.
-        if(count <= 0) {
-            repo.findByEmail(principal.getUsername())
-                    .map(Account::getId)
-                    .filter(x -> x.equals(id))
-                    .orElseThrow(() ->
-                            {
-                                throw new InstaApplicationException(
-                                        ErrorCode.OWNERSHIP_NOT_FOUNDED,
-                                        String.format("변경을 요구한 계정의 id값: %s", id)
-                                );
-                            }
-                    );
-        }
+        assertOwnership(id, dtoLogin);
         // 수정 사항 반영.
         repo.save(
-                dtoQueried.overWriteWith(dto).toEntity()
+                dtoQueried.overWriteWith(dtoForUpdating).toEntity()
         );
     }
 
-    public void accountDelete(Long id, UserDetails principal) {
+    public void accountDelete(Long id, AccountDto dtoLogin) {
         // 해당 계정의 Id가 존재하는지 확인.
-        AccountDto dtoQueried = repo.findById(id)
-                .map(AccountDto::fromEntity)
-                .orElseThrow(() -> {
-                            throw new InstaApplicationException(
-                                    ErrorCode.ID_NOT_FOUNDED,
-                                    String.format("다음 Id값이 존재하지 않습니다. \nId: %s", id)
-                            );
-                        }
-                );
+        loadUserById(id);
         // 계정 접근 권한을 확인하는 단계.
-        // 로그인된 유저의 권한이 ADMIN인지 확인
-        long count = principal.getAuthorities().stream()
-                .map(SimpleGrantedAuthority.class::cast)
-                .map(Object::toString)
-                .filter(x -> x.equals(RoleType.ROLE_ADMIN.name()))
-                .count();
-        // 로그인된 유저의 권한이 ADMIN이 아니라면 계정의 주인인지 확인하는 단계.
-        if(count <= 0) {
-            repo.findByEmail(principal.getUsername())
-                    .map(Account::getId)
-                    .filter(x -> x.equals(id))
-                    .orElseThrow(() ->
-                            {
-                                throw new InstaApplicationException(
-                                        ErrorCode.OWNERSHIP_NOT_FOUNDED,
-                                        String.format("변경을 요구한 계정의 id값: %s", id)
-                                );
-                            }
-                    );
-        } //    TODO: accountUpdate와의 코드 중복 해결하기.
-
+        assertOwnership(id, dtoLogin);
         // 해당 계정 삭제.
         repo.deleteById(id);
     }
@@ -169,15 +141,9 @@ public class AccountService implements UserDetailsService {
         return followRepo.countByFollowee_Id(id);
     }
 
-    public void doFollow(UserDetails principal, Long follower_id) {
-        Account follower = loadUserByUsername(principal.getUsername()).toEntity();
-        Account followee = repo.findById(follower_id)
-                .orElseThrow(
-                        () -> new InstaApplicationException(
-                                ErrorCode.ID_NOT_FOUNDED,
-                                String.format("다음 follower_id값이 존재하지 않습니다. \nId: %s", follower_id)
-                        )
-                );
+    public void doFollow(AccountDto dtoLogin, Long follower_id) {
+        Account follower = dtoLogin.toEntity();
+        Account followee = loadUserById(follower_id);
 
         if(followRepo.existsByFollower_IdAndFollowee_Id(follower.getId(), followee.getId())) {
             throw new InstaApplicationException(
@@ -193,17 +159,12 @@ public class AccountService implements UserDetailsService {
         followRepo.save(follow);
     }
 
-    public void undoFollow(UserDetails principal, Long follower_id) {
-        Account follower = loadUserByUsername(principal.getUsername()).toEntity();
-        Account followee = repo.findById(follower_id)
-                .orElseThrow(
-                        () -> new InstaApplicationException(
-                                ErrorCode.ID_NOT_FOUNDED,
-                                String.format("다음 follower_id값이 존재하지 않습니다. \nId: %s", follower_id)
-                        )
-                );
+    public void undoFollow(AccountDto dtoLogin, Long follower_id) {
+        Account follower = dtoLogin.toEntity();
+        Account followee = loadUserById(follower_id);
 
-        Follow entity = followRepo.findByFollower_IdAndFollowee_Id(follower.getId(), followee.getId()).orElseThrow(() -> {
+        Follow entity = followRepo.findByFollower_IdAndFollowee_Id(follower.getId(), followee.getId())
+                .orElseThrow(() -> {
                     throw new InstaApplicationException(
                             ErrorCode.FOLLOW_NOT_FOUNDED,
                             String.format("팔로우 주체: %s\n팔로우 대상: %s", follower.getId(), followee.getId())
@@ -214,19 +175,11 @@ public class AccountService implements UserDetailsService {
         followRepo.delete(entity);
     }
 
-    public Boolean isFollow(UserDetails principal, Long follower_id) {
-        Account follower = loadUserByUsername(principal.getUsername()).toEntity();
-        Account followee = repo.findById(follower_id)
-                .orElseThrow(
-                        () -> new InstaApplicationException(
-                                ErrorCode.ID_NOT_FOUNDED,
-                                String.format("다음 follower_id값이 존재하지 않습니다. \nId: %s", follower_id)
-                        )
-                );
+    public Boolean isFollow(AccountDto dtoLogin, Long follower_id) {
+        Account follower = dtoLogin.toEntity();
+        Account followee = loadUserById(follower_id);
 
-        return followRepo
-                .findByFollower_IdAndFollowee_Id(follower.getId(), followee.getId())
-                .isPresent();
+        return followRepo.existsByFollower_IdAndFollowee_Id(follower.getId(), followee.getId());
     }
 
     public Long countArticles(Long id) { return articleRepo.countByAccount_Id(id); }
@@ -243,39 +196,20 @@ public class AccountService implements UserDetailsService {
         });
     }
 
-    public Page<ArticleDto> loadExploreById(Long id, Pageable pageable, UserDetails principal) {
-        // 해당 계정의 Id가 존재하는지 확인.
-        AccountDto dtoQueried = repo.findById(id)
-                .map(AccountDto::fromEntity)
-                .orElseThrow(() -> {
-                            throw new InstaApplicationException(
-                                    ErrorCode.ID_NOT_FOUNDED,
-                                    String.format("다음 Id값이 존재하지 않습니다. \nId: %s", id)
-                            );
-                        }
-                );
+    public Page<ArticleDto> loadExploreById(Long id, Pageable pageable, AccountDto dtoLogin) {
         // 계정 접근 권한을 확인하는 단계.
-        // 로그인된 유저의 권한이 ADMIN인지 확인
-        long count = principal.getAuthorities().stream()
-                .map(SimpleGrantedAuthority.class::cast)
-                .map(Object::toString)
-                .filter(x -> x.equals(RoleType.ROLE_ADMIN.name()))
-                .count();
-        // 로그인된 유저의 권한이 ADMIN이 아니라면 계정의 주인인지 확인하는 단계.
-        if(count <= 0) {
-            repo.findByEmail(principal.getUsername())
-                    .map(Account::getId)
-                    .filter(x -> x .equals(id))
-                    .orElseThrow(() ->
-                            {
-                                throw new InstaApplicationException(
-                                        ErrorCode.OWNERSHIP_NOT_FOUNDED,
-                                        String.format("변경을 요구한 계정의 id값: %s", id)
-                                );
-                            }
-                    );
-        } //    TODO: accountUpdate와의 코드 중복 해결하기.
-        return articleRepo.findRandListById(id, pageable).map(ArticleDto::fromEntity);
+        assertOwnership(id, dtoLogin);
+        // 추천 알고리즘에 의해 id값이 선택되었다고 가정.
+        // 실제 서비스 환경을 모사할 때 주의해야 하는 부분.
+        List<Long> ids = List.of(1L, 2L, 3L);
+        List<ArticleDto> dtos = articleRepo.findRandListById(ids, pageable)
+                .stream().map(article -> {
+                    Long numLikes = likeRepo.countByArticle_Id(article.getId());
+                    Long numComments = commentRepo.countByArticle_Id(article.getId());
+
+                    return ArticleDto.fromEntity(article, numComments, numLikes);
+                }).toList();
+        return new PageImpl<>(dtos);
     }
 
     public Page<ArticleDto> loadArticlesById(Long id, Pageable pageable) {

@@ -3,7 +3,6 @@ package me.iksadnorth.insta.model.dto;
 import lombok.*;
 import me.iksadnorth.insta.model.entity.Account;
 import me.iksadnorth.insta.type.RoleType;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -54,6 +53,10 @@ public class AccountDto implements UserDetails {
     }
 
     public static AccountDto fromEntity(Account entity) {
+        return fromEntity(entity, null, null, null);
+    }
+
+    public static AccountDto fromInnerEntity(Account entity) {
         return fromEntity(entity, null, null, null);
     }
 

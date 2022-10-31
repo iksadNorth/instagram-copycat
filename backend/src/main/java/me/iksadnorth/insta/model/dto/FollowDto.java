@@ -1,17 +1,10 @@
 package me.iksadnorth.insta.model.dto;
 
 import lombok.*;
-import me.iksadnorth.insta.model.entity.Account;
 import me.iksadnorth.insta.model.entity.Follow;
-import me.iksadnorth.insta.type.RoleType;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import me.iksadnorth.insta.utils.ProxyHandler;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @ToString
 @EqualsAndHashCode(of = {"id"})
@@ -41,13 +34,13 @@ public class FollowDto {
     }
 
     public static FollowDto fromEntity(Follow entity) {
-        return new FollowDto(
-                entity.getId(),
-                entity.getCreatedAt(),
-                entity.getDeletedAt(),
+        return FollowDto.builder()
+                .id(entity.getId())
+                .createdAt(entity.getCreatedAt())
+                .deletedAt(entity.getDeletedAt())
 
-                AccountDto.fromEntity(entity.getFollower()),
-                AccountDto.fromEntity(entity.getFollowee())
-        );
+                .follower(ProxyHandler.of(entity.getFollower()).map(AccountDto::fromEntity).orElse(null))
+                .followee(ProxyHandler.of(entity.getFollowee()).map(AccountDto::fromEntity).orElse(null))
+                .build();
     }
 }

@@ -35,3 +35,6 @@ INSERT INTO hashtag (name, article_id) VALUES ('tag2', 3);
 
 INSERT INTO hashtag (name, article_id) VALUES ('tag3', 3);
 INSERT INTO hashtag (name, article_id) VALUES ('tag3', 1);
+
+INSERT INTO comments (created_at, account_id, article_id, parent_id, content) VALUES (NOW(), 2, 6, null, '댓글 달기');
+INSERT INTO comments (created_at, account_id, article_id, parent_id, content) VALUES (NOW(), 1, 6, 1, '대댓글 달기');

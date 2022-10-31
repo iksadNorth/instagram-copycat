@@ -9,18 +9,19 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE comment SET deleted_at = NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE comments SET deleted_at = NOW() WHERE id=?")
 @Where(clause = "deleted_at is NULL")
-@Table(name = "comment")
+@Table(name = "comments")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Comment extends BaseEntity {
     @CreatedBy
-    @ManyToOne @JoinColumn(name = "", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "", nullable = false)
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "article_id", nullable = false)
@@ -30,4 +31,7 @@ public class Comment extends BaseEntity {
     private Comment parent;
 
     private String content;
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<Likes> likes;
 }
