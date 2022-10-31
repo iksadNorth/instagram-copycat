@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
     @Autowired ArticleRepository repo;
     @Autowired CommentRepository commentRepo;
-    @Autowired ViewRepository viewRepo;
     @Autowired LikeRepository likeRepo;
     @Autowired AccountService accountService;
     public void articleCreate(ArticleDto dto) {
@@ -64,9 +63,8 @@ public class ArticleService {
 
             Long numComments = commentRepo.countByArticle_Id(articleId);
             Long numLikes = likeRepo.countByArticle_Id(articleId);
-            Long numViews = viewRepo.countByArticle_Id(articleId);
 
-            return ArticleDto.fromEntity(article, numComments, numLikes, numViews);
+            return ArticleDto.fromEntity(article, numComments, numLikes);
         }).orElseThrow(() -> {throw new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED,
                 String.format("검색에서 사용되었던 id값 : %d", id)
         );});

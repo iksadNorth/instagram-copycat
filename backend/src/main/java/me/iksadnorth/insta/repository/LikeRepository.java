@@ -1,7 +1,6 @@
 package me.iksadnorth.insta.repository;
 
 import me.iksadnorth.insta.model.entity.Likes;
-import me.iksadnorth.insta.model.entity.View;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
