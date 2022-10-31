@@ -44,19 +44,6 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void findRandListById() {
-        // given
-        Long id = 1L;
-        Pageable pageable = PageRequest.of(0, 10);
-
-        // when & then
-        Page<Article> articles = repo.findRandListById(id, pageable);
-        articles.forEach(article -> {
-            log.trace(article.getContent());
-        });
-    }
-
-    @Test
     void findByAccount_Id() {
         // given
         Long id = 1L;

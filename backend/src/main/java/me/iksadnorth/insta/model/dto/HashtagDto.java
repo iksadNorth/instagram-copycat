@@ -4,6 +4,7 @@ import lombok.*;
 import me.iksadnorth.insta.model.entity.Hashtag;
 import me.iksadnorth.insta.model.entity.View;
 import me.iksadnorth.insta.model.mappinginterface.HashtagNameMapping;
+import me.iksadnorth.insta.utils.ProxyHandler;
 
 import java.time.LocalDateTime;
 
@@ -35,14 +36,13 @@ public class HashtagDto {
     }
 
     public static HashtagDto fromEntity(Hashtag entity) {
-        return new HashtagDto(
-                entity.getId(),
-                entity.getCreatedAt(),
-                entity.getDeletedAt(),
-
-                entity.getName(),
-                ArticleDto.fromEntity(entity.getArticle())
-        );
+        return HashtagDto.builder()
+                .id(entity.getId())
+                .createdAt(entity.getCreatedAt())
+                .deletedAt(entity.getDeletedAt())
+                .name(entity.getName())
+                .article(ProxyHandler.of(entity.getArticle()).map(ArticleDto::fromEntity).orElse(null))
+                .build();
     }
 
     public static HashtagDto fromNameMapping(HashtagNameMapping hashtagNameMapping) {

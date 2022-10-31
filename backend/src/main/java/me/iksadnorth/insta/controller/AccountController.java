@@ -10,9 +10,7 @@ import me.iksadnorth.insta.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -39,14 +37,21 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public Response<Void> accountUpdate(@PathVariable Long id, @RequestBody AccountUpdateRequest request, Authentication auth) {
-        service.accountUpdate(id, request.toDto(), ((UserDetails) auth.getPrincipal()));
+    public Response<Void> accountUpdate(
+            @PathVariable Long id,
+            @RequestBody AccountUpdateRequest request,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        service.accountUpdate(id, request.toDto(), dto);
         return Response.success();
     }
 
     @DeleteMapping("/{id}")
-    public Response<Void> accountDelete(@PathVariable Long id, Authentication auth) {
-        service.accountDelete(id, ((UserDetails) auth.getPrincipal()));
+    public Response<Void> accountDelete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        service.accountDelete(id, dto);
         return Response.success();
     }
 
@@ -101,27 +106,27 @@ public class AccountController {
     @PostMapping("/follow/{follower_id}")
     public Response<Void> accountFollow(
             @PathVariable Long follower_id,
-            Authentication auth
+            @AuthenticationPrincipal AccountDto dto
     ) {
-        service.doFollow(((UserDetails) auth.getPrincipal()), follower_id);
+        service.doFollow(dto, follower_id);
         return Response.success();
     }
 
     @GetMapping("/follow/{follower_id}")
     public Response<FollowReadResponse> accountIsFollow(
             @PathVariable Long follower_id,
-            Authentication auth
+            @AuthenticationPrincipal AccountDto dto
     ) {
-        Boolean isFollow = service.isFollow(((UserDetails) auth.getPrincipal()), follower_id);
+        Boolean isFollow = service.isFollow(dto, follower_id);
         return Response.success(FollowReadResponse.of(isFollow));
     }
 
     @DeleteMapping("/follow/{follower_id}")
     public Response<Void> accountUnFollow(
             @PathVariable Long follower_id,
-            Authentication auth
+            @AuthenticationPrincipal AccountDto dto
     ) {
-        service.undoFollow(((UserDetails) auth.getPrincipal()), follower_id);
+        service.undoFollow(dto, follower_id);
         return Response.success();
     }
 
@@ -152,10 +157,9 @@ public class AccountController {
     @GetMapping("/principal/articles/recommended")
     public Response<Page<ArticleReadResponse>> accountRecommended(
             @AuthenticationPrincipal AccountDto dto,
-            @PageableDefault Pageable pageable,
-            Authentication auth
+            @PageableDefault Pageable pageable
     ) {
-        Page<ArticleDto> dtos = service.loadExploreById(dto.getId(), pageable, (UserDetails) auth.getPrincipal());
+        Page<ArticleDto> dtos = service.loadExploreById(dto.getId(), pageable, dto);
         return Response.success(dtos.map(ArticleReadResponse::from));
     }
 

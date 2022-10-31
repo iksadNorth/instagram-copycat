@@ -9,12 +9,14 @@ import me.iksadnorth.insta.repository.ImageRepository;
 import me.iksadnorth.insta.utils.NameGenerator.NameGenerator;
 import me.iksadnorth.insta.utils.fileManager.FileManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ImageService {
     private final ImageRepository repo;

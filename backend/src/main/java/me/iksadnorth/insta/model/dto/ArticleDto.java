@@ -2,6 +2,7 @@ package me.iksadnorth.insta.model.dto;
 
 import lombok.*;
 import me.iksadnorth.insta.model.entity.Article;
+import me.iksadnorth.insta.utils.ProxyHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,28 +48,17 @@ public class ArticleDto {
     }
 
     public static ArticleDto fromEntity(Article entity) {
-        return ArticleDto.builder()
-                .id(entity.getId())
-                .createdAt(entity.getCreatedAt())
-                .deletedAt(entity.getDeletedAt())
-
-                .account(AccountDto.fromEntity(entity.getAccount()))
-                .image(ImageDto.fromEntity(entity.getImage()))
-                .content(entity.getContent())
-                .isHideLikesAndViews(entity.getIsHideLikesAndViews())
-                .isAllowedComments(entity.getIsAllowedComments())
-
-                .build();
+        return ArticleDto.fromEntity(entity, null, null);
     }
 
-    public static ArticleDto fromEntity(Article entity, Long numComments, Long numLikes, Long numViews) {
+    public static ArticleDto fromEntity(Article entity, Long numComments, Long numLikes) {
         return ArticleDto.builder()
                 .id(entity.getId())
                 .createdAt(entity.getCreatedAt())
                 .deletedAt(entity.getDeletedAt())
 
-                .account(AccountDto.fromEntity(entity.getAccount()))
-                .image(ImageDto.fromEntity(entity.getImage()))
+                .account(ProxyHandler.of(entity.getAccount()).map(AccountDto::fromEntity).orElse(null))
+                .image(ProxyHandler.of(entity.getImage()).map(ImageDto::fromEntity).orElse(null))
                 .content(entity.getContent())
                 .isHideLikesAndViews(entity.getIsHideLikesAndViews())
                 .isAllowedComments(entity.getIsAllowedComments())

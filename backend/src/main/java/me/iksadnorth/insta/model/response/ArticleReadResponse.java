@@ -18,10 +18,11 @@ public class ArticleReadResponse {
     private final ImageDto image;
     private final String content;
 
-    // TODO: 아래 칼럼들에 대해서도 작업하기
+    private final Boolean isHideLikesAndViews;
+    private final Boolean isAllowedComments;
+
     private final Long numComments;
     private final Long numLikes;
-    private final Long numViews;
 
     public static ArticleReadResponse from(ArticleDto dto) {
         return new ArticleReadResponse(
@@ -32,9 +33,11 @@ public class ArticleReadResponse {
                 dto.getImage(),
                 dto.getContent(),
 
+                dto.getIsHideLikesAndViews(),
+                dto.getIsAllowedComments(),
+
                 dto.getNumComments(),
-                dto.getNumLikes(),
-                dto.getNumViews()
+                dto.getNumLikes()
         );
     }
 }

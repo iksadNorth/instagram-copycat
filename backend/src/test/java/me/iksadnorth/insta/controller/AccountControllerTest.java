@@ -142,7 +142,7 @@ class AccountControllerTest {
     void accountPutTest2() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED))
-                .given(service).accountUpdate(any(Long.class), any(AccountDto.class), any(UserDetails.class));
+                .given(service).accountUpdate(any(Long.class), any(AccountDto.class), any(AccountDto.class));
 
         // when & then
         mvc.perform(
@@ -161,7 +161,7 @@ class AccountControllerTest {
     void accountPutTest3() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.OWNERSHIP_NOT_FOUNDED))
-                .given(service).accountUpdate(any(Long.class), any(AccountDto.class), any(UserDetails.class));
+                .given(service).accountUpdate(any(Long.class), any(AccountDto.class), any(AccountDto.class));
 
         // when & then
         mvc.perform(
@@ -208,7 +208,7 @@ class AccountControllerTest {
     void accountDeleteTest2() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED))
-                .given(service).accountDelete(any(Long.class), any(UserDetails.class));
+                .given(service).accountDelete(any(Long.class), any(AccountDto.class));
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/2"))
@@ -223,7 +223,7 @@ class AccountControllerTest {
     void accountDeleteTest3() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.OWNERSHIP_NOT_FOUNDED))
-                .given(service).accountDelete(any(Long.class), any(UserDetails.class));
+                .given(service).accountDelete(any(Long.class), any(AccountDto.class));
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/1"))
@@ -317,7 +317,7 @@ class AccountControllerTest {
     void accountFollowTest4() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.DUPLICATED_FOLLOW))
-                .given(service).doFollow(any(UserDetails.class), any(Long.class));
+                .given(service).doFollow(any(AccountDto.class), any(Long.class));
 
         // when & then
         mvc.perform(post(prefix + "/accounts/follow/6"))
@@ -331,7 +331,7 @@ class AccountControllerTest {
     void accountFollowTest5() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.FOLLOW_NOT_FOUNDED))
-                .given(service).undoFollow(any(UserDetails.class), any(Long.class));
+                .given(service).undoFollow(any(AccountDto.class), any(Long.class));
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/1/follow/6"))
@@ -371,7 +371,7 @@ class AccountControllerTest {
     @Test
     void accountArticlesTest3() throws Exception {
         // given
-        given(service.loadExploreById(any(Long.class), any(Pageable.class), any(UserDetails.class))).willReturn(Page.empty());
+        given(service.loadExploreById(any(Long.class), any(Pageable.class), any(AccountDto.class))).willReturn(Page.empty());
 
         // when & then
         mvc.perform(get(prefix + "/accounts/1/articles/recommended"))
@@ -399,7 +399,7 @@ class AccountControllerTest {
     void accountArticlesTest5() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.OWNERSHIP_NOT_FOUNDED)).given(service)
-                .loadExploreById(any(Long.class), any(Pageable.class), any(UserDetails.class));
+                .loadExploreById(any(Long.class), any(Pageable.class), any(AccountDto.class));
 
         // when & then
         mvc.perform(get(prefix + "/accounts/1/articles/recommended"))
@@ -413,7 +413,7 @@ class AccountControllerTest {
     @Fixture.SetMockAdmin
     void accountArticlesTest6() throws Exception {
         // given
-        given(service.loadExploreById(any(Long.class), any(Pageable.class), any(UserDetails.class)))
+        given(service.loadExploreById(any(Long.class), any(Pageable.class), any(AccountDto.class)))
                 .willReturn(Page.empty());
 
         // when & then

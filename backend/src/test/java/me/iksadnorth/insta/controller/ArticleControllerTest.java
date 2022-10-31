@@ -9,6 +9,7 @@ import me.iksadnorth.insta.model.request.ArticleCreateRequest;
 import me.iksadnorth.insta.model.request.ArticleUpdateRequest;
 import me.iksadnorth.insta.service.AccountService;
 import me.iksadnorth.insta.service.ArticleService;
+import me.iksadnorth.insta.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,6 +38,7 @@ class ArticleControllerTest {
     @Autowired ObjectMapper mapper;
 
     @MockBean AccountService accountService;
+    @MockBean CommentService commentService;
     @MockBean ArticleService service;
     @InjectMocks ArticleController controller;
 
@@ -77,7 +79,7 @@ class ArticleControllerTest {
     @WithAnonymousUser
     void articleReadTest1() throws Exception {
         // given
-        given(service.articleRead(any(Long.class))).willReturn(fixture.getArticleDtos(0));
+        given(service.articleReadWithInfo(any(Long.class))).willReturn(fixture.getArticleDtos(0));
 
         // when & then
         mvc.perform(
