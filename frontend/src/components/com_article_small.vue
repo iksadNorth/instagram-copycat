@@ -9,10 +9,16 @@
     <com-img :data="data" />
 
     <!-- 게시물 각종 버튼들 -->
-    <com-article-tools :data="data" />
+    <com-article-tools 
+        :hideLike="isHiddenLikes"
+        :data="data" 
+    />
 
     <!-- 게시글 좋아요 갯수 표시 -->
-    <com-likes :data="data" />
+    <com-likes 
+        v-if="!isHiddenLikes"
+        :data="data" 
+    />
 
     <!-- 게시글 내용 -->
     <com-article-content :data="data" />
@@ -26,16 +32,22 @@
     <v-divider/>
 
     <!-- 게시글 댓글 작성 -->
-    <com-post-comment/>
+    <com-post-comment
+        v-if="isAllowedToComment" 
+        :data="data" 
+        :getObject="commentTo" @setObject="changeObject" 
+    />
   </v-card>
 </template>
 
 <script>
+import { Message } from '@/utils/comment'
+
 export default {
     props: {
         data: Object,
         // data: {
-        //     name: "kakao_career",
+        //     nickname: "kakao_career",
         //     imgSrc: "article-img-example.jpg",
         //     comments: 83,
         //     likes: 83,
@@ -43,18 +55,26 @@ export default {
         //     createdAt: "8월 5",
         // },
     },
+    computed: {
+        isAllowedToComment() {return this.data.isAllowedComments;},
+        isHiddenLikes() {return this.data.isHideLikesAndViews;},
+    },
     data() {
       return {
         label: {
           more: {label: `댓글 ${this.data.comments}개 더보기`, click: this.onClickMore}
-        }
+        },
+        commentTo: Message.of(),
       }
     },
     methods: {
       onClickMore() {
         console.log("Click onClickMore");
         this.$router.push(`/p/${this.data.pid}`);
-      }
+      },
+      changeObject() {
+        this.commentTo = Message.of();
+      },
     },
 }
 </script>
