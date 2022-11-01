@@ -161,6 +161,9 @@ export class ArticleReadByIdResponse {
                 imgSrc: item['image']['path'],
                 content: item['content'],
 
+                isHideLikesAndViews: item['isHideLikesAndViews'],
+                isAllowedComments: item['isAllowedComments'],
+
                 comments: item['numComments'],
                 likes: item['numLikes'],
                 views: item['numViews'],
@@ -188,6 +191,38 @@ export class ArticleReadResponse {
                     
                     uid: item['account']['id'],
                     nickname: item['account']['nickName'],
+                    imgSrc: item['image']['path'],
+                    content: item['content'],
+
+                    isHideLikesAndViews: item['isHideLikesAndViews'],
+                    isAllowedComments: item['isAllowedComments'],
+
+                    comments: item['numComments'],
+                    likes: item['numLikes'],
+                    views: item['numViews'],
+                }
+            });
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}
+
+export class ArticleReadWithoutAccountResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get content() {
+        if(this.response) {
+            const array = this.response.data.data.content
+            return array.map(item => {
+                return {
+                    pid: item['id'],
+                    createdAt: item['createdAt'],
+                    
                     imgSrc: item['image']['path'],
                     content: item['content'],
 
@@ -228,6 +263,35 @@ export class LikeReadResponse {
     get isLike() {
         if(this.response) {
             return this.response.data.data.isLike;
+        } else {
+            return null;
+        }
+    }
+
+    static of(response) {return new this(response);}
+}
+
+export class CommentReadResponse {
+    constructor(response) {
+        this.response = response;
+    }
+
+    get content() {
+        if(this.response) {
+            const array = this.response.data.data.content
+            return array.map(item => {
+                return {
+                    cid: item['id'],
+                    createdAt: item['createdAt'],
+                    
+                    uid: item['account']['id'],
+                    nickname: item['account']['nickName'],
+                    content: item['content'],
+
+                    likes: item['numLikes'],
+                    children: item['numChildren'],
+                }
+            });
         } else {
             return null;
         }

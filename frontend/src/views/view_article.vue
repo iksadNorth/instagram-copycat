@@ -21,15 +21,27 @@
             <com-article-content class="ml-1 mt-1" :data="data" isExistAvatar />
 
             <!-- 댓글 표시 -->
-            <com-comment class="ml-1 mt-1" :data="data" />
+            <div class="frame" >
+                <com-comment
+                    v-for="comment of comments" :key="comment"
+                    :data="comment" @setObject="changeObject"
+                />
+            </div>
+                
 
             <v-divider class="my-4"/>
 
             <!-- 게시물 각종 버튼들 -->
-            <com-article-tools :data="data" />
+            <com-article-tools 
+                :hideLike="isHiddenLikes"
+                :data="data" 
+            />
 
             <!-- 게시글 좋아요 표시 -->
-            <com-likes :data="data" />
+            <com-likes 
+                v-if="!isHiddenLikes"
+                :data="data" 
+            />
 
             <!-- 작성 일자 -->
             <com-createdAt :data="data" />
@@ -37,7 +49,12 @@
             <v-divider/>
 
             <!-- 게시글 댓글 작성 -->
-            <com-post-comment/>
+            <com-post-comment
+                v-if="isAllowedToComment" 
+                :data="data" 
+                :getObject="commentTo" @setObject="changeObject" 
+                @update="fetchComments" 
+            />
     </v-col>
     </v-row>
 </v-container>
@@ -45,6 +62,7 @@
 
 <script>
 import * as Res from "@/dto/Response";
+import { Message } from '@/utils/comment'
 
 export default {
     data() {
@@ -58,11 +76,25 @@ export default {
                 likes: 0,
                 content: "",
                 createdAt: "",
-            }
+            },
+            comments: [
+                // {
+                //     uid: 1,
+                //     pid: 2,
+                //     nickname: "NickName",
+                //     cid: 12,
+                //     createdAt: "2022-02-02",
+                //     likes: 83,
+                //     content: "게시글 내용",
+                // }
+            ],
+            commentTo: Message.of(),
         }
     },
     computed: {
         pid() {return this.$route.params.pid;},
+        isAllowedToComment() {return this.data.isAllowedComments;},
+        isHiddenLikes() {return this.data.isHideLikesAndViews;},
     },
     methods: {
         fetchPost: async function() {
@@ -71,6 +103,20 @@ export default {
                 method: 'get', url: this.$to(`/articles/${this.pid}`),
             });
         },
+        fetchComments() {
+            console.log("call fetchComments");
+            this.$axiosAuth({
+                method: 'get', url: this.$to(`/articles/${this.pid}/comments`),
+            }).then(res => {
+                this.comments = Res.CommentReadResponse.of(res).content;
+            }).catch(res => {
+                const error = Res.ErrResponse.of(res);
+                console.log(error);
+            });
+        },
+        changeObject(val) {
+            this.commentTo = val;
+        }
     },
     created: async function() {
         try {
@@ -81,6 +127,7 @@ export default {
             const error = Res.ErrResponse.of(res);
             console.log(error);
         }
+        this.fetchComments();
     },
 }
 </script>
@@ -92,6 +139,7 @@ export default {
     }
     #right--sector {
         background-color: rgb(235, 235, 235);
+        min-width: 400px
     }
     #body {
         background-color: black;
@@ -99,5 +147,10 @@ export default {
     .inline {
         display: flex;
         align-items: center;
+    }
+    .frame {
+        height: 40vh;
+        overflow-x: scroll;
+        overflow-y: scroll;
     }
 </style>
