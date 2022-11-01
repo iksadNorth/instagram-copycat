@@ -36,5 +36,10 @@ export default {
 <style>
   .footer {
     height: 8vh;
+    max-height: 8vh;
+  }
+  .v-main {
+    margin: auto;
+    max-width: 900px;
   }
 </style>

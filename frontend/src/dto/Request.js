@@ -129,3 +129,17 @@ export class PageRequest {
     static of(page, size, sort) {return new this(page, size, sort);}
     static of(page, size) {return new this(page, size, null);}
 }
+
+export class CommentCreateRequest {
+    constructor(content) {
+        this.content = content;
+    }
+
+    get param() {
+        return {
+            "content": this.content,
+        };
+    }
+
+    static of(content) {return new this(content);}
+}
