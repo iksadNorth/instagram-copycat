@@ -154,9 +154,11 @@ export default {
         },
     },
     mounted() {
-        this.fetchMyProfile();
-        this.fetchFeeds();
-        this.fetchYetFollow();
+        if(this.isLogin) {
+            this.fetchMyProfile();
+            this.fetchFeeds();
+            this.fetchYetFollow();
+        }
     }
 }
 </script>

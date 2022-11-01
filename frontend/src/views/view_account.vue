@@ -41,7 +41,7 @@ export default {
             this.$axios({
                 method: 'get', url: this.$to(`/accounts/${this.uid}/articles`),
             }).then(res => {
-                this.album = this.album.concat(Res.ArticleReadResponse.of(res).content);
+                this.album = this.album.concat(Res.ArticleReadWithoutAccountResponse.of(res).content);
             }).catch(res => {
                 const error = Res.ErrResponse.of(res);
                 console.log(error);

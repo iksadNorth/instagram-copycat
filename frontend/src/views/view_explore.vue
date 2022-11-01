@@ -28,7 +28,7 @@ export default {
             this.$axiosAuth({
                 method: 'get', url: this.$to(`/accounts/principal/articles/recommended`),
             }).then(res => {
-                this.album = this.album.concat(Res.ArticleReadResponse.of(res).content);
+                this.album = Res.ArticleReadWithoutAccountResponse.of(res).content;
             }).catch(res => {
                 const error = Res.ErrResponse.of(res);
                 console.log(error);

@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-row align-center mt-3">
+    <div class="d-flex flex-row align-center">
         <p class="date">{{ createdAt }}</p>
     </div>
 </template>

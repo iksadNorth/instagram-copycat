@@ -92,7 +92,9 @@ public class AccountService implements UserDetailsService {
                                 String.format("다음 계정이 중복이 됩니다. \nId: %s,\nemail: %s", account.getId(), account.getEmail())
                         );}
                 );
-        repo.save(dto.toEntity());
+        Account entity = dto.toEntity();
+        entity.setRole(RoleType.ROLE_USER);
+        repo.save(entity);
     }
 
     public AccountDto loadById(Long id) {

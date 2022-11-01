@@ -22,20 +22,6 @@
             <v-row v-for="profile of label.result_of_searching_account.value" :key="profile" >
                 <com-profile :data="profile" />
             </v-row>
-
-            <v-spacer class="my-8" />
-            
-            <!-- 해시태그 검색 결과 -->
-            <v-row>
-                <h2>{{ label.result_of_searching_hashtag.label }}</h2>
-            </v-row>
-            <v-divider />
-            <v-row v-if="label.result_of_searching_hashtag.value.length == 0">
-                <h5>{{ label.result_of_searching_hashtag.no_result }}</h5>
-            </v-row>
-            <v-row v-for="profile of label.result_of_searching_hashtag.value" :key="profile" >
-                <com-profile :data="profile" kind="hashtag" />
-            </v-row>
         </v-card>
     </v-menu>
 </template>
@@ -66,7 +52,6 @@ export default {
             console.log("Click doPreSearch. keyword: " + keyword);
 
             this.label.result_of_searching_account.value = await this.fetchAccount(keyword);
-            this.label.result_of_searching_hashtag.value = await this.fetchHashtag(keyword);
         },
         fetchAccount: async function (keyword) {
             try {
@@ -76,22 +61,6 @@ export default {
                 });
                 
                 return Res.AccountKeywordResponse.of(res_account).content;
-
-            } catch(res) {
-                const error = Res.ErrResponse.of(res);
-                console.log(error);
-
-                return [];
-            }
-        },
-        fetchHashtag: async function (keyword) {
-            try {
-                const res_hashtag = await this.$axios({
-                    method: 'get', url: this.$to("/hashtag"),
-                    params: Req.HashtagKeyWordRequest.of(keyword).param,
-                });
-                
-                return Res.HashtagKeywordResponse.of(res_hashtag).content;
 
             } catch(res) {
                 const error = Res.ErrResponse.of(res);
