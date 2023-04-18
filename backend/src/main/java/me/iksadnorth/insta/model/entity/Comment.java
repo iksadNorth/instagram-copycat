@@ -21,7 +21,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Comment extends BaseEntity {
     @CreatedBy
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "article_id", nullable = false)
