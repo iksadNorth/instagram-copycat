@@ -6,6 +6,7 @@ import me.iksadnorth.insta.model.dto.FollowDto;
 import me.iksadnorth.insta.type.RoleType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

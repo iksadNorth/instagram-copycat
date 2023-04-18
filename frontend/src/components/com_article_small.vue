@@ -56,7 +56,7 @@ export default {
         // },
     },
     computed: {
-        isAllowedToComment() {return this.data.isAllowedComments;},
+        isAllowedToComment() {return this.data.notAllowedComments;},
         isHiddenLikes() {return this.data.isHideLikesAndViews;},
     },
     data() {

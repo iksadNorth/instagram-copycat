@@ -20,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -160,7 +159,7 @@ class AccountControllerTest {
     @Fixture.SetMockOther
     void accountPutTest3() throws Exception {
         // given
-        willThrow(new InstaApplicationException(ErrorCode.OWNERSHIP_NOT_FOUNDED))
+        willThrow(new InstaApplicationException(ErrorCode.NOT_BELONGING_TO_YOU))
                 .given(service).accountUpdate(any(Long.class), any(AccountDto.class), any(AccountDto.class));
 
         // when & then
@@ -170,7 +169,7 @@ class AccountControllerTest {
                         .content(mapper.writeValueAsBytes(AccountUpdateRequest.from(fixture.getDtos(1))))
                 )
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.OWNERSHIP_NOT_FOUNDED.getStatus().value()))
+                .andExpect(status().is(ErrorCode.NOT_BELONGING_TO_YOU.getStatus().value()))
         ;
     }
 
@@ -208,7 +207,7 @@ class AccountControllerTest {
     void accountDeleteTest2() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED))
-                .given(service).accountDelete(any(Long.class), any(AccountDto.class));
+                .given(service).accountDelete(any(Long.class), any());
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/2"))
@@ -222,13 +221,13 @@ class AccountControllerTest {
     @Fixture.SetMockOther
     void accountDeleteTest3() throws Exception {
         // given
-        willThrow(new InstaApplicationException(ErrorCode.OWNERSHIP_NOT_FOUNDED))
-                .given(service).accountDelete(any(Long.class), any(AccountDto.class));
+        willThrow(new InstaApplicationException(ErrorCode.NOT_BELONGING_TO_YOU))
+                .given(service).accountDelete(any(Long.class), any());
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/1"))
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.OWNERSHIP_NOT_FOUNDED.getStatus().value()))
+                .andExpect(status().is(ErrorCode.NOT_BELONGING_TO_YOU.getStatus().value()))
         ;
     }
 
@@ -317,7 +316,7 @@ class AccountControllerTest {
     void accountFollowTest4() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.DUPLICATED_FOLLOW))
-                .given(service).doFollow(any(AccountDto.class), any(Long.class));
+                .given(service).doFollow(any(), any(Long.class));
 
         // when & then
         mvc.perform(post(prefix + "/accounts/follow/6"))
@@ -331,7 +330,7 @@ class AccountControllerTest {
     void accountFollowTest5() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.FOLLOW_NOT_FOUNDED))
-                .given(service).undoFollow(any(AccountDto.class), any(Long.class));
+                .given(service).undoFollow(any(), any(Long.class));
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/1/follow/6"))
@@ -389,7 +388,7 @@ class AccountControllerTest {
         // when & then
         mvc.perform(get(prefix + "/accounts/1/articles/recommended"))
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.OWNERSHIP_NOT_FOUNDED.getStatus().value()))
+                .andExpect(status().is(ErrorCode.NOT_BELONGING_TO_YOU.getStatus().value()))
         ;
     }
 
@@ -398,13 +397,13 @@ class AccountControllerTest {
     @Fixture.SetMockOther
     void accountArticlesTest5() throws Exception {
         // given
-        willThrow(new InstaApplicationException(ErrorCode.OWNERSHIP_NOT_FOUNDED)).given(service)
+        willThrow(new InstaApplicationException(ErrorCode.NOT_BELONGING_TO_YOU)).given(service)
                 .loadExploreById(any(Long.class), any(Pageable.class), any(AccountDto.class));
 
         // when & then
         mvc.perform(get(prefix + "/accounts/1/articles/recommended"))
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.OWNERSHIP_NOT_FOUNDED.getStatus().value()))
+                .andExpect(status().is(ErrorCode.NOT_BELONGING_TO_YOU.getStatus().value()))
         ;
     }
 

@@ -27,8 +27,6 @@ public class FixtureTest {
     @MockBean
     CommentService commentService;
     @MockBean
-    HashtagService hashtagService;
-    @MockBean
     ImageService imageService;
     @Autowired
     ApplicationContext applicationContext;

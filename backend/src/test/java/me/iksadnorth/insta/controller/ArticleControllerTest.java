@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.iksadnorth.insta.config.EnableProjectSecurityConfig;
 import me.iksadnorth.insta.exception.ErrorCode;
 import me.iksadnorth.insta.fixture.Fixture;
+import me.iksadnorth.insta.model.dto.ArticleDto;
 import me.iksadnorth.insta.model.request.ArticleCreateRequest;
 import me.iksadnorth.insta.model.request.ArticleUpdateRequest;
 import me.iksadnorth.insta.service.AccountService;
@@ -49,11 +50,16 @@ class ArticleControllerTest {
     @Test
     void articleCreateTest1() throws Exception {
         // given
+        ArticleDto dto = ArticleDto.builder()
+                .content("1번째 게시물 글 내용.")
+                .isAllowedComments(true)
+                .isHideLikesAndViews(true)
+                .build();
 
         // when & then
         mvc.perform(
                         post(prefix + "/articles")
-                                .content(mapper.writeValueAsBytes(ArticleCreateRequest.from(fixture.getArticleDtos(1))))
+                                .content(mapper.writeValueAsBytes(ArticleCreateRequest.from(dto)))
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isOk());
@@ -71,7 +77,7 @@ class ArticleControllerTest {
                                 .content(mapper.writeValueAsBytes(ArticleCreateRequest.from(fixture.getArticleDtos(1))))
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
-                .andExpect(status().is(ErrorCode.OWNERSHIP_NOT_FOUNDED.getStatus().value()));
+                .andExpect(status().is(ErrorCode.NOT_BELONGING_TO_YOU.getStatus().value()));
     }
 
     @DisplayName("[get][/articles/{id}] 게시글 조회 - 정상작동")

@@ -47,7 +47,7 @@ public class ArticleDto {
     }
 
     public static ArticleDto fromEntity(Article entity) {
-        return ArticleDto.fromEntity(entity, null, null);
+        return ArticleDto.fromEntity(entity, 0L, 0L);
     }
 
     public static ArticleDto fromEntity(Article entity, Long numComments, Long numLikes) {
@@ -74,10 +74,22 @@ public class ArticleDto {
                 .createdAt(createdAt)
                 .deletedAt(Optional.ofNullable(dto.getDeletedAt()).orElse(deletedAt))
 
-                .content(Optional.ofNullable(dto.getContent()).orElse(content))
+                .account(Optional.ofNullable(dto.getAccount()).orElse(account))
                 .image(Optional.ofNullable(dto.getImage()).orElse(image))
+                .content(Optional.ofNullable(dto.getContent()).orElse(content))
                 .isHideLikesAndViews(Optional.ofNullable(dto.getIsHideLikesAndViews()).orElse(isHideLikesAndViews))
                 .isAllowedComments(Optional.ofNullable(dto.getIsAllowedComments()).orElse(isAllowedComments))
+
+                .numLikes(Optional.ofNullable(dto.getNumLikes()).orElse(numLikes))
+                .numComments(Optional.ofNullable(dto.getNumComments()).orElse(numComments))
                 .build();
+    }
+
+    public ArticleDto withNumLikes(Long numLikes) {
+        return this.overWriteWith(ArticleDto.builder().numLikes(numLikes).build());
+    }
+
+    public ArticleDto withNumComments(Long numComments) {
+        return this.overWriteWith(ArticleDto.builder().numLikes(numComments).build());
     }
 }

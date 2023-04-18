@@ -13,9 +13,7 @@ import me.iksadnorth.insta.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -26,8 +24,8 @@ public class ArticleController {
     private final CommentService commentService;
 
     @PostMapping
-    public Response<Void> articleCreate(@RequestBody ArticleCreateRequest request) {
-        service.articleCreate(request.toDto());
+    public Response<Void> articleCreate(@RequestBody ArticleCreateRequest request, @AuthenticationPrincipal AccountDto principal) {
+        service.articleCreate(request.toDto(), principal);
         return Response.success();
     }
 
@@ -41,15 +39,18 @@ public class ArticleController {
     public Response<Void> articleUpdate(
             @PathVariable Long id,
             @RequestBody ArticleUpdateRequest request,
-            Authentication auth
+            @AuthenticationPrincipal AccountDto dto
     ) {
-        service.articleUpdate(id, request.toDto(), ((UserDetails) auth.getPrincipal()));
+        service.articleUpdate(id, request.toDto(), dto);
         return Response.success();
     }
 
     @DeleteMapping("/{id}")
-    public Response<Void> articleDelete(@PathVariable Long id, Authentication auth) {
-        service.articleDelete(id, ((UserDetails) auth.getPrincipal()));
+    public Response<Void> articleDelete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto
+            ) {
+        service.articleDelete(id, dto);
         return Response.success();
     }
 
@@ -60,20 +61,29 @@ public class ArticleController {
     }
 
     @PostMapping("/{id}/like")
-    public Response<Void> articleLikeAdd(@PathVariable Long id, Authentication auth) {
-        service.articleLikeAdd(id, ((UserDetails) auth.getPrincipal()));
+    public Response<Void> articleLikeAdd(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        service.articleLikeAdd(id, dto);
         return Response.success();
     }
 
     @GetMapping("/{id}/like")
-    public Response<LikeReadResponse> articleIsLike(@PathVariable Long id, Authentication auth) {
-        Boolean isLike = service.articleIsLike(id, ((UserDetails) auth.getPrincipal()));
+    public Response<LikeReadResponse> articleIsLike(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        Boolean isLike = service.articleIsLike(id, dto);
         return Response.success(LikeReadResponse.of(isLike));
     }
 
     @DeleteMapping("/{id}/like")
-    public Response<Void> articleLikeDelete(@PathVariable Long id, Authentication auth) {
-        service.articleLikeDelete(id, ((UserDetails) auth.getPrincipal()));
+    public Response<Void> articleLikeDelete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        service.articleLikeDelete(id, dto);
         return Response.success();
     }
 

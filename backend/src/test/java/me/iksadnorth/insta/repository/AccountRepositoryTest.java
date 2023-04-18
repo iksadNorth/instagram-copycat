@@ -8,7 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Slf4j
 @DisplayName("AccountRepo 테스트 - 직접 설정한 쿼리가 작동하는지 확인하는 테스트")
 @EnableProjectJpaConfig
-@ActiveProfiles("Test")
+@ActiveProfiles("test")
 @DataJpaTest
 class AccountRepositoryTest {
     @Autowired AccountRepository repo;
@@ -31,11 +30,11 @@ class AccountRepositoryTest {
         log.trace("Email: {}", entity1.get().getEmail());
         log.trace("NickName: {}", entity1.get().getNickName());
         log.trace("Introduction: {}", entity1.get().getIntroduction());
-        entity1.get().getArticles().stream()
+        entity1.get().getArticles()
                 .forEach(x -> log.trace("Article_id: {}", x.getId()));
-        entity1.get().getFollowers().stream()
+        entity1.get().getFollowers()
                 .forEach(x -> log.trace("Followers_id: {}", x.getId()));
-        entity1.get().getFollowees().stream()
+        entity1.get().getFollowees()
                 .forEach(x -> log.trace("Followees_id: {}", x.getId()));
     }
 

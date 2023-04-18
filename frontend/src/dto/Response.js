@@ -162,7 +162,7 @@ export class ArticleReadByIdResponse {
                 content: item['content'],
 
                 isHideLikesAndViews: item['isHideLikesAndViews'],
-                isAllowedComments: item['isAllowedComments'],
+                notAllowedComments: item['isAllowedComments'],
 
                 comments: item['numComments'],
                 likes: item['numLikes'],
@@ -195,11 +195,10 @@ export class ArticleReadResponse {
                     content: item['content'],
 
                     isHideLikesAndViews: item['isHideLikesAndViews'],
-                    isAllowedComments: item['isAllowedComments'],
+                    notAllowedComments: item['isAllowedComments'],
 
                     comments: item['numComments'],
                     likes: item['numLikes'],
-                    views: item['numViews'],
                 }
             });
         } else {

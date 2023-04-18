@@ -45,9 +45,6 @@ public class Article extends BaseEntity {
     private Boolean isAllowedComments;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
-    private List<Hashtag> hashtags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)

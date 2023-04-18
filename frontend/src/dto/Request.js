@@ -73,7 +73,7 @@ export class ArticleCreateRequest {
             "image": {"id": this.id, "path": this.url,},
             "content": this.content,
             "isHideLikesAndViews": this.toggleHide,
-            "isAllowedComments": this.toggleComment,
+            "notAllowedComments": this.toggleComment,
         };
     }
 

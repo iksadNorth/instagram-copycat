@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Slf4j
 @DisplayName("ArticleRepo 테스트 - 직접 설정한 쿼리가 작동하는지 확인하는 테스트")
 @EnableProjectJpaConfig
-@ActiveProfiles("Test")
+@ActiveProfiles("test")
 @DataJpaTest
 class ArticleRepositoryTest {
     @Autowired ArticleRepository repo;
@@ -37,10 +37,8 @@ class ArticleRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         // when & then
-        Page<Article> articles = repo.findFeedListById(id, pageable);
-        articles.forEach(article -> {
-            log.trace(article.getContent());
-        });
+        Page<Article> articles = repo.findByAccount_Followees_Follower_Id(id, pageable);
+        articles.forEach(article -> log.trace(article.getContent()));
     }
 
     @Test
@@ -51,21 +49,6 @@ class ArticleRepositoryTest {
 
         // when & then
         Page<Article> articles = repo.findByAccount_Id(id, pageable);
-        articles.forEach(article -> {
-            log.trace(article.getContent());
-        });
-    }
-
-    @Test
-    void findByHashtag_Name() {
-        // given
-        String tag = "#tag3";
-        Pageable pageable = PageRequest.of(0, 10);
-
-        // when & then
-        Page<Article> articles = repo.findByHashtags_Name(tag, pageable);
-        articles.forEach(article -> {
-            log.trace(article.getContent());
-        });
+        articles.forEach(article -> log.trace(article.getContent()));
     }
 }

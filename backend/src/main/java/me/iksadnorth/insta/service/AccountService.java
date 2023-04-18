@@ -8,12 +8,13 @@ import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.dto.ArticleDto;
 import me.iksadnorth.insta.model.entity.Account;
 import me.iksadnorth.insta.model.entity.Follow;
-import me.iksadnorth.insta.repository.*;
+import me.iksadnorth.insta.repository.AccountRepository;
+import me.iksadnorth.insta.repository.ArticleRepository;
+import me.iksadnorth.insta.repository.FollowRepository;
 import me.iksadnorth.insta.type.RoleType;
 import me.iksadnorth.insta.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,9 +31,8 @@ import java.util.Optional;
 public class AccountService implements UserDetailsService {
     @Autowired AccountRepository repo;
     @Autowired ArticleRepository articleRepo;
+    @Autowired ArticleService articleService;
     @Autowired FollowRepository followRepo;
-    @Autowired CommentRepository commentRepo;
-    @Autowired LikeRepository likeRepo;
 
     @Autowired JwtProperties jwtProperties;
 
@@ -49,7 +49,7 @@ public class AccountService implements UserDetailsService {
     public Account loadUserById(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> {throw new InstaApplicationException(
-                        ErrorCode.ID_NOT_FOUNDED, String.format("해당 연산에서 사용된 ID값 : %d", id)
+                        ErrorCode.USER_NOT_FOUNDED, String.format("해당 연산에서 사용된 ID값 : %d", id)
                 );});
     }
 
@@ -67,8 +67,8 @@ public class AccountService implements UserDetailsService {
     public void assertOwnership(Long idGonnaChange, AccountDto dtoLogin) {
         if(!hasOwnership(idGonnaChange, dtoLogin)) {
             throw new InstaApplicationException(
-                    ErrorCode.OWNERSHIP_NOT_FOUNDED,
-                    String.format("변경을 요구한 계정의 id값: %s", idGonnaChange)
+                    ErrorCode.NOT_BELONGING_TO_YOU,
+                    String.format("변경을 요구한 계정의 id값: %s", dtoLogin.getId())
             );
         }
     }
@@ -99,6 +99,20 @@ public class AccountService implements UserDetailsService {
 
     public AccountDto loadById(Long id) {
         Account entity = loadUserById(id);
+        // 작성자가 쓴 글 목록.
+        Long articles = articleRepo.countByAccount_Id(id);
+        // 작성자를 팔로우한 사람 수.
+        Long followees = followRepo.countByFollowee_Id(id);
+        // 작성자가 팔로우한 사람 수.
+        Long followers = followRepo.countByFollower_Id(id);
+
+        return AccountDto.fromEntity(entity, articles, followees, followers);
+    }
+
+    public AccountDto loadById(AccountDto dto) {
+        Account entity = dto.toEntity();
+        Long id = dto.getId();
+
         // 작성자가 쓴 글 목록.
         Long articles = articleRepo.countByAccount_Id(id);
         // 작성자를 팔로우한 사람 수.
@@ -186,14 +200,10 @@ public class AccountService implements UserDetailsService {
     public Long countArticles(Long id) { return articleRepo.countByAccount_Id(id); }
 
     public Page<ArticleDto> loadFeedById(Long id, Pageable pageable) {
-        return articleRepo.findFeedListById(id, pageable).map(article -> {
-            Long articleId = article.getId();
-
-            Long numComments = commentRepo.countByArticle_Id(articleId);
-            Long numLikes = likeRepo.countByArticle_Id(articleId);
-
-            return ArticleDto.fromEntity(article, numComments, numLikes);
-        });
+        return articleService.countsWith(
+                articleRepo.findByAccount_Followees_Follower_Id(id, pageable)
+                ,pageable
+        );
     }
 
     public Page<ArticleDto> loadExploreById(Long id, Pageable pageable, AccountDto dtoLogin) {
@@ -202,14 +212,7 @@ public class AccountService implements UserDetailsService {
         // 추천 알고리즘에 의해 id값이 선택되었다고 가정.
         // 실제 서비스 환경을 모사할 때 주의해야 하는 부분.
         List<Long> ids = List.of(1L, 2L, 3L);
-        List<ArticleDto> dtos = articleRepo.findRandListById(ids, pageable)
-                .stream().map(article -> {
-                    Long numLikes = likeRepo.countByArticle_Id(article.getId());
-                    Long numComments = commentRepo.countByArticle_Id(article.getId());
-
-                    return ArticleDto.fromEntity(article, numComments, numLikes);
-                }).toList();
-        return new PageImpl<>(dtos);
+        return articleService.countsWith(articleRepo.findRandListById(ids, pageable), pageable);
     }
 
     public Page<ArticleDto> loadArticlesById(Long id, Pageable pageable) {

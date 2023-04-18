@@ -133,7 +133,7 @@ export default {
             this.$axiosAuth({
                 method: 'get', url: this.$to(`/accounts/principal/articles/follow`),
             }).then(res => {
-                this.feeds.value = this.feeds.value.concat(Res.ArticleReadResponse.of(res).content);
+                this.feeds.value = Res.ArticleReadResponse.of(res).content;
                 this.feeds.isLoaded = true;
             }).catch(res => {
                 const error = Res.ErrResponse.of(res);

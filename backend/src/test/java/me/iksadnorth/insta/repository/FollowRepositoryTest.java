@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Slf4j
 @DisplayName("FollowRepo 테스트 - 직접 설정한 쿼리가 작동하는지 확인하는 테스트")
 @EnableProjectJpaConfig
-@ActiveProfiles("Test")
+@ActiveProfiles("test")
 @DataJpaTest
 class FollowRepositoryTest {
     @Autowired
@@ -61,6 +59,6 @@ class FollowRepositoryTest {
 
         // when & then
         Follow follow = repo.findByFollower_IdAndFollowee_Id(id, followeeId).get();
-        log.trace("팔로우 엔티티 주소 : {}", follow.toString());
+        log.trace("팔로우 엔티티 주소 : {}", follow);
     }
 }

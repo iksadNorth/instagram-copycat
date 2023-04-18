@@ -53,11 +53,7 @@ public class AccountDto implements UserDetails {
     }
 
     public static AccountDto fromEntity(Account entity) {
-        return fromEntity(entity, null, null, null);
-    }
-
-    public static AccountDto fromInnerEntity(Account entity) {
-        return fromEntity(entity, null, null, null);
+        return fromEntity(entity, 0L, 0L, 0L);
     }
 
     public static AccountDto fromEntity(
