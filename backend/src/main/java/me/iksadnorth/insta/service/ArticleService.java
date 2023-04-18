@@ -32,7 +32,7 @@ public class ArticleService {
 
     public Article loadById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> {throw new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED,
+                .orElseThrow(() -> {throw new InstaApplicationException(ErrorCode.ARTICLE_NOT_FOUNDED,
                         String.format("검색에서 사용되었던 id값 : %d", id)
                 );});
     }
@@ -51,8 +51,8 @@ public class ArticleService {
     public void assertOwnership(Long idGonnaChange, UserDetails principal) {
         if(!hasOwnership(idGonnaChange, principal)) {
             throw new InstaApplicationException(
-                    ErrorCode.OWNERSHIP_NOT_FOUNDED,
-                    String.format("변경을 요구한 계정의 id값: %s", idGonnaChange)
+                    ErrorCode.NOT_BELONGING_TO_YOU,
+                    String.format("변경을 요구한 계정의 id값: %s", principal.getId())
             );
         }
     }

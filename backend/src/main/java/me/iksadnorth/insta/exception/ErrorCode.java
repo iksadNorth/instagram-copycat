@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorCode {
     USER_NOT_FOUNDED(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
+    ARTICLE_NOT_FOUNDED(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
+    COMMENT_NOT_FOUNDED(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
     ID_NOT_FOUNDED(HttpStatus.NOT_FOUND, "해당 ID 값을 찾을 수 없습니다."),
     FOLLOW_NOT_FOUNDED(HttpStatus.NOT_FOUND, "해당 팔로우를 찾을 수 없습니다."),
     TAG_NOT_FOUNDED(HttpStatus.NOT_FOUND, "해당 태그를 찾을 수 없습니다."),
@@ -15,7 +17,7 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "JWT Token 값이 적절하지 않습니다."),
     TOKEN_NOT_FOUNDED(HttpStatus.UNAUTHORIZED, "인증을 위한 토큰을 찾을 수 없습니다."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰의 기한이 만료되었습니다."),
-    OWNERSHIP_NOT_FOUNDED(HttpStatus.UNAUTHORIZED, "해당 객체에 대한 권한이 없습니다."),
+    NOT_BELONGING_TO_YOU(HttpStatus.UNAUTHORIZED, "해당 객체에 대한 권한이 없습니다."),
     DUPLICATED_USER(HttpStatus.INTERNAL_SERVER_ERROR, "이미 존재하는 유저입니다."),
     DUPLICATED_FOLLOW(HttpStatus.INTERNAL_SERVER_ERROR, "이미 팔로우되어 있습니다."),
     TOO_MANY_IMAGES(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 파일 갯수가 1개가 아닙니다."),

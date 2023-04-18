@@ -43,7 +43,7 @@ public class CommentService {
     public CommentDto commentReadById(Long id) {
         return repo.findById(id).map(CommentDto::fromEntity).orElseThrow(() -> {
             throw new InstaApplicationException(
-                    ErrorCode.ID_NOT_FOUNDED,
+                    ErrorCode.COMMENT_NOT_FOUNDED,
                     String.format("해당 Id값: %d", id)
             );}
         );
@@ -52,7 +52,7 @@ public class CommentService {
     public CommentDto commentReadByIdWithArticle(Long id) {
         return repo.findByIdWithArticle(id).map(CommentDto::fromEntity).orElseThrow(() -> {
             throw new InstaApplicationException(
-                    ErrorCode.ID_NOT_FOUNDED,
+                    ErrorCode.COMMENT_NOT_FOUNDED,
                     String.format("해당 Id값: %d", id)
             );}
         );
@@ -153,7 +153,7 @@ public class CommentService {
     public void commentDeleteLikes(AccountDto dto, Long id) {
         Likes likeEntity = likeRepo.findByAccount_IdAndComment_Id(dto.getId(), id)
                 .orElseThrow(() -> new InstaApplicationException(
-                        ErrorCode.ID_NOT_FOUNDED,
+                        ErrorCode.COMMENT_NOT_FOUNDED,
                         String.format("해당 유저 Id와 댓글 Id: %s, %s", dto.getId(), id)
                 ));
         likeRepo.delete(likeEntity);

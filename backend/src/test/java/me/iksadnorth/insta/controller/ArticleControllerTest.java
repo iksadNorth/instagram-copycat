@@ -71,7 +71,7 @@ class ArticleControllerTest {
                                 .content(mapper.writeValueAsBytes(ArticleCreateRequest.from(fixture.getArticleDtos(1))))
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
-                .andExpect(status().is(ErrorCode.OWNERSHIP_NOT_FOUNDED.getStatus().value()));
+                .andExpect(status().is(ErrorCode.NOT_BELONGING_TO_YOU.getStatus().value()));
     }
 
     @DisplayName("[get][/articles/{id}] 게시글 조회 - 정상작동")

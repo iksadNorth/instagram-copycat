@@ -30,9 +30,8 @@ import java.util.Optional;
 public class AccountService implements UserDetailsService {
     @Autowired AccountRepository repo;
     @Autowired ArticleRepository articleRepo;
+    @Autowired ArticleService articleService;
     @Autowired FollowRepository followRepo;
-    @Autowired CommentRepository commentRepo;
-    @Autowired LikeRepository likeRepo;
 
     @Autowired JwtProperties jwtProperties;
 
@@ -49,7 +48,7 @@ public class AccountService implements UserDetailsService {
     public Account loadUserById(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> {throw new InstaApplicationException(
-                        ErrorCode.ID_NOT_FOUNDED, String.format("해당 연산에서 사용된 ID값 : %d", id)
+                        ErrorCode.USER_NOT_FOUNDED, String.format("해당 연산에서 사용된 ID값 : %d", id)
                 );});
     }
 
@@ -67,8 +66,8 @@ public class AccountService implements UserDetailsService {
     public void assertOwnership(Long idGonnaChange, AccountDto dtoLogin) {
         if(!hasOwnership(idGonnaChange, dtoLogin)) {
             throw new InstaApplicationException(
-                    ErrorCode.OWNERSHIP_NOT_FOUNDED,
-                    String.format("변경을 요구한 계정의 id값: %s", idGonnaChange)
+                    ErrorCode.NOT_BELONGING_TO_YOU,
+                    String.format("변경을 요구한 계정의 id값: %s", dtoLogin.getId())
             );
         }
     }

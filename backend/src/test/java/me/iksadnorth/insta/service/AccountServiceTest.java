@@ -223,7 +223,7 @@ class AccountServiceTest {
                 () -> service.accountUpdate(id, newDto, userLogged)
         );
 
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.OWNERSHIP_NOT_FOUNDED);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.NOT_BELONGING_TO_YOU);
 
     }
 
@@ -285,7 +285,7 @@ class AccountServiceTest {
                 () -> service.accountDelete(id, userLogged)
         );
 
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.OWNERSHIP_NOT_FOUNDED);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.NOT_BELONGING_TO_YOU);
 
     }
 
@@ -322,7 +322,7 @@ class AccountServiceTest {
         Long id = trgDto.getId();
 
         Pageable pageable = PageRequest.of(0, 10);
-        given(articleRepo.findRandListById(any(), any())).willReturn(Page.empty());
+        given(articleRepo.findRandListById(any(), any())).willReturn(List.of());
 
         // when & then
         assertDoesNotThrow(() -> service.loadExploreById(id, pageable, userLogged));
@@ -367,7 +367,7 @@ class AccountServiceTest {
                 () -> service.accountDelete(id, userLogged)
         );
 
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.OWNERSHIP_NOT_FOUNDED);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.NOT_BELONGING_TO_YOU);
 
     }
 }
