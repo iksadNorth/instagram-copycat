@@ -32,7 +32,7 @@ public class AccountController {
 
     @GetMapping("/principal")
     public Response<AccountReadResponse> accountReadMine(@AuthenticationPrincipal AccountDto dto) {
-        AccountDto responses = service.loadById(dto.getId());
+        AccountDto responses = service.loadById(dto);
         return Response.success(AccountReadResponse.from(responses));
     }
 

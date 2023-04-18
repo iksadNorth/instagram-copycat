@@ -50,7 +50,7 @@
 
             <!-- 게시글 댓글 작성 -->
             <com-post-comment
-                v-if="isAllowedToComment" 
+                v-if="!notAllowedToComment" 
                 :data="data" 
                 :getObject="commentTo" @setObject="changeObject" 
                 @update="fetchComments" 
@@ -93,7 +93,7 @@ export default {
     },
     computed: {
         pid() {return this.$route.params.pid;},
-        isAllowedToComment() {return this.data.isAllowedComments;},
+        notAllowedToComment() {return this.data.notAllowedComments;},
         isHiddenLikes() {return this.data.isHideLikesAndViews;},
     },
     methods: {

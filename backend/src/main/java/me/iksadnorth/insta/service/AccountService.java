@@ -8,12 +8,13 @@ import me.iksadnorth.insta.model.dto.AccountDto;
 import me.iksadnorth.insta.model.dto.ArticleDto;
 import me.iksadnorth.insta.model.entity.Account;
 import me.iksadnorth.insta.model.entity.Follow;
-import me.iksadnorth.insta.repository.*;
+import me.iksadnorth.insta.repository.AccountRepository;
+import me.iksadnorth.insta.repository.ArticleRepository;
+import me.iksadnorth.insta.repository.FollowRepository;
 import me.iksadnorth.insta.type.RoleType;
 import me.iksadnorth.insta.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -108,6 +109,20 @@ public class AccountService implements UserDetailsService {
         return AccountDto.fromEntity(entity, articles, followees, followers);
     }
 
+    public AccountDto loadById(AccountDto dto) {
+        Account entity = dto.toEntity();
+        Long id = dto.getId();
+
+        // 작성자가 쓴 글 목록.
+        Long articles = articleRepo.countByAccount_Id(id);
+        // 작성자를 팔로우한 사람 수.
+        Long followees = followRepo.countByFollowee_Id(id);
+        // 작성자가 팔로우한 사람 수.
+        Long followers = followRepo.countByFollower_Id(id);
+
+        return AccountDto.fromEntity(entity, articles, followees, followers);
+    }
+
     public void accountUpdate(Long id, AccountDto dtoForUpdating, AccountDto dtoLogin) {
         // 해당 계정의 Id가 존재하는지 확인.
         AccountDto dtoQueried = AccountDto.fromEntity(loadUserById(id));
@@ -185,14 +200,10 @@ public class AccountService implements UserDetailsService {
     public Long countArticles(Long id) { return articleRepo.countByAccount_Id(id); }
 
     public Page<ArticleDto> loadFeedById(Long id, Pageable pageable) {
-        return articleRepo.findFeedListById(id, pageable).map(article -> {
-            Long articleId = article.getId();
-
-            Long numComments = commentRepo.countByArticle_Id(articleId);
-            Long numLikes = likeRepo.countByArticle_Id(articleId);
-
-            return ArticleDto.fromEntity(article, numComments, numLikes);
-        });
+        return articleService.countsWith(
+                articleRepo.findByAccount_Followees_Follower_Id(id, pageable)
+                ,pageable
+        );
     }
 
     public Page<ArticleDto> loadExploreById(Long id, Pageable pageable, AccountDto dtoLogin) {
@@ -201,14 +212,7 @@ public class AccountService implements UserDetailsService {
         // 추천 알고리즘에 의해 id값이 선택되었다고 가정.
         // 실제 서비스 환경을 모사할 때 주의해야 하는 부분.
         List<Long> ids = List.of(1L, 2L, 3L);
-        List<ArticleDto> dtos = articleRepo.findRandListById(ids, pageable)
-                .stream().map(article -> {
-                    Long numLikes = likeRepo.countByArticle_Id(article.getId());
-                    Long numComments = commentRepo.countByArticle_Id(article.getId());
-
-                    return ArticleDto.fromEntity(article, numComments, numLikes);
-                }).toList();
-        return new PageImpl<>(dtos);
+        return articleService.countsWith(articleRepo.findRandListById(ids, pageable), pageable);
     }
 
     public Page<ArticleDto> loadArticlesById(Long id, Pageable pageable) {

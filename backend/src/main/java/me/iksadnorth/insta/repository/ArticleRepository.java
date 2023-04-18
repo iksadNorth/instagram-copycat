@@ -17,21 +17,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Long countByAccount_Id(Long accountId);
 
     @EntityGraph(attributePaths = {"image", "account"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query(
-            "SELECT a FROM Article a " +
-                    "LEFT JOIN a.account w " +
-                    "LEFT JOIN w.followees fs " +
-                    "WHERE fs.follower.id = :id"
-    )
-    Page<Article> findFeedListById(Long id, Pageable pageable);
+    Page<Article> findByAccount_Followees_Follower_Id(Long id, Pageable pageable);
 
     @Query("SELECT a FROM Article a JOIN FETCH a.image WHERE a.id IN :ids")
     List<Article> findRandListById(Collection<Long> ids, Pageable pageable);
 
     @EntityGraph(attributePaths = {"image"}, type = EntityGraph.EntityGraphType.LOAD)
     Page<Article> findByAccount_Id(Long id, Pageable pageable);
-
-    boolean existsByIdAndAccount_Email(Long id, String username);
-
-    Page<Article> findByHashtags_Name(String tag, Pageable pageable);
 }

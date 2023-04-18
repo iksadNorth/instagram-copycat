@@ -52,6 +52,8 @@ public class CommentDto {
                 .parent(ProxyHandler.of(entity.getParent()).map(CommentDto::fromEntity).orElse(null))
                 .content(entity.getContent())
 
+                .numLikes(0L)
+                .numChildren(0L)
                 .build();
     }
 
@@ -61,26 +63,22 @@ public class CommentDto {
                 .createdAt(createdAt)
                 .deletedAt(Optional.ofNullable(dto.getDeletedAt()).orElse(deletedAt))
 
-                .article(article)
-                .parent(parent)
+                .account(Optional.ofNullable(dto.getAccount()).orElse(account))
+                .article(Optional.ofNullable(dto.getArticle()).orElse(article))
+                .parent(Optional.ofNullable(dto.getParent()).orElse(parent))
                 .content(Optional.ofNullable(dto.getContent()).orElse(content))
+
+                .numLikes(Optional.ofNullable(dto.getNumLikes()).orElse(numLikes))
+                .numChildren(Optional.ofNullable(dto.getNumChildren()).orElse(numChildren))
                 .build();
     }
 
-    public CommentDto withNum(Long numLikes, Long numChildren) {
-        return CommentDto.builder()
-                .id(id)
-                .createdAt(createdAt)
-                .deletedAt(deletedAt)
+    public CommentDto withNumChildren(Long numChildren) {
+        return this.overWriteWith(CommentDto.builder().numChildren(numChildren).build());
+    }
 
-                .account(account)
-                .article(article)
-                .parent(parent)
-                .content(content)
-
-                .numLikes(numLikes)
-                .numChildren(numChildren)
-                .build();
+    public CommentDto withNumLikes(Long numLikes) {
+        return this.overWriteWith(CommentDto.builder().numLikes(numLikes).build());
     }
 
     public static CommentDto of(String content, AccountDto accountDto, ArticleDto articleDto, CommentDto parentDto) {
@@ -89,6 +87,9 @@ public class CommentDto {
                 .article(articleDto)
                 .parent(parentDto)
                 .content(content)
+
+                .numLikes(0L)
+                .numChildren(0L)
                 .build();
     }
 

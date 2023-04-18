@@ -18,10 +18,10 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -329,27 +329,6 @@ class AccountServiceTest {
 
     }
 
-    @DisplayName("추천 게시글 목록 로드 테스트 - 존재하지 않는 id.")
-    @Test
-    void loadExploreByIdTest2() {
-        // given
-        AccountDto userLogged = fixture.getDtos(0);
-        AccountDto trgDto = fixture.getDtos(1);
-        Long id = trgDto.getId();
-
-        Pageable pageable = PageRequest.of(0, 10);
-        given(articleRepo.findRandListById(any(), any())).willReturn(Page.empty());
-
-        // when & then
-        InstaApplicationException e = assertThrows(
-                InstaApplicationException.class,
-                () -> service.loadExploreById(id, pageable, userLogged)
-        );
-
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.ID_NOT_FOUNDED);
-
-    }
-
     @DisplayName("추천 게시글 목록 로드 테스트 - 인가받지 못한 유저.")
     @Test
     void loadExploreByIdTest3() {
@@ -359,7 +338,7 @@ class AccountServiceTest {
         Long id = trgDto.getId();
 
         Pageable pageable = PageRequest.of(0, 10);
-        given(articleRepo.findRandListById(any(), any())).willReturn(Page.empty());
+        given(articleRepo.findRandListById(any(), any())).willReturn(List.of());
 
         // when & then
         InstaApplicationException e = assertThrows(

@@ -37,7 +37,7 @@ class ArticleRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         // when & then
-        Page<Article> articles = repo.findFeedListById(id, pageable);
+        Page<Article> articles = repo.findByAccount_Followees_Follower_Id(id, pageable);
         articles.forEach(article -> {
             log.trace(article.getContent());
         });
@@ -51,19 +51,6 @@ class ArticleRepositoryTest {
 
         // when & then
         Page<Article> articles = repo.findByAccount_Id(id, pageable);
-        articles.forEach(article -> {
-            log.trace(article.getContent());
-        });
-    }
-
-    @Test
-    void findByHashtag_Name() {
-        // given
-        String tag = "#tag3";
-        Pageable pageable = PageRequest.of(0, 10);
-
-        // when & then
-        Page<Article> articles = repo.findByHashtags_Name(tag, pageable);
         articles.forEach(article -> {
             log.trace(article.getContent());
         });

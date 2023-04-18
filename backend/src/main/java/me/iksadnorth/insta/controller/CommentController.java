@@ -27,33 +27,45 @@ public class CommentController {
     public Response<Void> commentCreateToComment(
             @PathVariable Long id,
             @AuthenticationPrincipal AccountDto dto,
-            @RequestBody CommentCreateRequest request) {
+            @RequestBody CommentCreateRequest request
+    ) {
         service.commentCreateToComment(request.getContent(), dto, id);
         return Response.success();
     }
 
     @GetMapping("/{id}/children")
-    public Response<Page<CommentReadResponse>> commentRead(@PathVariable Long id, @PageableDefault Pageable pageable) {
+    public Response<Page<CommentReadResponse>> commentRead(
+            @PathVariable Long id,
+            @PageableDefault Pageable pageable
+    ) {
         Page<CommentDto> dtos = service.childrenRead(id, pageable);
         return Response.success(dtos.map(CommentReadResponse::from));
     }
 
     @PutMapping("/{id}")
-    public Response<Void> commentUpdate(@PathVariable Long id, @RequestBody CommentUpdateRequest request, Authentication auth) {
-        service.commentUpdate(id, request.toDto(), ((UserDetails) auth.getPrincipal()));
+    public Response<Void> commentUpdate(
+            @PathVariable Long id,
+            @RequestBody CommentUpdateRequest request,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        service.commentUpdate(id, request.toDto(), dto);
         return Response.success();
     }
 
     @DeleteMapping("/{id}")
-    public Response<Void> commentDelete(@PathVariable Long id, Authentication auth) {
-        service.commentDelete(id, ((UserDetails) auth.getPrincipal()));
+    public Response<Void> commentDelete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal AccountDto dto
+    ) {
+        service.commentDelete(id, dto);
         return Response.success();
     }
 
     @PostMapping("/{id}/like")
     public Response<Void> commentCreateLikes(
             @PathVariable Long id,
-            @AuthenticationPrincipal AccountDto dto) {
+            @AuthenticationPrincipal AccountDto dto
+    ) {
         service.commentCreateLikes(dto, id);
         return Response.success();
     }
@@ -61,7 +73,8 @@ public class CommentController {
     @GetMapping("/{id}/like")
     public Response<LikeReadResponse> commentIsLikes(
             @PathVariable Long id,
-            @AuthenticationPrincipal AccountDto dto) {
+            @AuthenticationPrincipal AccountDto dto
+    ) {
         Boolean isLikes = service.commentIsLikes(dto, id);
         return Response.success(LikeReadResponse.of(isLikes));
     }
@@ -69,7 +82,8 @@ public class CommentController {
     @DeleteMapping("/{id}/like")
     public Response<Void> commentDeleteLikes(
             @PathVariable Long id,
-            @AuthenticationPrincipal AccountDto dto) {
+            @AuthenticationPrincipal AccountDto dto
+    ) {
         service.commentDeleteLikes(dto, id);
         return Response.success();
     }
