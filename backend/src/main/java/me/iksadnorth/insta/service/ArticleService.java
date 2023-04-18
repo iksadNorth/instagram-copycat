@@ -33,8 +33,11 @@ public class ArticleService {
     @Autowired CommentRepository commentRepo;
     @Autowired LikeRepository likeRepo;
 
-    public void articleCreate(ArticleDto dto) {
-        repo.save(dto.toEntity());
+    public void articleCreate(ArticleDto dto, AccountDto principal) {
+        ArticleDto dtoSaving = ArticleDto.builder()
+                .account(principal)
+                .build();
+        repo.save(dtoSaving.overWriteWith(dto).toEntity());
     }
 
     public ArticleDto loadDtoById(Long id) {

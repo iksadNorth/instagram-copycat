@@ -207,7 +207,7 @@ class AccountControllerTest {
     void accountDeleteTest2() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.ID_NOT_FOUNDED))
-                .given(service).accountDelete(any(Long.class), any(AccountDto.class));
+                .given(service).accountDelete(any(Long.class), any());
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/2"))
@@ -222,7 +222,7 @@ class AccountControllerTest {
     void accountDeleteTest3() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.NOT_BELONGING_TO_YOU))
-                .given(service).accountDelete(any(Long.class), any(AccountDto.class));
+                .given(service).accountDelete(any(Long.class), any());
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/1"))
@@ -316,7 +316,7 @@ class AccountControllerTest {
     void accountFollowTest4() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.DUPLICATED_FOLLOW))
-                .given(service).doFollow(any(AccountDto.class), any(Long.class));
+                .given(service).doFollow(any(), any(Long.class));
 
         // when & then
         mvc.perform(post(prefix + "/accounts/follow/6"))
@@ -330,7 +330,7 @@ class AccountControllerTest {
     void accountFollowTest5() throws Exception {
         // given
         willThrow(new InstaApplicationException(ErrorCode.FOLLOW_NOT_FOUNDED))
-                .given(service).undoFollow(any(AccountDto.class), any(Long.class));
+                .given(service).undoFollow(any(), any(Long.class));
 
         // when & then
         mvc.perform(delete(prefix + "/accounts/1/follow/6"))

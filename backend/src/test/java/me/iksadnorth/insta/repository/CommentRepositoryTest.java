@@ -11,16 +11,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.util.Pair;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.Tuple;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @DisplayName("CommentRepo 테스트 - 직접 설정한 쿼리가 작동하는지 확인하는 테스트")
 @EnableProjectJpaConfig
-@ActiveProfiles("Test")
+@ActiveProfiles("test")
 @DataJpaTest
 class CommentRepositoryTest {
     @Autowired CommentRepository repo;

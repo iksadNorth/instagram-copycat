@@ -6,6 +6,7 @@ import me.iksadnorth.insta.exception.ErrorCode;
 import me.iksadnorth.insta.exception.InstaApplicationException;
 import me.iksadnorth.insta.fixture.Fixture;
 import me.iksadnorth.insta.model.dto.AccountDto;
+import me.iksadnorth.insta.model.entity.Article;
 import me.iksadnorth.insta.repository.AccountRepository;
 import me.iksadnorth.insta.repository.ArticleRepository;
 import me.iksadnorth.insta.repository.FollowRepository;
@@ -18,11 +19,13 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -45,6 +48,7 @@ class AccountServiceTest {
     private static MockedStatic<JwtTokenUtils> mockJwtTokenUtils;
     private final Fixture fixture = new Fixture();
     @InjectMocks AccountService service;
+    @Mock ArticleService articleService;
 
     @BeforeAll
     public static void beforeALl() {
@@ -171,7 +175,7 @@ class AccountServiceTest {
                 () -> service.loadById(id)
         );
 
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.ID_NOT_FOUNDED);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUNDED);
 
     }
 
@@ -204,7 +208,7 @@ class AccountServiceTest {
                 () -> service.accountUpdate(id, newDto, userLogged)
         );
 
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.ID_NOT_FOUNDED);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUNDED);
 
     }
 
@@ -267,7 +271,7 @@ class AccountServiceTest {
                 () -> service.accountDelete(id, userLogged)
         );
 
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.ID_NOT_FOUNDED);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUNDED);
 
     }
 
@@ -323,6 +327,7 @@ class AccountServiceTest {
 
         Pageable pageable = PageRequest.of(0, 10);
         given(articleRepo.findRandListById(any(), any())).willReturn(List.of());
+        given(articleService.countsWith((Stream<Article>) any(), any())).willReturn(Page.empty());
 
         // when & then
         assertDoesNotThrow(() -> service.loadExploreById(id, pageable, userLogged));

@@ -13,9 +13,7 @@ import me.iksadnorth.insta.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -26,8 +24,8 @@ public class ArticleController {
     private final CommentService commentService;
 
     @PostMapping
-    public Response<Void> articleCreate(@RequestBody ArticleCreateRequest request) {
-        service.articleCreate(request.toDto());
+    public Response<Void> articleCreate(@RequestBody ArticleCreateRequest request, @AuthenticationPrincipal AccountDto principal) {
+        service.articleCreate(request.toDto(), principal);
         return Response.success();
     }
 
