@@ -36,6 +36,8 @@ public class AccountService implements UserDetailsService {
 
     @Autowired JwtProperties jwtProperties;
 
+    @Autowired RecSystem recsys;
+
     @Override
     public AccountDto loadUserByUsername(String email) throws UsernameNotFoundException {
         return repo.findByEmail(email)
@@ -211,7 +213,7 @@ public class AccountService implements UserDetailsService {
         assertOwnership(id, dtoLogin);
         // 추천 알고리즘에 의해 id값이 선택되었다고 가정.
         // 실제 서비스 환경을 모사할 때 주의해야 하는 부분.
-        List<Long> ids = List.of(1L, 2L, 3L);
+        List<Long> ids = recsys.recommend(id, pageable);
         return articleService.countsWith(articleRepo.findRandListById(ids, pageable), pageable);
     }
 
