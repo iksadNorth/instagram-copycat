@@ -1,9 +1,5 @@
 # SNS Copycat 웹 사이트
 
-<aside>
-💡 목차
-
-</aside>
 
 # 📌 프로젝트 개요
 
@@ -36,7 +32,7 @@
 - Json Web Token
 - Lombok
 - H2 Database
-- MySQL Driver
+- MySQL
 
 - Vue.Js
 - Vuetify
@@ -66,6 +62,8 @@
 # 📌 프로젝트 주요 기능
 
 [기능 구현](https://www.notion.so/ffeeea24847c40059d6ba9bf46e14444)
+
+
 ![image](https://user-images.githubusercontent.com/66674140/233839434-b8ef7e61-1a32-44dd-9b30-b79cd2893262.png)
 
 
